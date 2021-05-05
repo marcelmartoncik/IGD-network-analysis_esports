@@ -3,9 +3,12 @@ library(tidyverse)
 library(dataMaid)
 library(codebook)
 library(labelled)
+library(psych)
+library(GPArotation)
 
 # read data
 esports <- read.csv("/home/z/Dokumenty/VYSKUM/APVV IGD/Clanky/esports a IGD/Data/IGD_network_esports.csv")
+esports <- read.csv("/home/z/Dokumenty/VYSKUM/APVV IGD/Clanky/esports a IGD/Data/IGD_network_esports_selection.csv")
 
 # Create labels for codebook
 var_label(esports$duration) <- "Duration in seconds of the whole test battery"
@@ -119,21 +122,21 @@ makeCodebook(esports, reportTitle = NULL, file = NULL)
 # Recode text values to numeric values
 esports <- esports %>% mutate(gender = recode(gender,
                                           `Male`= 0, `Female` = 1, `Non-binary` = 2, 
-                                          `Prefer not to say` = 3))
+                                          `Prefer not to say` = 3, .default = NaN))
 esports <- esports %>% 
-  mutate_at(c("playing_esports","team_membership"), funs(recode(., `No`= 0, `Yes`= 1)))
+  mutate_at(c("playing_esports","team_membership"), funs(recode(., `No`= 0, `Yes`= 1, .default = NaN)))
 esports <- esports %>% mutate(playing_with_offline_friends = recode(playing_with_offline_friends,
                                             `Never`= 1, `Rarely` = 2, `Sometimes` = 3,
-                                            `Often` = 4, `Very often` = 5))
+                                            `Often` = 4, `Very often` = 5, .default = NaN))
 esports <- esports %>% 
   mutate_at(c("MOGQ_social1", "MOGQ_social2", "MOGQ_social3", "MOGQ_social4",
               "MOGQ_escape1", "MOGQ_escape2", "MOGQ_escape3", "MOGQ_escape4",
               "MOGQ_competition1", "MOGQ_competition2", "MOGQ_competition3", "MOGQ_competition4", 
               "MOGQ_coping1", "MOGQ_coping2", "MOGQ_coping3", "MOGQ_coping4"), funs(recode(., 
               `Almost never/never`= 1, `Some of time` = 2, `Half of the time` = 3, `Most of the time` = 4, 
-              `Almost always/always` = 5)))
+              `Almost always/always` = 5, .default = NaN)))
 esports <- esports %>% mutate_at(c("IGCQ_1", "IGCQ_2", "IGCQ_3", "IGCQ_4"), funs(recode(.,
-                                           `No agreement`= 1, `Agree` = 2, `Strongly Agree` = 3)))
+                                           `No agreement`= 1, `Agree` = 2, `Strongly Agree` = 3, .default = NaN)))
 esports <- esports %>% mutate_at(c("IGDS9SF_1", "IGDS9SF_2", "IGDS9SF_3", "IGDS9SF_4", 
                                    "IGDS9SF_5", "IGDS9SF_6", "IGDS9SF_7", "IGDS9SF_8", 
                                    "IGDS9SF_9", "GDT_1", "GDT_2", "GDT_3", "GDT_4",
@@ -141,15 +144,15 @@ esports <- esports %>% mutate_at(c("IGDS9SF_1", "IGDS9SF_2", "IGDS9SF_3", "IGDS9
                                    "IGD_alternative_criterion5", "IGD_alternative_criterion6",
                                    "IGD_alternative_craving", "IGD_alternative_health"), 
                                  funs(recode(.,`Never`= 1, `Rarely` = 2, 
-                                               `Sometimes` = 3, `Often` = 4, `Very often` = 5)))
+                                               `Sometimes` = 3, `Often` = 4, `Very often` = 5, .default = NaN)))
 esports <- esports %>% mutate_at(c("BFRS_1", "BFRS_2", "BFRS_3", "BFRS_4", "BFRS_5",
                                    "BFRS_6", "BFRS_7"), funs(recode(., `Not at all`= 1, 
-                                                                    `Somewhat` = 2, `A lot` = 3)))
+                                                                    `Somewhat` = 2, `A lot` = 3, .default = NaN)))
 esports <- esports %>% mutate_at(c("BSCS_1", "BSCS_2", "BSCS_3", "BSCS_4", "BSCS_5",
                                    "BSCS_6", "BSCS_7", "BSCS_8", "BSCS_9", "BSCS_10", 
                                    "BSCS_11", "BSCS_12", "BSCS_13"), funs(recode(., `1 Not at all`= 1, 
                                                                     `2` = 2, `3` = 3, `4` = 4, 
-                                                                    `5       Very much` = 5)))
+                                                                    `5       Very much` = 5, .default = NaN)))
 esports <- esports %>% mutate_at(c("neuroticism_1", "neuroticism_2", "neuroticism_3", "neuroticism_4",
                                    "neuroticism_5", "neuroticism_6", "neuroticism_7", "neuroticism_8", 
                                    "neuroticism_9", "neuroticism_10", "harm_avoidance_1", "harm_avoidance_2",
@@ -157,20 +160,49 @@ esports <- esports %>% mutate_at(c("neuroticism_1", "neuroticism_2", "neuroticis
                                    "harm_avoidance_7", "harm_avoidance_8", "harm_avoidance_9", "harm_avoidance_10" ), 
                                  funs(recode(., `Very Inaccurate`= 1, `Moderately Inaccurate` = 2, 
                                              `Neither Accurate Nor Inaccurate` = 3, `Moderately Accurate`= 4, 
-                                             `Very Accurate` = 5)))
+                                             `Very Accurate` = 5, .default = NaN)))
 esports <- esports %>% mutate_at(c("DJGLS_1", "DJGLS_2", "DJGLS_3", "DJGLS_4", "DJGLS_5",
                                    "DJGLS_6", "DJGLS_7"), 
                                  funs(recode(., `Strongly agree`= 1, `Agree` = 2, 
                                              `Neither agree nor disagree` = 3, `Disagree`= 4, 
-                                             `Strongly disagree` = 5)))
+                                             `Strongly disagree` = 5, .default = NaN)))
 esports <- esports %>% mutate_at(c("BAS_reward_1", "BAS_reward_2", "BAS_reward_3", "BAS_reward_4", 
                                    "BAS_reward_5"), 
                                  funs(recode(., `Very true for me`= 1, `Somewhat true for me` = 2, 
-                                             `Somewhat false for me` = 3, `Very false for me` = 4)))
+                                             `Somewhat false for me` = 3, `Very false for me` = 4,
+                                             .default = NaN)))
 esports <- esports %>% mutate(attention_check_1 = recode(attention_check_1,
                                                          `Never`= 0, `Rarely` = 0, 
-                                                         `Sometimes` = 0, `Often` = 1, `Very often` = 0))
+                                                         `Sometimes` = 0, `Often` = 1, `Very often` = 0,
+                                                         .default = NaN))
 esports <- esports %>% mutate(attention_check_2 = recode(attention_check_2,
                                                          `Very Inaccurate`= 0, `Moderately Inaccurate` = 1, 
                                                          `Neither Accurate Nor Inaccurate` = 0, `Moderately Accurate`= 0, 
-                                                         `Very Accurate` = 0))
+                                                         `Very Accurate` = 0, .default = NaN))
+
+#Reliabilities
+#Internet Gaming Disorder Scale – Short-Form (IGDS9-SF)
+omega(select(esports, IGDS9SF_1 : IGDS9SF_9), nfactors = 1)
+#Gaming Disorder Test
+omega(select(esports, GDT_1 : GDT_4), nfactors = 1)
+#Brief Family Relationship Scale, Cohesion subscale
+omega(select(esports, BFRS_1 : BFRS_7), nfactors = 1)
+#Motives for Online Gaming Questionnaire, subscale Social
+omega(select(esports, MOGQ_social1 : MOGQ_social4), nfactors = 1)
+#Motives for Online Gaming Questionnaire, subscale Competition
+omega(select(esports, MOGQ_competition1 : MOGQ_competition4), nfactors = 1)
+#Motives for Online Gaming Questionnaire, subscale Escape
+omega(select(esports, MOGQ_escape1 : MOGQ_escape4), nfactors = 1)
+#Motives for Online Gaming Questionnaire, subscale Coping
+omega(select(esports, MOGQ_coping1 : MOGQ_coping4), nfactors = 1)
+#IPIP neuroticism
+omega(select(esports, neuroticism_1 : neuroticism_10), nfactors = 1)
+#IPIP harm avoidance
+omega(select(esports, harm_avoidance_1 : harm_avoidance_10), nfactors = 1)
+#De Jong Gierveld Loneliness Scale
+omega(select(esports, DJGLS_1 : DJGLS_6), nfactors = 1)
+#Brief Self-Control Scale
+omega(select(esports, BSCS_1 : BSCS_13), nfactors = 1)
+#BAS Reward Responsiveness
+omega(select(esports, BAS_reward_1 : BAS_reward_5), nfactors = 1)
+omega(select(data, fl1 : fl8), nfactors = 1, poly = T)
