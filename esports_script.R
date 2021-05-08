@@ -7,12 +7,14 @@ library(psych)
 library(GPArotation)
 
 # read data
-esports <- read.csv("/home/z/Dokumenty/VYSKUM/APVV IGD/Clanky/esports a IGD/Data/IGD_network_esports.csv")
-esports <- read.csv("/home/z/Dokumenty/VYSKUM/APVV IGD/Clanky/esports a IGD/Data/IGD_network_esports_selection.csv")
+library(readxl)
+esports <- read_excel("/home/z/Dokumenty/VYSKUM/APVV IGD/Clanky/esports a IGD/Data/IGD_network_esports.xlsx")
+esports <- read_excel("/home/z/Dokumenty/VYSKUM/APVV IGD/Clanky/esports a IGD/Data/IGD_network_esports_selection.xlsx")
 
 # Create labels for codebook
 var_label(esports$duration) <- "Duration in seconds of the whole test battery"
-var_label(esports$Q_RelevantIDFraudScore) <- "Fraud score assigned by Qualtrics"
+var_label(esports$Q_RecaptchaScore) <- "Fraud score assigned by Qualtrics. A score of Less than 0.5 means the respondent is likely a bot."
+var_label(esports$Q_RelevantIDFraudScore) <- "Fraud score assigned by Qualtrics. A score greater than or equal to 30 means the response is likely fraudulent and a bot."
 var_label(esports$gaming_time) <- "How many hours a day (on average) do you spend on gaming?"
 var_label(esports$gaming_related_activities_time) <- "How many hours a day (on average) do you spend on gaming related activities other than gaming (e.g., watching other people play games, consuming other gaming-related media (e.g. videos))?"
 var_label(esports$online_gaming_time) <- "Please divide your whole gaming time between playing online and offline games. Your choices must total 100%. - I play online games x percent (of the time)"
@@ -205,4 +207,3 @@ omega(select(esports, DJGLS_1 : DJGLS_6), nfactors = 1)
 omega(select(esports, BSCS_1 : BSCS_13), nfactors = 1)
 #BAS Reward Responsiveness
 omega(select(esports, BAS_reward_1 : BAS_reward_5), nfactors = 1)
-omega(select(data, fl1 : fl8), nfactors = 1, poly = T)
