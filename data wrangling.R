@@ -1,3 +1,6 @@
+# read necessary packages
+library(tidyverse)
+
 # Recode text values to numeric values
 esports <- esports %>% mutate(gender = recode(gender,
                                           `Male`= 0, `Female` = 1, `Non-binary` = 2, 
@@ -58,5 +61,4 @@ esports <- esports %>% mutate(attention_check_2 = recode(attention_check_2,
                                                          `Very Inaccurate`= 0, `Moderately Inaccurate` = 1, 
                                                          `Neither Accurate Nor Inaccurate` = 0, `Moderately Accurate`= 0, 
                                                          `Very Accurate` = 0, .default = NaN))
-
 
