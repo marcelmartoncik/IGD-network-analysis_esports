@@ -103,3 +103,9 @@ plot(pVSnp, what = "strength")
 plot(pVSnp, what = "network")
 plot(pVSnp, what = "edge")
 plot(pVSnp, what = "centrality")
+
+## Check whether the R2s are equal
+predMgmNetIGD$errors
+a <- lm(IGDS9SF_1 ~ IGDS9SF_2 + IGDS9SF_3 + IGDS9SF_4 + IGDS9SF_5 + 
+          IGDS9SF_6 + IGDS9SF_7 + IGDS9SF_8 + IGDS9SF_9, data = esports)
+summary(a)
