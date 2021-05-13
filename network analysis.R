@@ -19,26 +19,30 @@ corStability(stabIGD)
 plot(stabIGD, statistics = c("Strength","ExpectedInfluence","Closeness", "Betweenness"))
 bootIGD <- bootnet(netIGD, 
                    nBoots = 1000, 
-                   statistics = c("Strength","edge"),
+                   statistics = c("ExpectedInfluence","edge"),
                    type = "nonparametric",
                    verbose = FALSE) 
-plot(bootIGD, c("Strength"))
+plot(bootIGD, c("ExpectedInfluence"))
 plot(bootIGD, c("edge"))
+plot(bootIGD, c("edge"), plot = "difference")
+
 simIGD <- netSimulator(netIGD,
                         default = "EBICglasso",
+                        corMethod = "cor_auto",
                         nCases = c(250,500, 1000, 2000),
-                        nReps = 100,
+                        nReps = 1000,
                         nCores = 8)
 plot(simIGD)
 repIGD <- replicationSimulator(netIGD,
                                 default = "EBICglasso",
+                                corMethod = "cor_auto",
                                 nCases = c(250,500, 1000, 2000),
-                                nReps = 100,
+                                nReps = 1000,
                                 nCores = 8)
-plot(repIGD, statistics = "correlation")
+plot(repIGD)
 
 igdTypes <- rep("g", 9)
-igdLevels <- rep(1, 9)
+igdLevels <- rep(1, 9) ##Treated as continuous
 
 mgmNetIGD <- mgm(select(esports, IGDS9SF_1:IGDS9SF_9), 
                  type = igdTypes,
@@ -91,9 +95,11 @@ pVSnp <- NetworkComparisonTest::NCT(select(esportsP, IGDS9SF_1:IGDS9SF_9), selec
                                    test.edges = TRUE, edges = "all", p.adjust.methods = "bonferroni", gamma = 0.5,
                                    test.centrality = TRUE, centrality = "all",
                                    progressbar = TRUE)
-
+pVSnp
 pVSnp$glstrinv.pval # global strength invariance p-value 
 pVSnp$nwinv.pval # maximum difference in any of the edge weights of the observed networks p-value
 pVSnp$einv.pvals # the Holm-Bonferroni corrected p-values per edge from the permutation test concerning differences in edges weights
-plot(pVSnp, what = "network")
 plot(pVSnp, what = "strength")
+plot(pVSnp, what = "network")
+plot(pVSnp, what = "edge")
+plot(pVSnp, what = "centrality")
