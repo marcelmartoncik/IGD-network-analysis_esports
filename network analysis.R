@@ -65,3 +65,35 @@ qgraph(mgmNetIGD$pairwise$wadj,
 # Graph_lasso2 <- qgraph(corMat, graph = "glasso", layout = "spring", tuning = 0.5,
 #                       sampleSize = nrow(esports))
 
+
+esportsP <- subset(esports, subset = playing_esports == 1)
+esportsNP <- subset(esports, subset = playing_esports == 0)
+
+pIGD <- estimateNetwork(select(esportsP, IGDS9SF_1:IGDS9SF_9), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+npIGD <- estimateNetwork(select(esportsNP, IGDS9SF_1:IGDS9SF_9), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+centralityPlot(pIGD, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"),
+               decreasing = TRUE)
+centralityPlot(pIGD, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"),
+               decreasing = TRUE)
+
+L <- averageLayout(pIGD, npIGD)
+plot(pIGD, theme = "classic", title = "Group1", layout = L)
+plot(npIGD, theme = "classic", title = "Group2", layout = L)
+
+centralityPlot(
+  list(group1 = pIGD,
+       group2 = npIGD), 
+  include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"),
+  decreasing = TRUE)
+
+
+pVSnp <- NetworkComparisonTest::NCT(select(esportsP, IGDS9SF_1:IGDS9SF_9), select(esportsNP, IGDS9SF_1:IGDS9SF_9), it = 100, weighted = TRUE, 
+                                   test.edges = TRUE, edges = "all", p.adjust.methods = "bonferroni", gamma = 0.5,
+                                   test.centrality = TRUE, centrality = "all",
+                                   progressbar = TRUE)
+
+pVSnp$glstrinv.pval # global strength invariance p-value 
+pVSnp$nwinv.pval # maximum difference in any of the edge weights of the observed networks p-value
+pVSnp$einv.pvals # the Holm-Bonferroni corrected p-values per edge from the permutation test concerning differences in edges weights
+plot(pVSnp, what = "network")
+plot(pVSnp, what = "strength")
