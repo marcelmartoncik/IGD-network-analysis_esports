@@ -109,3 +109,38 @@ predMgmNetIGD$errors
 a <- lm(IGDS9SF_1 ~ IGDS9SF_2 + IGDS9SF_3 + IGDS9SF_4 + IGDS9SF_5 + 
           IGDS9SF_6 + IGDS9SF_7 + IGDS9SF_8 + IGDS9SF_9, data = esports)
 summary(a)
+
+
+
+
+# ICD-based IGD -----------------------------------------------------------
+
+netICD <- estimateNetwork(select(esports, IGCQ_1:IGCQ_4), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+centralityPlot(netICD, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"),
+               decreasing = TRUE)
+plot(netICD, theme = "gray")
+
+
+# Best items --------------------------------------------------------------
+
+bestIGD <- select(esports, IGDS9SF_1, IGD_alternative_criterion2, IGD_alternative_criterion3, 
+                  IGDS9SF_4, IGD_alternative_criterion5, IGD_alternative_criterion6, 
+                  IGDS9SF_7, IGDS9SF_8, IGDS9SF_9)
+names(bestIGD) <- c("1", "2", "3", "4", "5", "6", "7", "8", "9")
+netBest <- estimateNetwork(bestIGD, default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+centralityPlot(netBest, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"),
+               decreasing = TRUE)
+plot(netBest, theme = "gray")
+
+dsmIGD <- select(esports, IGDS9SF_1:IGDS9SF_9)
+names(dsmIGD) <- c("1", "2", "3", "4", "5", "6", "7", "8", "9")
+netIGD <- estimateNetwork(dsmIGD, default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+centralityPlot(netIGD, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"),
+               decreasing = TRUE)
+plot(netIGD, theme = "gray")
+
+centralityPlot(
+  list(group1 = netBest,
+       group2 = netIGD), 
+  include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"),
+  decreasing = TRUE)
