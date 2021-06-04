@@ -89,6 +89,9 @@ table(esports$careless)
 1-(nrow(subset(esports, careless == 0))/nrow(esports))
 esports$careless <- as.numeric(esports$careless)
 
+##Remove careless participants
+esports <- subset(esports, careless != 1)
+
 
 # Gamers ------------------------------------------------------------------
 
@@ -133,6 +136,9 @@ gamers$careless[is.na(gamers$careless)] <- 0
 table(gamers$careless)
 1-(nrow(subset(gamers, careless == 0))/nrow(gamers))
 gamers$careless <- as.numeric(gamers$careless)
+
+##Remove careless participants
+gamers <- subset(gamers, careless != 1)
 
 
 # Write csv files ---------------------------------------------------------
