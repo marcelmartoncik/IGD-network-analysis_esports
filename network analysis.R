@@ -1,8 +1,327 @@
+# Libraries ---------------------------------------------------------------
+
 library(bootnet)
 library(qgraph)
 library(mgm)
 
-# Network analysis --------------------------------------------------------
+
+# Load data - original dataset --------------------------------------------
+
+esports <- read.csv2("esports_withoutCarelessRecoded.csv")
+gamers <- read.csv2("gamers_withoutCarelessRecoded.csv")
+
+
+# Network analysis - esports ----------------------------------------------
+
+##IGDSF
+
+esportsIGDSF <- estimateNetwork(select(esports, IGDS9SF_1:IGDS9SF_9), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+centralityPlot(esportsIGDSF, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"),
+               decreasing = TRUE)
+plot(esportsIGDSF, theme = "gray",
+     labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"))
+# denseEsportsIGD <- estimateNetwork(select(esports, IGDS9SF_1:IGDS9SF_9), default = "EBICglasso", corMethod = "cor", tuning = 0)
+# plot(denseEsportsIGD, theme = "gray",
+#      labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"))
+# cor(as.vector(denseEsportsIGD$graph), as.vector(denseEsportsIGD$graph))  
+stabEsportsIGDSF <- bootnet(esportsIGDSF, nBoots = 2000, default = "EBICglasso", type = "case", nCores = 8, statistics = c("Strength","ExpectedInfluence","Closeness", "Betweenness"))
+corStability(stabEsportsIGDSF)
+plot(stabEsportsIGDSF, statistics = c("Strength","ExpectedInfluence","Closeness", "Betweenness"))
+bootEsportsIGDSF <- bootnet(esportsIGDSF, nBoots = 2000, statistics = c("ExpectedInfluence","edge"),
+                            type = "nonparametric", verbose = FALSE) 
+plot(bootEsportsIGDSF, c("ExpectedInfluence"))
+plot(bootEsportsIGDSF, c("edge"))
+plot(bootEsportsIGDSF, c("edge"), plot = "difference")
+
+simEsportsIGDSF <- netSimulator(esportsIGDSF, default = "EBICglasso", corMethod = "cor_auto",
+                                nCases = c(250,500, 1000, 2000), nReps = 2000, nCores = 8)
+plot(simEsportsIGDSF)
+repEsportsIGDSF <- replicationSimulator(esportsIGDSF, default = "EBICglasso", corMethod = "cor_auto",
+                               nCases = c(250,500, 1000, 2000), nReps = 2000, nCores = 8)
+plot(repEsportsIGDSF)
+
+typesIGD <- rep("g", 9)
+levelsIGD <- rep(1, 9) ##Treated as continuous
+mgmEsportsIGDSF <- mgm(select(esports, IGDS9SF_1:IGDS9SF_9), 
+                       type = typesIGD, level = levelsIGD,
+                       lambdaSel = "EBIC", lambdaGam = .5, ruleReg = "AND")
+predMgmEsportsIGDSF <- predict(mgmEsportsIGDSF, select(esports, IGDS9SF_1:IGDS9SF_9))
+predMgmEsportsIGDSF$errors
+qgraph(mgmEsportsIGDSF$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmNetIGD$errors[,3],
+       title = "Esports - IGDSF", labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"), label.cex = 1, label.scale = FALSE)
+
+
+##IGD - best items
+
+esportsIGDSFalt <- estimateNetwork(select(esports, IGDS9SF_1, IGD_alternative_criterion2, IGD_alternative_criterion3, 
+                                          IGDS9SF_4, IGD_alternative_criterion5, IGD_alternative_criterion6,
+                                          IGDS9SF_7:IGDS9SF_9), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+centralityPlot(esportsIGDSFalt, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"),
+               decreasing = TRUE)
+plot(esportsIGDSFalt, theme = "gray",
+     labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"))
+stabEsportsIGDSFalt <- bootnet(esportsIGDSFalt, nBoots = 2000, default = "EBICglasso", type = "case", nCores = 8, statistics = c("Strength","ExpectedInfluence","Closeness", "Betweenness"))
+corStability(stabEsportsIGDSFalt)
+plot(stabEsportsIGDSFalt, statistics = c("Strength","ExpectedInfluence","Closeness", "Betweenness"))
+bootEsportsIGDSFalt <- bootnet(esportsIGDSFalt, nBoots = 2000, statistics = c("ExpectedInfluence","edge"),
+                               type = "nonparametric", verbose = FALSE) 
+plot(bootEsportsIGDSFalt, c("ExpectedInfluence"))
+plot(bootEsportsIGDSFalt, c("edge"))
+plot(bootEsportsIGDSFalt, c("edge"), plot = "difference")
+
+simEsportsIGDSFalt <- netSimulator(esportsIGDSFalt, default = "EBICglasso", corMethod = "cor_auto",
+                                   nCases = c(250,500, 1000, 2000), nReps = 2000, nCores = 8)
+plot(simEsportsIGDSFalt)
+repEsportsIGDSFalt <- replicationSimulator(esportsIGDSFalt, default = "EBICglasso", corMethod = "cor_auto",
+                                           nCases = c(250,500, 1000, 2000), nReps = 2000, nCores = 8)
+plot(repEsportsIGDSFalt)
+
+typesIGD <- rep("g", 9)
+levelsIGD <- rep(1, 9) ##Treated as continuous
+mgmEsportsIGDSFalt <- mgm(select(esports, IGDS9SF_1, IGD_alternative_criterion2, IGD_alternative_criterion3, 
+                                 IGDS9SF_4, IGD_alternative_criterion5, IGD_alternative_criterion6,
+                                 IGDS9SF_7:IGDS9SF_9), 
+                          type = typesIGD, level = levelsIGD,
+                          lambdaSel = "EBIC", lambdaGam = .5, ruleReg = "AND")
+predMgmEsportsIGDSFalt <- predict(mgmEsportsIGDSFalt, select(esports, IGDS9SF_1:IGDS9SF_9))
+predMgmEsportsIGDSFalt$errors
+qgraph(mgmEsportsIGDSFalt$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmNetIGD$errors[,3],
+       title = "Esports - IGDSF", labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"), label.cex = 1, label.scale = FALSE)
+
+
+##IGD - best items + craving and health
+
+esportsIGDSFaltCH <- estimateNetwork(select(esports, IGDS9SF_1, IGD_altCHernative_criterion2, IGD_altCHernative_criterion3, 
+                                          IGDS9SF_4, IGD_altCHernative_criterion5, IGD_altCHernative_criterion6,
+                                          IGDS9SF_7:IGDS9SF_9), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+centralityPlot(esportsIGDSFaltCH, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"),
+               decreasing = TRUE)
+plot(esportsIGDSFaltCH, theme = "gray",
+     labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"))
+stabEsportsIGDSFaltCH <- bootnet(esportsIGDSFaltCH, nBoots = 2000, default = "EBICglasso", type = "case", nCores = 8, statistics = c("Strength","ExpectedInfluence","Closeness", "Betweenness"))
+corStability(stabEsportsIGDSFaltCH)
+plot(stabEsportsIGDSFaltCH, statistics = c("Strength","ExpectedInfluence","Closeness", "Betweenness"))
+bootEsportsIGDSFaltCH <- bootnet(esportsIGDSFaltCH, nBoots = 2000, statistics = c("ExpectedInfluence","edge"),
+                               type = "nonparametric", verbose = FALSE) 
+plot(bootEsportsIGDSFaltCH, c("ExpectedInfluence"))
+plot(bootEsportsIGDSFaltCH, c("edge"))
+plot(bootEsportsIGDSFaltCH, c("edge"), plot = "difference")
+
+simEsportsIGDSFaltCH <- netSimulator(esportsIGDSFaltCH, default = "EBICglasso", corMethod = "cor_auto",
+                                   nCases = c(250,500, 1000, 2000), nReps = 2000, nCores = 8)
+plot(simEsportsIGDSFaltCH)
+repEsportsIGDSFaltCH <- replicationSimulator(esportsIGDSFaltCH, default = "EBICglasso", corMethod = "cor_auto",
+                                           nCases = c(250,500, 1000, 2000), nReps = 2000, nCores = 8)
+plot(repEsportsIGDSFaltCH)
+
+typesIGD <- rep("g", 9)
+levelsIGD <- rep(1, 9) ##Treated as continuous
+mgmEsportsIGDSFaltCH <- mgm(select(esports, IGDS9SF_1, IGD_altCHernative_criterion2, IGD_altCHernative_criterion3, 
+                                 IGDS9SF_4, IGD_altCHernative_criterion5, IGD_altCHernative_criterion6,
+                                 IGDS9SF_7:IGDS9SF_9), 
+                          type = typesIGD, level = levelsIGD,
+                          lambdaSel = "EBIC", lambdaGam = .5, ruleReg = "AND")
+predMgmEsportsIGDSFaltCH <- predict(mgmEsportsIGDSFaltCH, select(esports, IGDS9SF_1:IGDS9SF_9))
+predMgmEsportsIGDSFaltCH$errors
+qgraph(mgmEsportsIGDSFaltCH$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmNetIGD$errors[,3],
+       title = "Esports - IGDSF", labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"), label.cex = 1, label.scale = FALSE)
+
+
+##IGCQ
+
+esportsIGCQ <- estimateNetwork(select(esports, IGCQ_1:IGCQ_4), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+centralityPlot(esportsIGCQ, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"),
+               decreasing = TRUE)
+plot(esportsIGCQ, theme = "gray",
+     labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"))
+stabEsportsIGCQ <- bootnet(esportsIGCQ, nBoots = 2000, default = "EBICglasso", type = "case", nCores = 8, statistics = c("Strength","ExpectedInfluence","Closeness", "Betweenness"))
+corStability(stabEsportsIGCQ)
+plot(stabEsportsIGCQ, statistics = c("Strength","ExpectedInfluence","Closeness", "Betweenness"))
+bootEsportsIGCQ <- bootnet(esportsIGCQ, nBoots = 2000, statistics = c("ExpectedInfluence","edge"),
+                            type = "nonparametric", verbose = FALSE) 
+plot(bootEsportsIGCQ, c("ExpectedInfluence"))
+plot(bootEsportsIGCQ, c("edge"))
+plot(bootEsportsIGCQ, c("edge"), plot = "difference")
+
+simEsportsIGCQ <- netSimulator(esportsIGCQ, default = "EBICglasso", corMethod = "cor_auto",
+                                nCases = c(250,500, 1000, 2000), nReps = 2000, nCores = 8)
+plot(simEsportsIGCQ)
+repEsportsIGCQ <- replicationSimulator(esportsIGCQ, default = "EBICglasso", corMethod = "cor_auto",
+                                        nCases = c(250,500, 1000, 2000), nReps = 2000, nCores = 8)
+plot(repEsportsIGCQ)
+
+typesIGD <- rep("g", 9)
+levelsIGD <- rep(1, 9) ##Treated as continuous
+mgmEsportsIGCQ <- mgm(select(esports, IGDS9SF_1:IGDS9SF_9), 
+                       type = typesIGD, level = levelsIGD,
+                       lambdaSel = "EBIC", lambdaGam = .5, ruleReg = "AND")
+predMgmEsportsIGCQ <- predict(mgmEsportsIGCQ, select(esports, IGCQ_1:IGCQ_4))
+predMgmEsportsIGCQ$errors
+qgraph(mgmEsportsIGCQ$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmNetIGD$errors[,3],
+       title = "Esports - IGCQ", labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"), label.cex = 1, label.scale = FALSE)
+
+
+# Network analysis - Gamers -----------------------------------------------
+
+
+##IGDSF
+
+gamersIGDSF <- estimateNetwork(select(gamers, IGDS9SF_1:IGDS9SF_9), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+centralityPlot(gamersIGDSF, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"),
+               decreasing = TRUE)
+plot(gamersIGDSF, theme = "gray",
+     labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"))
+# denseGamersIGD <- estimateNetwork(select(gamers, IGDS9SF_1:IGDS9SF_9), default = "EBICglasso", corMethod = "cor", tuning = 0)
+# plot(denseGamersIGD, theme = "gray",
+#      labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"))
+# cor(as.vector(denseGamersIGD$graph), as.vector(denseGamersIGD$graph))  
+stabGamersIGDSF <- bootnet(gamersIGDSF, nBoots = 2000, default = "EBICglasso", type = "case", nCores = 8, statistics = c("Strength","ExpectedInfluence","Closeness", "Betweenness"))
+corStability(stabGamersIGDSF)
+plot(stabGamersIGDSF, statistics = c("Strength","ExpectedInfluence","Closeness", "Betweenness"))
+bootGamersIGDSF <- bootnet(gamersIGDSF, nBoots = 2000, statistics = c("ExpectedInfluence","edge"),
+                           type = "nonparametric", verbose = FALSE) 
+plot(bootGamersIGDSF, c("ExpectedInfluence"))
+plot(bootGamersIGDSF, c("edge"))
+plot(bootGamersIGDSF, c("edge"), plot = "difference")
+
+simGamersIGDSF <- netSimulator(gamersIGDSF, default = "EBICglasso", corMethod = "cor_auto",
+                               nCases = c(250,500, 1000, 2000), nReps = 2000, nCores = 8)
+plot(simGamersIGDSF)
+repGamersIGDSF <- replicationSimulator(gamersIGDSF, default = "EBICglasso", corMethod = "cor_auto",
+                                       nCases = c(250,500, 1000, 2000), nReps = 2000, nCores = 8)
+plot(repGamersIGDSF)
+
+typesIGD <- rep("g", 9)
+levelsIGD <- rep(1, 9) ##Treated as continuous
+mgmGamersIGDSF <- mgm(select(gamers, IGDS9SF_1:IGDS9SF_9), 
+                       type = typesIGD, level = levelsIGD,
+                       lambdaSel = "EBIC", lambdaGam = .5, ruleReg = "AND")
+predMgmGamersIGDSF <- predict(mgmGamersIGDSF, select(gamers, IGDS9SF_1:IGDS9SF_9))
+predMgmGamersIGDSF$errors
+qgraph(mgmGamersIGDSF$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmNetIGD$errors[,3],
+       title = "Gamers - IGDSF", labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"), label.cex = 1, label.scale = FALSE)
+
+
+##IGD - best items
+
+gamersIGDSFalt <- estimateNetwork(select(gamers, IGDS9SF_1, IGD_alternative_criterion2, IGD_alternative_criterion3, 
+                                          IGDS9SF_4, IGD_alternative_criterion5, IGD_alternative_criterion6,
+                                          IGDS9SF_7:IGDS9SF_9), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+centralityPlot(gamersIGDSFalt, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"),
+               decreasing = TRUE)
+plot(gamersIGDSFalt, theme = "gray",
+     labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"))
+stabGamersIGDSFalt <- bootnet(gamersIGDSFalt, nBoots = 2000, default = "EBICglasso", type = "case", nCores = 8, statistics = c("Strength","ExpectedInfluence","Closeness", "Betweenness"))
+corStability(stabGamersIGDSFalt)
+plot(stabGamersIGDSFalt, statistics = c("Strength","ExpectedInfluence","Closeness", "Betweenness"))
+bootGamersIGDSFalt <- bootnet(gamersIGDSFalt, nBoots = 2000, statistics = c("ExpectedInfluence","edge"),
+                               type = "nonparametric", verbose = FALSE) 
+plot(bootGamersIGDSFalt, c("ExpectedInfluence"))
+plot(bootGamersIGDSFalt, c("edge"))
+plot(bootGamersIGDSFalt, c("edge"), plot = "difference")
+
+simGamersIGDSFalt <- netSimulator(gamersIGDSFalt, default = "EBICglasso", corMethod = "cor_auto",
+                                  nCases = c(250,500, 1000, 2000), nReps = 2000, nCores = 8)
+plot(simGamersIGDSFalt)
+repGamersIGDSFalt <- replicationSimulator(gamersIGDSFalt, default = "EBICglasso", corMethod = "cor_auto",
+                                          nCases = c(250,500, 1000, 2000), nReps = 2000, nCores = 8)
+plot(repGamersIGDSFalt)
+
+typesIGD <- rep("g", 9)
+levelsIGD <- rep(1, 9) ##Treated as continuous
+mgmGamersIGDSFalt <- mgm(select(gamers, IGDS9SF_1, IGD_alternative_criterion2, IGD_alternative_criterion3, 
+                                IGDS9SF_4, IGD_alternative_criterion5, IGD_alternative_criterion6,
+                                IGDS9SF_7:IGDS9SF_9), 
+                         type = typesIGD, level = levelsIGD,
+                         lambdaSel = "EBIC", lambdaGam = .5, ruleReg = "AND")
+predMgmGamersIGDSFalt <- predict(mgmGamersIGDSFalt, select(gamers, IGDS9SF_1:IGDS9SF_9))
+predMgmGamersIGDSFalt$errors
+qgraph(mgmGamersIGDSFalt$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmNetIGD$errors[,3],
+       title = "Gamers - IGDSF", labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"), label.cex = 1, label.scale = FALSE)
+
+
+##IGD - best items + craving and health
+
+gamersIGDSFaltCH <- estimateNetwork(select(gamers, IGDS9SF_1, IGD_altCHernative_criterion2, IGD_altCHernative_criterion3, 
+                                           IGDS9SF_4, IGD_altCHernative_criterion5, IGD_altCHernative_criterion6,
+                                           IGDS9SF_7:IGDS9SF_9), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+centralityPlot(gamersIGDSFaltCH, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"),
+               decreasing = TRUE)
+plot(gamersIGDSFaltCH, theme = "gray",
+     labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"))
+stabGamersIGDSFaltCH <- bootnet(gamersIGDSFaltCH, nBoots = 2000, default = "EBICglasso", type = "case", nCores = 8, statistics = c("Strength","ExpectedInfluence","Closeness", "Betweenness"))
+corStability(stabGamersIGDSFaltCH)
+plot(stabGamersIGDSFaltCH, statistics = c("Strength","ExpectedInfluence","Closeness", "Betweenness"))
+bootGamersIGDSFaltCH <- bootnet(gamersIGDSFaltCH, nBoots = 2000, statistics = c("ExpectedInfluence","edge"),
+                                type = "nonparametric", verbose = FALSE) 
+plot(bootGamersIGDSFaltCH, c("ExpectedInfluence"))
+plot(bootGamersIGDSFaltCH, c("edge"))
+plot(bootGamersIGDSFaltCH, c("edge"), plot = "difference")
+
+simGamersIGDSFaltCH <- netSimulator(gamersIGDSFaltCH, default = "EBICglasso", corMethod = "cor_auto",
+                                    nCases = c(250,500, 1000, 2000), nReps = 2000, nCores = 8)
+plot(simGamersIGDSFaltCH)
+repGamersIGDSFaltCH <- replicationSimulator(gamersIGDSFaltCH, default = "EBICglasso", corMethod = "cor_auto",
+                                            nCases = c(250,500, 1000, 2000), nReps = 2000, nCores = 8)
+plot(repGamersIGDSFaltCH)
+
+typesIGD <- rep("g", 9)
+levelsIGD <- rep(1, 9) ##Treated as continuous
+mgmGamersIGDSFaltCH <- mgm(select(gamers, IGDS9SF_1, IGD_altCHernative_criterion2, IGD_altCHernative_criterion3, 
+                                  IGDS9SF_4, IGD_altCHernative_criterion5, IGD_altCHernative_criterion6,
+                                  IGDS9SF_7:IGDS9SF_9), 
+                           type = typesIGD, level = levelsIGD,
+                           lambdaSel = "EBIC", lambdaGam = .5, ruleReg = "AND")
+predMgmGamersIGDSFaltCH <- predict(mgmGamersIGDSFaltCH, select(gamers, IGDS9SF_1:IGDS9SF_9))
+predMgmGamersIGDSFaltCH$errors
+qgraph(mgmGamersIGDSFaltCH$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmNetIGD$errors[,3],
+       title = "Gamers - IGDSF", labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"), label.cex = 1, label.scale = FALSE)
+
+
+##IGCQ
+
+gamersIGCQ <- estimateNetwork(select(gamers, IGCQ_1:IGCQ_4), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+centralityPlot(gamersIGCQ, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"),
+               decreasing = TRUE)
+plot(gamersIGCQ, theme = "gray",
+     labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"))
+stabGamersIGCQ <- bootnet(gamersIGCQ, nBoots = 2000, default = "EBICglasso", type = "case", nCores = 8, statistics = c("Strength","ExpectedInfluence","Closeness", "Betweenness"))
+corStability(stabGamersIGCQ)
+plot(stabGamersIGCQ, statistics = c("Strength","ExpectedInfluence","Closeness", "Betweenness"))
+bootGamersIGCQ <- bootnet(gamersIGCQ, nBoots = 2000, statistics = c("ExpectedInfluence","edge"),
+                          type = "nonparametric", verbose = FALSE) 
+plot(bootGamersIGCQ, c("ExpectedInfluence"))
+plot(bootGamersIGCQ, c("edge"))
+plot(bootGamersIGCQ, c("edge"), plot = "difference")
+
+simGamersIGCQ <- netSimulator(gamersIGCQ, default = "EBICglasso", corMethod = "cor_auto",
+                              nCases = c(250,500, 1000, 2000), nReps = 2000, nCores = 8)
+plot(simGamersIGCQ)
+repGamersIGCQ <- replicationSimulator(gamersIGCQ, default = "EBICglasso", corMethod = "cor_auto",
+                                      nCases = c(250,500, 1000, 2000), nReps = 2000, nCores = 8)
+plot(repGamersIGCQ)
+
+typesIGD <- rep("g", 9)
+levelsIGD <- rep(1, 9) ##Treated as continuous
+mgmGamersIGCQ <- mgm(select(gamers, IGDS9SF_1:IGDS9SF_9), 
+                     type = typesIGD, level = levelsIGD,
+                     lambdaSel = "EBIC", lambdaGam = .5, ruleReg = "AND")
+predMgmGamersIGCQ <- predict(mgmGamersIGCQ, select(gamers, IGCQ_1:IGCQ_4))
+predMgmGamersIGCQ$errors
+qgraph(mgmGamersIGCQ$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmNetIGD$errors[,3],
+       title = "Gamers - IGCQ", labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"), label.cex = 1, label.scale = FALSE)
+
+
+
+
+
+
+
+
+
+
+# Other analyses ----------------------------------------------------------
+
 
 # netIGD <- estimateNetwork(select(esports, IGDS9SF_1:IGDS9SF_9), default = "EBICglasso", tuning = .50) ##W/o threshold
 netIGD <- estimateNetwork(select(esports, IGDS9SF_1:IGDS9SF_9), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)

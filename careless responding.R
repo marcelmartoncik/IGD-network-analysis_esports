@@ -47,6 +47,9 @@ longstringWoNA <- function(dataCareless) {
 
 # Esports -----------------------------------------------------------------
 
+##Bot detection
+esports$bot <- ifelse(esports$Q_RecaptchaScore < .5, 1, ifelse(esports$Q_RelevantIDFraudScore > 30, 1, 0))
+
 ##Calculate longstrings
 esports$long1to3 <- longstringWoNA(select(esports, IGCQ_1:IGCQ_4, BFRS_1:BFRS_7))
 esports$long1to4 <- longstringWoNA(select(esports, BAS_reward_1:BAS_reward_5))
@@ -71,17 +74,17 @@ esports$attention_check_2 <- ifelse(esports$attention_check_2 == 1, 0, 1)
 esports$attention_check_2[is.na(esports$attention_check_2)] <- 1
 esports$ac <- esports$attention_check_1 + esports$attention_check_1
 
-whichCareless <- NULL
+whichManyMissings <- NULL
 for(i in 1:nrow(esports)) {
-  whichCareless[i] <- isTRUE(sum(is.na(esports[i, ])) / ncol(esports) > .5)
+  whichManyMissings[i] <- isTRUE(sum(is.na(esports[i, ])) / ncol(esports) > .5)
 }
-sum(whichCareless == TRUE)
-which(whichCareless == TRUE)
+sum(whichManyMissings == TRUE)
+which(whichManyMissings == TRUE)
 
 ##Careless participants summary
 
-##About 6% of the participants could be considered careless
-esports$careless <- ifelse(esports$ac > 1 | 
+##About 7% of the participants could be considered careless
+esports$careless <- ifelse(esports$bot == 1 | esports$ac > 1 | 
                           (scale(esports$long1to3) > 3 | scale(esports$long1to5) > 3) | 
                           (scale(esports$mahal1to3) > 3 | scale(esports$mahal1to5) > 3), 1, 0)
 esports$careless[is.na(esports$careless)] <- 0
@@ -94,6 +97,9 @@ esports <- subset(esports, careless != 1)
 
 
 # Gamers ------------------------------------------------------------------
+
+##Bot detection
+gamers$bot <- ifelse(gamers$Q_RecaptchaScore < .5, 1, ifelse(gamers$Q_RelevantIDFraudScore > 30, 1, 0))
 
 ##Calculate longstrings
 gamers$long1to3 <- longstringWoNA(select(gamers, IGCQ_1:IGCQ_4, BFRS_1:BFRS_7))
@@ -119,17 +125,17 @@ gamers$attention_check_2 <- ifelse(gamers$attention_check_2 == 1, 0, 1)
 gamers$attention_check_2[is.na(gamers$attention_check_2)] <- 1
 gamers$ac <- gamers$attention_check_1 + gamers$attention_check_1
 
-whichCareless <- NULL
+whichManyMissings <- NULL
 for(i in 1:nrow(gamers)) {
-  whichCareless[i] <- isTRUE(sum(is.na(gamers[i, ])) / ncol(gamers) > .5)
+  whichManyMissings[i] <- isTRUE(sum(is.na(gamers[i, ])) / ncol(gamers) > .5)
 }
-sum(whichCareless == TRUE)
-which(whichCareless == TRUE)
+sum(whichManyMissings == TRUE)
+which(whichManyMissings == TRUE)
 
 ##Careless participants summary
 
-##About 5% of the participants could be considered careless
-gamers$careless <- ifelse(gamers$ac > 1 | 
+##About 6% of the participants could be considered careless
+gamers$careless <- ifelse(gamers$bot | gamers$ac > 1 | 
                              (scale(gamers$long1to3) > 3 | scale(gamers$long1to5) > 3) | 
                              (scale(gamers$mahal1to3) > 3 | scale(gamers$mahal1to5) > 3), 1, 0)
 gamers$careless[is.na(gamers$careless)] <- 0
