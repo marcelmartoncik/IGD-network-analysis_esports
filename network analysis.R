@@ -47,7 +47,7 @@ mgmEsportsIGDSF <- mgm(select(esports, IGDS9SF_1:IGDS9SF_9),
                        lambdaSel = "EBIC", lambdaGam = .5, ruleReg = "AND")
 predMgmEsportsIGDSF <- predict(mgmEsportsIGDSF, select(esports, IGDS9SF_1:IGDS9SF_9))
 predMgmEsportsIGDSF$errors
-qgraph(mgmEsportsIGDSF$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmNetIGD$errors[,3],
+qgraph(mgmEsportsIGDSF$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmEsportsIGDSF$errors[,3],
        title = "Esports - IGDSF", labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"), label.cex = 1, label.scale = FALSE)
 
 
@@ -85,15 +85,15 @@ mgmEsportsIGDSFalt <- mgm(select(esports, IGDS9SF_1, IGD_alternative_criterion2,
                           lambdaSel = "EBIC", lambdaGam = .5, ruleReg = "AND")
 predMgmEsportsIGDSFalt <- predict(mgmEsportsIGDSFalt, select(esports, IGDS9SF_1:IGDS9SF_9))
 predMgmEsportsIGDSFalt$errors
-qgraph(mgmEsportsIGDSFalt$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmNetIGD$errors[,3],
+qgraph(mgmEsportsIGDSFalt$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmEsportsIGDSFalt$errors[,3],
        title = "Esports - IGDSF", labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"), label.cex = 1, label.scale = FALSE)
 
 
 ##IGD - best items + craving and health
 
-esportsIGDSFaltCH <- estimateNetwork(select(esports, IGDS9SF_1, IGD_altCHernative_criterion2, IGD_altCHernative_criterion3, 
-                                          IGDS9SF_4, IGD_altCHernative_criterion5, IGD_altCHernative_criterion6,
-                                          IGDS9SF_7:IGDS9SF_9), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+esportsIGDSFaltCH <- estimateNetwork(select(esports, IGDS9SF_1, IGD_alternative_criterion2, IGD_alternative_criterion3, 
+                                          IGDS9SF_4, IGD_alternative_criterion5, IGD_alternative_criterion6,
+                                          IGDS9SF_7:IGDS9SF_9, IGD_alternative_craving, IGD_alternative_health), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
 centralityPlot(esportsIGDSFaltCH, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"),
                decreasing = TRUE)
 plot(esportsIGDSFaltCH, theme = "gray",
@@ -116,14 +116,14 @@ plot(repEsportsIGDSFaltCH)
 
 typesIGD <- rep("g", 9)
 levelsIGD <- rep(1, 9) ##Treated as continuous
-mgmEsportsIGDSFaltCH <- mgm(select(esports, IGDS9SF_1, IGD_altCHernative_criterion2, IGD_altCHernative_criterion3, 
-                                 IGDS9SF_4, IGD_altCHernative_criterion5, IGD_altCHernative_criterion6,
-                                 IGDS9SF_7:IGDS9SF_9), 
+mgmEsportsIGDSFaltCH <- mgm(select(esports, IGDS9SF_1, IGD_alternative_criterion2, IGD_alternative_criterion3, 
+                                 IGDS9SF_4, IGD_alternative_criterion5, IGD_alternative_criterion6,
+                                 IGDS9SF_7:IGDS9SF_9, IGD_alternative_craving, IGD_alternative_health), 
                           type = typesIGD, level = levelsIGD,
                           lambdaSel = "EBIC", lambdaGam = .5, ruleReg = "AND")
 predMgmEsportsIGDSFaltCH <- predict(mgmEsportsIGDSFaltCH, select(esports, IGDS9SF_1:IGDS9SF_9))
 predMgmEsportsIGDSFaltCH$errors
-qgraph(mgmEsportsIGDSFaltCH$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmNetIGD$errors[,3],
+qgraph(mgmEsportsIGDSFaltCH$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmEsportsIGDSFaltCH$errors[,3],
        title = "Esports - IGDSF", labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"), label.cex = 1, label.scale = FALSE)
 
 
@@ -157,12 +157,11 @@ mgmEsportsIGCQ <- mgm(select(esports, IGDS9SF_1:IGDS9SF_9),
                        lambdaSel = "EBIC", lambdaGam = .5, ruleReg = "AND")
 predMgmEsportsIGCQ <- predict(mgmEsportsIGCQ, select(esports, IGCQ_1:IGCQ_4))
 predMgmEsportsIGCQ$errors
-qgraph(mgmEsportsIGCQ$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmNetIGD$errors[,3],
+qgraph(mgmEsportsIGCQ$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmEsportsIGCQ$errors[,3],
        title = "Esports - IGCQ", labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"), label.cex = 1, label.scale = FALSE)
 
 
 # Network analysis - Gamers -----------------------------------------------
-
 
 ##IGDSF
 
@@ -198,7 +197,7 @@ mgmGamersIGDSF <- mgm(select(gamers, IGDS9SF_1:IGDS9SF_9),
                        lambdaSel = "EBIC", lambdaGam = .5, ruleReg = "AND")
 predMgmGamersIGDSF <- predict(mgmGamersIGDSF, select(gamers, IGDS9SF_1:IGDS9SF_9))
 predMgmGamersIGDSF$errors
-qgraph(mgmGamersIGDSF$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmNetIGD$errors[,3],
+qgraph(mgmGamersIGDSF$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmGamersIGDSF$errors[,3],
        title = "Gamers - IGDSF", labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"), label.cex = 1, label.scale = FALSE)
 
 
@@ -236,15 +235,15 @@ mgmGamersIGDSFalt <- mgm(select(gamers, IGDS9SF_1, IGD_alternative_criterion2, I
                          lambdaSel = "EBIC", lambdaGam = .5, ruleReg = "AND")
 predMgmGamersIGDSFalt <- predict(mgmGamersIGDSFalt, select(gamers, IGDS9SF_1:IGDS9SF_9))
 predMgmGamersIGDSFalt$errors
-qgraph(mgmGamersIGDSFalt$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmNetIGD$errors[,3],
+qgraph(mgmGamersIGDSFalt$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmGamersIGDSFalt$errors[,3],
        title = "Gamers - IGDSF", labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"), label.cex = 1, label.scale = FALSE)
 
 
 ##IGD - best items + craving and health
 
-gamersIGDSFaltCH <- estimateNetwork(select(gamers, IGDS9SF_1, IGD_altCHernative_criterion2, IGD_altCHernative_criterion3, 
-                                           IGDS9SF_4, IGD_altCHernative_criterion5, IGD_altCHernative_criterion6,
-                                           IGDS9SF_7:IGDS9SF_9), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+gamersIGDSFaltCH <- estimateNetwork(select(gamers, IGDS9SF_1, IGD_alternative_criterion2, IGD_alternative_criterion3, 
+                                           IGDS9SF_4, IGD_alternative_criterion5, IGD_alternative_criterion6,
+                                           IGDS9SF_7:IGDS9SF_9, IGD_alternative_craving, IGD_alternative_health), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
 centralityPlot(gamersIGDSFaltCH, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"),
                decreasing = TRUE)
 plot(gamersIGDSFaltCH, theme = "gray",
@@ -267,14 +266,14 @@ plot(repGamersIGDSFaltCH)
 
 typesIGD <- rep("g", 9)
 levelsIGD <- rep(1, 9) ##Treated as continuous
-mgmGamersIGDSFaltCH <- mgm(select(gamers, IGDS9SF_1, IGD_altCHernative_criterion2, IGD_altCHernative_criterion3, 
-                                  IGDS9SF_4, IGD_altCHernative_criterion5, IGD_altCHernative_criterion6,
-                                  IGDS9SF_7:IGDS9SF_9), 
+mgmGamersIGDSFaltCH <- mgm(select(gamers, IGDS9SF_1, IGD_alternative_criterion2, IGD_alternative_criterion3, 
+                                  IGDS9SF_4, IGD_alternative_criterion5, IGD_alternative_criterion6,
+                                  IGDS9SF_7:IGDS9SF_9, IGD_alternative_craving, IGD_alternative_health), 
                            type = typesIGD, level = levelsIGD,
                            lambdaSel = "EBIC", lambdaGam = .5, ruleReg = "AND")
 predMgmGamersIGDSFaltCH <- predict(mgmGamersIGDSFaltCH, select(gamers, IGDS9SF_1:IGDS9SF_9))
 predMgmGamersIGDSFaltCH$errors
-qgraph(mgmGamersIGDSFaltCH$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmNetIGD$errors[,3],
+qgraph(mgmGamersIGDSFaltCH$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmGamersIGDSFaltCH$errors[,3],
        title = "Gamers - IGDSF", labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"), label.cex = 1, label.scale = FALSE)
 
 
@@ -308,86 +307,62 @@ mgmGamersIGCQ <- mgm(select(gamers, IGDS9SF_1:IGDS9SF_9),
                      lambdaSel = "EBIC", lambdaGam = .5, ruleReg = "AND")
 predMgmGamersIGCQ <- predict(mgmGamersIGCQ, select(gamers, IGCQ_1:IGCQ_4))
 predMgmGamersIGCQ$errors
-qgraph(mgmGamersIGCQ$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmNetIGD$errors[,3],
+qgraph(mgmGamersIGCQ$pairwise$wadj, layout = "spring", repulsion = 1, pie = predMgmGamersIGCQ$errors[,3],
        title = "Gamers - IGCQ", labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"), label.cex = 1, label.scale = FALSE)
 
 
 
+# Compare esports players and regular gamers ------------------------------
 
+##IGDSF
+esportsIGDSF <- estimateNetwork(select(esports, IGDS9SF_1:IGDS9SF_9), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+gamersIGDSF <- estimateNetwork(select(gamers, IGDS9SF_1:IGDS9SF_9), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
 
+centralityPlot(
+  list(esports = esportsIGDSF,
+       gamers = gamersIGDSF), 
+  include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"),
+  decreasing = TRUE)
 
+##IGD - best items
+esportsIGDSFalt <- estimateNetwork(select(esports, IGDS9SF_1, IGD_alternative_criterion2, IGD_alternative_criterion3, 
+                                          IGDS9SF_4, IGD_alternative_criterion5, IGD_alternative_criterion6,
+                                          IGDS9SF_7:IGDS9SF_9), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+gamersIGDSFalt <- estimateNetwork(select(gamers, IGDS9SF_1, IGD_alternative_criterion2, IGD_alternative_criterion3, 
+                                         IGDS9SF_4, IGD_alternative_criterion5, IGD_alternative_criterion6,
+                                         IGDS9SF_7:IGDS9SF_9), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+centralityPlot(
+  list(esports = esportsIGDSFalt,
+       gamers = gamersIGDSFalt), 
+  include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"),
+  decreasing = TRUE)
 
+##IGD - best items + craving and health
+esportsIGDSFaltCH <- estimateNetwork(select(esports, IGDS9SF_1, IGD_alternative_criterion2, IGD_alternative_criterion3, 
+                                            IGDS9SF_4, IGD_alternative_criterion5, IGD_alternative_criterion6,
+                                            IGDS9SF_7:IGDS9SF_9, IGD_alternative_craving, IGD_alternative_health), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+gamersIGDSFaltCH <- estimateNetwork(select(gamers, IGDS9SF_1, IGD_alternative_criterion2, IGD_alternative_criterion3, 
+                                           IGDS9SF_4, IGD_alternative_criterion5, IGD_alternative_criterion6,
+                                           IGDS9SF_7:IGDS9SF_9, IGD_alternative_craving, IGD_alternative_health), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+centralityPlot(
+  list(esports = esportsIGDSFaltCH,
+       gamers = gamersIGDSFaltCH), 
+  include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"),
+  decreasing = TRUE)
 
+##IGCQ
+esportsIGCQ <- estimateNetwork(select(esports, IGCQ_1:IGCQ_4), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+gamersIGCQ <- estimateNetwork(select(gamers, IGCQ_1:IGCQ_4), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+centralityPlot(
+  list(esports = esportsIGCQ,
+       gamers = gamersIGCQ), 
+  include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"),
+  decreasing = TRUE)
 
 
 # Other analyses ----------------------------------------------------------
 
-
-# netIGD <- estimateNetwork(select(esports, IGDS9SF_1:IGDS9SF_9), default = "EBICglasso", tuning = .50) ##W/o threshold
-netIGD <- estimateNetwork(select(esports, IGDS9SF_1:IGDS9SF_9), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
-centralityPlot(netIGD, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"),
-               decreasing = TRUE)
-plot(netIGD, theme = "gray",
-     labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"))
-# denseNetIGD <- netIGD <- estimateNetwork(select(esports, IGDS9SF_1:IGDS9SF_9), default = "EBICglasso", corMethod = "cor", tuning = 0)
-# plot(denseNetIGD, theme = "gray",
-#      labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"))
-# cor(as.vector(netIGD$graph), as.vector(denseNetIGD$graph))  
-stabIGD <- bootnet(netIGD, nBoots = 2000, default = "EBICglasso", type = "case", nCores = 8, statistics = c("Strength","ExpectedInfluence","Closeness", "Betweenness"))
-corStability(stabIGD)
-plot(stabIGD, statistics = c("Strength","ExpectedInfluence","Closeness", "Betweenness"))
-bootIGD <- bootnet(netIGD, 
-                   nBoots = 1000, 
-                   statistics = c("ExpectedInfluence","edge"),
-                   type = "nonparametric",
-                   verbose = FALSE) 
-plot(bootIGD, c("ExpectedInfluence"))
-plot(bootIGD, c("edge"))
-plot(bootIGD, c("edge"), plot = "difference")
-
-simIGD <- netSimulator(netIGD,
-                        default = "EBICglasso",
-                        corMethod = "cor_auto",
-                        nCases = c(250,500, 1000, 2000),
-                        nReps = 1000,
-                        nCores = 8)
-plot(simIGD)
-repIGD <- replicationSimulator(netIGD,
-                                default = "EBICglasso",
-                                corMethod = "cor_auto",
-                                nCases = c(250,500, 1000, 2000),
-                                nReps = 1000,
-                                nCores = 8)
-plot(repIGD)
-
-igdTypes <- rep("g", 9)
-igdLevels <- rep(1, 9) ##Treated as continuous
-
-mgmNetIGD <- mgm(select(esports, IGDS9SF_1:IGDS9SF_9), 
-                 type = igdTypes,
-                 level = igdLevels,
-                 lambdaSel = "EBIC", 
-                 lambdaGam = .5, 
-                 ruleReg = "AND")
-
-predMgmNetIGD <- predict(mgmNetIGD, select(esports, IGDS9SF_1:IGDS9SF_9))
-predMgmNetIGD$errors
-
-qgraph(mgmNetIGD$pairwise$wadj, 
-       layout = "spring",
-       repulsion = 1, 
-       title = "IGD net",
-       pie = predMgmNetIGD$errors[,3],
-       labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9"),
-       label.cex = 1,
-       label.scale = FALSE)
-
-# corMat <- cor_auto(select(esports, IGDS9SF_1:IGDS9SF_9))
-# Graph_lasso <- qgraph(corMat, graph = "glasso", layout = "spring", tuning = 0,
-#                       sampleSize = nrow(esports))
-# Graph_lasso2 <- qgraph(corMat, graph = "glasso", layout = "spring", tuning = 0.5,
-#                       sampleSize = nrow(esports))
-
+##Compare professional and non-professional esports players
 
 esportsP <- subset(esports, subset = playing_esports == 1)
 esportsNP <- subset(esports, subset = playing_esports == 0)
