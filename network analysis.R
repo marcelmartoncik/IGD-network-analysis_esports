@@ -351,11 +351,11 @@ centralityPlot(
   decreasing = TRUE)
 
 ##IGCQ
-esportsIGCQ <- estimateNetwork(select(esports, IGCQ_1:IGCQ_4), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
-gamersIGCQ <- estimateNetwork(select(gamers, IGCQ_1:IGCQ_4), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+esportsGDT <- estimateNetwork(select(esports, GDT_1:GDT_4), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
+gamersGDT <- estimateNetwork(select(gamers, GDT_1:GDT_4), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5)
 centralityPlot(
-  list(esports = esportsIGCQ,
-       gamers = gamersIGCQ), 
+  list(esports = esportsGDT,
+       gamers = gamersGDT), 
   include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"),
   decreasing = TRUE)
 
