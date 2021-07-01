@@ -5,12 +5,6 @@ library(miceadds)
 library(dplyr)
 library(psych)
 
-
-# Load data ---------------------------------------------------------------
-
-esports <- read.csv2("esports_withoutCarelessRecoded.csv")
-gamers <- read.csv2("gamers_withoutCarelessRecoded.csv")
-
 # Data imputation ---------------------------------------------------------
 
 ##Esports

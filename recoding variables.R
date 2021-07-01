@@ -1,9 +1,3 @@
-# Libraries ---------------------------------------------------------------
-
-esports <- read.csv2("esports_WithoutCareless.csv")
-gamers <- read.csv2("gamers_WithoutCareless.csv")
-
-
 # Recode reverse coded items ----------------------------------------------
 
 ##Brief Self Control Scale
@@ -29,8 +23,3 @@ esports <- esports %>% mutate_at(c("DJGLS_2", "DJGLS_3", "DJGLS_4"),
                                  funs(recode(., "1" = 5, "2" = 4, "3" = 3, "4" = 2, "5" = 1, .default = NaN)))
 gamers <- gamers %>% mutate_at(c("DJGLS_2", "DJGLS_3", "DJGLS_4"), 
                                funs(recode(., "1" = 5, "2" = 4, "3" = 3, "4" = 2, "5" = 1, .default = NaN)))
-
-# Write csv files ---------------------------------------------------------
-
-# write.csv2(esports, "esports_withoutCarelessRecoded.csv", row.names = FALSE)
-# write.csv2(gamers, "gamers_withoutCarelessRecoded.csv", row.names = FALSE)

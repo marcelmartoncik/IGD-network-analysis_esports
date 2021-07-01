@@ -7,13 +7,6 @@ library(dplyr)
 library(janitor)
 library(psych)
 
-
-# Load data ---------------------------------------------------------------
-
-esports <- read.csv2("esports_WithCareless.csv")
-gamers <- read.csv2("gamers_WithCareless.csv")
-
-
 # Detection of careless participants --------------------------------------
 
 ##A function for calculating longstrings after removing NAs
@@ -145,10 +138,3 @@ gamers$careless <- as.numeric(gamers$careless)
 
 ##Remove careless participants
 gamers <- subset(gamers, careless != 1)
-
-
-# Write csv files ---------------------------------------------------------
-
-# write.csv2(esports, "esports_withoutCareless.csv", row.names = FALSE)
-# write.csv2(gamers, "gamers_withoutCareless.csv", row.names = FALSE)
-

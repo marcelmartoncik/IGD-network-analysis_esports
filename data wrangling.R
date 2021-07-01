@@ -133,10 +133,3 @@ gamers <- gamers %>% mutate(attention_check_2 = recode(attention_check_2,
                                                          `Very Inaccurate`= 0, `Moderately Inaccurate` = 1, 
                                                          `Neither Accurate Nor Inaccurate` = 0, `Moderately Accurate`= 0, 
                                                          `Very Accurate` = 0, .default = NaN))
-
-
-
-# Write csv files ---------------------------------------------------------
-
-# write.csv2(esports, "esports_withCareless.csv", row.names = FALSE)
-# write.csv2(gamers, "gamers_withCareless.csv", row.names = FALSE)
