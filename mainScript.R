@@ -7,7 +7,6 @@ library(psych)
 library(networktree)
 library(magrittr)
 library(psychonetrics)
-library(clusterGeneration)
 
 # Sourcing auxiliary scripts ----------------------------------------------
 rm(list = ls())
@@ -152,15 +151,6 @@ for(d in 1:length(data)) {
                        "Proportion of significantly different edges" = proportionSignEdges,
                        "Proportion of edges having significantly different expected influence" = proportionSignInfluence)
 }
-
-igdStructuresNets <- rep(list(rep(list(NA), 2)), 4)
-for(i in names(igdStructures)) {
-  for(d in names(data)) {
-    igdStructuresNets[[i]][[d]] <- tryCatch(network(data = data[[d]], structureName = names(igdStructures[i])),
-                                            error = function(e) NULL)
-  }
-}
-
 
 # Centrality of core vs peripheral IGD symptoms ---------------------------
 
