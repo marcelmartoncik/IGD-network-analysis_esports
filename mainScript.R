@@ -7,6 +7,7 @@ library(psych)
 library(networktree)
 library(magrittr)
 library(psychonetrics)
+library(NetworkComparisonTest)
 
 # Sourcing auxiliary scripts ----------------------------------------------
 rm(list = ls())
@@ -18,6 +19,8 @@ source("recoding variables.R")
 gamersImp <- readRDS("gamersImputed.Rds")
 esportsImp <- readRDS("esportsImputed.Rds")
 data <- readRDS("data.Rds")
+
+nBoot <- 3
 
 # Find splits -------------------------------------------------------------
 igdStructures <- list(
@@ -33,6 +36,7 @@ splitsMatrixGamers <- splitsMatrixEsports <- matrix(data = NA, nrow = length(igd
                                                     dimnames = list(names(igdStructures), mods))
 
 # Split matrices for gamers
+# List elements represent split matrices per nIteration iterations
 splitMatrixGamersList <- list(NA)
 for(d in 1:length(gamersImp)) {
   for(i in 1:length(igdStructures)) {
@@ -47,6 +51,7 @@ for(d in 1:length(gamersImp)) {
 }
 
 # Split matrices for esports
+# List elements represent split matrices per nIteration iterations
 splitMatrixEsportsList <- list(NA)
 for(d in 1:length(esportsImp)) {
   for(i in 1:length(igdStructures)) {
@@ -75,7 +80,7 @@ meanSplitMatrices <- lapply(meanSplitMatrices, transform, gender = .5)
 # Generic network function ------------------------------------------------
 
 # Generic Network (moderator) analysis function
-network <- function(data = NA, structureName = NA, moderator = NULL, estimator = "mgm", nBoot = 3, cores = 8){
+network <- function(data = NA, structureName = NA, moderator = NULL, estimator = "mgm", nBoot = 200, cores = 8){
   set.seed(1)
   nodesVect <- igdStructures[[eval(substitute(structureName))]]
   if(is.null(moderator)) {
@@ -105,7 +110,6 @@ network <- function(data = NA, structureName = NA, moderator = NULL, estimator =
   }
 }
 
-
 # Network analysis --------------------------------------------------------
 
 # Networks for individual IGD structures
@@ -116,6 +120,7 @@ for(i in names(igdStructures)) {
                      error = function(e) NULL)
   }
 }
+igdStructuresNets
 
 # Invariance of individual network structures across gamers and esports
 igdStructuresDiff <- list(NA)
@@ -130,20 +135,36 @@ for(i in names(igdStructures)) {
                                    error = function(e) NULL)
   igdStructuresDiff[[i]] <- suppressMessages(NCT(igdStructuresGamers, igdStructuresEsports, test.edges = T, test.centrality = T, progressbar = F, it = 100))
 }
+igdStructuresDiff
 
+# Invariance of igds9sfVarNames and bestVarNames structures across gamers and esports
+# First plot is based on the gamers sample, second plot on esports players
+structInvariance <- list(NA)
+for(d in names(data)){
+  struct1 <- data[[d]] %>% select(igdStructures$igds9sfVarNames)
+  struct2 <- data[[d]] %>% select(igdStructures$bestVarNames)
+  names(struct1) <- names(struct2) <- 1:9
+  netIGD9sf <- estimateNetwork(struct1, default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE)
+  netBestVar <- estimateNetwork(struct2, default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE)
+  set.seed(1)
+  structInvariance[[d]][[1]] <- suppressMessages(NCT(netIGD9sf, netBestVar, test.edges = T, test.centrality = T, progressbar = F, it = nBoot))
+  structInvariance[[d]][[2]] <- recordPlot(centralityPlot(list(IGDSF9 = netIGD9sf, BestVar = netBestVar), include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"), decreasing = TRUE))
+}
+structInvariance
 
 # Network invariance across levels of moderators
+# 1 == gamers, 2 = esports players
 netInvariance <- strengthInvariance <- proportionSignEdges <- proportionSignInfluence <- list(matrix(NA, nrow = length(igdStructures), ncol = length(mods), dimnames = list(names(igdStructures), mods)),
                                                                                               matrix(NA, nrow = length(igdStructures), ncol = length(mods), dimnames = list(names(igdStructures), mods)))
 for(d in 1:length(data)) {
   for(i in 1:length(igdStructures)) {
-    for(j in 1:length(mods)) {
-     netObj <- tryCatch(network(data = data[[d]], structureName = names(igdStructures[i]), moderator = mods[j]),
-                        error = function(e) NULL)
-     netInvariance[[d]][i, j] <- ifelse(is.numeric(netObj$nwinv.pval), netObj$nwinv.pval, NA)
-     strengthInvariance[[d]][i, j] <- ifelse(is.numeric(netObj$glstrinv.pval), netObj$glstrinv.pval, NA)
-     proportionSignEdges[[d]][i, j] <- ifelse(is.numeric(netObj$einv.pvals$`p-value`), sum(netObj$einv.pvals$`p-value` < .05)/length(netObj$einv.pvals$`p-value`), NA)
-     proportionSignInfluence[[d]][i, j] <- ifelse(is.numeric(netObj$diffcen.pval[,2]), sum(netObj$diffcen.pval[,2] < .05)/length(netObj$diffcen.pval[,2]), NA)
+    for(j in 1:length(mods[1:3])) {
+      netObj <- tryCatch(network(data = data[[d]], structureName = names(igdStructures[i]), moderator = mods[j]),
+                         error = function(e) NULL)
+      netInvariance[[d]][i, j] <- ifelse(is.numeric(netObj$nwinv.pval), netObj$nwinv.pval, NA)
+      strengthInvariance[[d]][i, j] <- ifelse(is.numeric(netObj$glstrinv.pval), netObj$glstrinv.pval, NA)
+      proportionSignEdges[[d]][i, j] <- ifelse(is.numeric(netObj$einv.pvals$`p-value`), sum(netObj$einv.pvals$`p-value` < .05)/length(netObj$einv.pvals$`p-value`), NA)
+      proportionSignInfluence[[d]][i, j] <- ifelse(is.numeric(netObj$diffcen.pval[,2]), sum(netObj$diffcen.pval[,2] < .05)/length(netObj$diffcen.pval[,2]), NA)
     }
   }
   modsResults <<- list("Net Invariance" = netInvariance, 
@@ -151,6 +172,7 @@ for(d in 1:length(data)) {
                        "Proportion of significantly different edges" = proportionSignEdges,
                        "Proportion of edges having significantly different expected influence" = proportionSignInfluence)
 }
+modsResults
 
 # Centrality of core vs peripheral IGD symptoms ---------------------------
 
