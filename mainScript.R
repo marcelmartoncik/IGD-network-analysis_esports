@@ -7,6 +7,7 @@ library(psych)
 library(networktree)
 library(magrittr)
 library(psychonetrics)
+library(clusterGeneration)
 
 # Sourcing auxiliary scripts ----------------------------------------------
 rm(list = ls())
@@ -152,6 +153,59 @@ for(d in 1:length(data)) {
                        "Proportion of edges having significantly different expected influence" = proportionSignInfluence)
 }
 
+igdStructuresNets <- rep(list(rep(list(NA), 2)), 4)
+for(i in names(igdStructures)) {
+  for(d in names(data)) {
+    igdStructuresNets[[i]][[d]] <- tryCatch(network(data = data[[d]], structureName = names(igdStructures[i])),
+                                            error = function(e) NULL)
+  }
+}
+
+
+# Centrality of core vs peripheral IGD symptoms ---------------------------
+
+# Centrality of the core (2, 4, 7, 9) and peripheral IGD symptoms (1, 3, 8) (Charlton & Danforth, 2007; Brunborg et al., 2015) in the population of gamers and esports players
+
+bootCentrality <- rep(list(data.frame(NA)), 2)
+set.seed(1)
+nIterations <- 1000
+for(i in 1:nIterations){
+  for(d in 1:length(data)) {
+    # Compute correlation matrix for both samples
+    mat <- data[[d]] %>% select(IGDS9SF_1:IGDS9SF_9) %>% cor()
+    diag(mat) <- NA
+    mat[upper.tri(mat)] <- NA
+    mat <- c(mat[!is.na(mat)])
+    # Reshuffle the correlations and recreate the matrix
+    mat <- sample(mat, replace = FALSE)
+    class(mat) <- 'dist'
+    attr(mat,'Size') <- 9
+    mat <- as.matrix(mat)
+    diag(mat) <- 1
+    
+    # Estimate the network for reshuffled matrices, compute raw centrality estimates, and create output object bootCentrality. Done in nIterations number of iterations
+    net <- suppressMessages(centralityTable(qgraph(mat, graph = "EBICglasso", sampleSize = nrow(data[[d]]), tuning = 0.5, DoNotPlot = T), standardized = FALSE))
+    bootCentrality[[d]][i, "Betweenness"] <- net %>% filter(measure == "Betweenness") %>% select(value) %>% slice(1:4) %>% unlist() %>% mean() - net %>% filter(measure == "Betweenness") %>% select(value) %>% slice(5:7) %>% unlist() %>% mean()
+    bootCentrality[[d]][i, "Closeness"] <- net %>% filter(measure == "Closeness") %>% select(value) %>% slice(1:4) %>% unlist() %>% mean() - net %>% filter(measure == "Closeness") %>% select(value) %>% slice(5:7) %>% unlist() %>% mean()
+    bootCentrality[[d]][i, "Strength"] <- net %>% filter(measure == "Strength") %>% select(value) %>% slice(1:4) %>% unlist() %>% mean() - net %>% filter(measure == "Strength") %>% select(value) %>% slice(5:7) %>% unlist() %>% mean()
+    bootCentrality[[d]][i, "ExpectedInfluence"] <- net %>% filter(measure == "ExpectedInfluence") %>% select(value) %>% slice(1:4) %>% unlist() %>% mean() - net %>% filter(measure == "ExpectedInfluence") %>% select(value) %>% slice(5:7) %>% unlist() %>% mean()
+  }
+}
+
+# Estimate network based on empirical data from gamers and esports players, extract centrality indices and compare means of those centrality indices for core and peripheral symptoms. 
+# Lastly, compute one-tailed permutation p-values for the difference of those centrality means, where the iterated set of reshuffled matrices act as the H0 distribution.
+empiricalCentrality <- list(rep(data.frame(NA), 2))
+centralityPval <- list(rep(NA, 2))
+for(d in 1:length(data)){
+  netEmpirical <- centralityTable(estimateNetwork(data[[d]] %>% select(IGDS9SF_1:IGDS9SF_9), default = "EBICglasso", verbose = FALSE, tuning = 0.5), standardized = FALSE)
+  empiricalCentrality[[d]] <- c("Betweenness" = netEmpirical %>% filter(measure == "Betweenness") %>% select(value) %>% slice(2, 4, 7, 9) %>% unlist() %>% mean() - netEmpirical %>% filter(measure == "Betweenness") %>% select(value) %>% slice(1, 3, 8) %>% unlist() %>% mean(),
+                                "Closeness" = netEmpirical %>% filter(measure == "Closeness") %>% select(value) %>% slice(2, 4, 7, 9) %>% unlist() %>% mean() - netEmpirical %>% filter(measure == "Closeness") %>% select(value) %>% slice(1, 3, 8) %>% unlist() %>% mean(),
+                                "Strength" = netEmpirical %>% filter(measure == "Strength") %>% select(value) %>% slice(2, 4, 7, 9) %>% unlist() %>% mean() - netEmpirical %>% filter(measure == "Strength") %>% select(value) %>% slice(1, 3, 8) %>% unlist() %>% mean(),
+                                "ExpectedInfluence" = netEmpirical %>% filter(measure == "ExpectedInfluence") %>% select(value) %>% slice(2, 4, 7, 9) %>% unlist() %>% mean() - netEmpirical %>% filter(measure == "ExpectedInfluence") %>% select(value) %>% slice(1, 3, 8) %>% unlist() %>% mean())
+  centralityPval[[d]] <- apply(bootCentrality[[d]][,-1] >= empiricalCentrality[[d]], 2, function(x)table(x)[2])/rep(nIterations, length(empiricalCentrality[[1]]))
+  names(centralityPval)[[d]] <- names(data)[[d]]
+}
+centralityPval
 
 # Graveyard ---------------------------------------------------------------
 
