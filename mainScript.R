@@ -11,23 +11,28 @@ library(NetworkComparisonTest)
 
 # Sourcing auxiliary scripts ----------------------------------------------
 rm(list = ls())
-source("data wrangling.R")
+# source("data wrangling.R")
 # source("codebook.R")
-source("careless responding.R")
-source("recoding variables.R")
+# source("careless responding.R")
+# source("recoding variables.R")
 # source("data imputation.R")
 gamersImp <- readRDS("gamersImputed.Rds")
 esportsImp <- readRDS("esportsImputed.Rds")
 data <- readRDS("data.Rds")
 
-bootstrapIterations <- 10
+bootstrapIterations <- 2000
+
+# Estimate the structure of GD together with additional 
+# IGD symptoms (n. 1, 2, 3, 5, 7, 8) measured with the highest content validity
+# and with two additional items focused on craving and neglecting health 
 
 # Find splits -------------------------------------------------------------
 igdStructures <- list(
   igds9sfVarNames = select(esports, IGDS9SF_1:IGDS9SF_9) %>% names(),
   bestVarNames = select(esports, IGDS9SF_1, IGD_alternative_criterion2, IGD_alternative_criterion3, IGDS9SF_4, IGD_alternative_criterion5, IGD_alternative_criterion6, IGDS9SF_7:IGDS9SF_9) %>% names(),
   bestCravingHealthVarNames = select(esports, IGDS9SF_1, IGD_alternative_criterion2, IGD_alternative_criterion3, IGDS9SF_4, IGD_alternative_criterion5, IGD_alternative_criterion6, IGDS9SF_7:IGDS9SF_9, IGD_alternative_craving, IGD_alternative_health) %>% names(),
-  gdtVarNames = select(esports, GDT_1:GDT_4) %>% names()
+  gdtVarNames = select(esports, GDT_1:GDT_4) %>% names(),
+  gdtBestCravingHealthVarNames = select(esports, GDT_1:GDT_4, IGDS9SF_1, IGD_alternative_criterion2, IGD_alternative_criterion3, IGD_alternative_criterion5, IGDS9SF_7, IGDS9SF_8) %>% names()
 )
 
 mods <- select(esportsImp[[1]], c(gender, gaming_time, MOGQ_social, MOGQ_escape, MOGQ_competition, MOGQ_coping, IGCQ, BFRS, BSCS, neuroticism, DJGLS, harm_avoidance, BAS_reward)) %>% names()
@@ -85,7 +90,7 @@ network <- function(data = NA, structureName = NA, moderator = NULL, estimator =
   nodesVect <- igdStructures[[eval(substitute(structureName))]]
   if(is.null(moderator)) {
     netObj <- estimateNetwork(data %>% select(eval(substitute(nodesVect))), default = "EBICglasso", corMethod = "cor_auto", tuning = 0.5, verbose = FALSE)
-    centralityPlot <- suppressMessages(centralityPlot(netObj, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"), decreasing = TRUE, print = FALSE))
+    centralityPlot <- suppressMessages(centralityPlot(netObj, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"), orderBy = "Strength", print = FALSE))
     netPlot <- plot(netObj, theme = "gray", labels = paste(1:length(nodesVect)))
     netPlot <- recordPlot()
     dev.off()
@@ -105,7 +110,7 @@ network <- function(data = NA, structureName = NA, moderator = NULL, estimator =
                                         default = estimator, corMethod = "cor_auto", verbose = FALSE),
                         error = function(e) NULL)
     set.seed(1)
-    netComparison <- suppressMessages(NCT(netMod1, netMod2, test.edges = T, test.centrality = T, progressbar = F, it = bootstrapIterations))
+    netComparison <- suppressMessages(NCT(netMod1, netMod2, test.edges = T, test.centrality = T, progressbar = T, it = bootstrapIterations))
     return(netComparison)
   }
 }
@@ -113,11 +118,11 @@ network <- function(data = NA, structureName = NA, moderator = NULL, estimator =
 # Network analysis --------------------------------------------------------
 
 # Networks for individual IGD structures
-igdStructuresNets <- rep(list(rep(list(NA), 2)), 4)
+igdStructuresNets <- rep(list(rep(list(NA), 2)), 5)
 for(i in names(igdStructures)) {
   for(d in names(data)) {
     igdStructuresNets[[i]][[d]] <- tryCatch(network(data = data[[d]], structureName = names(igdStructures[i]), estimator = "EBICglasso"),
-                     error = function(e) NULL)
+                                            error = function(e) NULL)
   }
 }
 # igdStructuresNets
@@ -134,7 +139,7 @@ for(i in names(igdStructures)) {
   igdStructuresEsports <- tryCatch(estimateNetwork(data = data[[2]] %>% select(eval(substitute(nodesVect))),
                                                    default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE),
                                    error = function(e) NULL)
-  igdStructuresDiff[[i]] <- suppressMessages(NCT(igdStructuresGamers, igdStructuresEsports, test.edges = T, test.centrality = T, progressbar = F, it = 100))
+  igdStructuresDiff[[i]] <- suppressMessages(NCT(igdStructuresGamers, igdStructuresEsports, test.edges = T, test.centrality = T, progressbar = F, it = 1000))
 }
 # igdStructuresDiff
 
@@ -154,6 +159,7 @@ for(d in names(data)){
 # structInvariance
 
 # Network invariance across levels of moderators
+bootstrapIterations <- 1000
 # 1 == gamers, 2 = esports players
 netInvariance <- strengthInvariance <- proportionSignEdges <- proportionSignInfluence <- list(matrix(NA, nrow = length(igdStructures), ncol = length(mods), dimnames = list(names(igdStructures), mods)),
                                                                                               matrix(NA, nrow = length(igdStructures), ncol = length(mods), dimnames = list(names(igdStructures), mods)))
@@ -182,7 +188,7 @@ for(d in 1:length(data)) {
 
 bootCentrality <- rep(list(data.frame(NA)), 2)
 set.seed(1)
-nIterations <- 1000
+nIterations <- 10000
 for(i in 1:nIterations){
   for(d in 1:length(data)) {
     # Compute correlation matrix for both samples
@@ -223,6 +229,84 @@ for(d in 1:length(data)){
 
 end_time <- Sys.time()
 end_time - start_time
+
+
+save.image(file = "allResults")
+
+
+
+# Results -----------------------------------------------------------------
+
+
+meanSplitMatrices
+
+igdStructuresNets$igds9sfVarNames$gamers$`Network plot`
+igdStructuresNets$igds9sfVarNames$gamers$`Centrality plot`
+igdStructuresNets$igds9sfVarNames$gamers$Stability
+igdStructuresNets$igds9sfVarNames$esports$`Network plot`
+igdStructuresNets$igds9sfVarNames$esports$`Centrality plot`
+igdStructuresNets$igds9sfVarNames$esports$Stability
+
+igdStructuresNets$bestVarNames$gamers$`Network plot`
+igdStructuresNets$bestVarNames$gamers$`Centrality plot`
+igdStructuresNets$bestVarNames$gamers$Stability
+igdStructuresNets$bestVarNames$esports$`Network plot`
+igdStructuresNets$bestVarNames$esports$`Centrality plot`
+igdStructuresNets$bestVarNames$esports$Stability
+
+igdStructuresNets$bestCravingHealthVarNames$gamers$`Network plot`
+igdStructuresNets$bestCravingHealthVarNames$gamers$`Centrality plot`
+igdStructuresNets$bestCravingHealthVarNames$gamers$Stability
+igdStructuresNets$bestCravingHealthVarNames$esports$`Network plot`
+igdStructuresNets$bestCravingHealthVarNames$esports$`Centrality plot`
+igdStructuresNets$bestCravingHealthVarNames$esports$Stability
+
+igdStructuresNets$gdtVarNames$gamers$`Network plot`
+igdStructuresNets$gdtVarNames$gamers$`Centrality plot`
+igdStructuresNets$gdtVarNames$gamers$Stability
+igdStructuresNets$gdtVarNames$esports$`Network plot`
+igdStructuresNets$gdtVarNames$esports$`Centrality plot`
+igdStructuresNets$gdtVarNames$esports$Stability
+
+igdStructuresNets$gdtBestCravingHealthVarNames$gamers$`Network plot`
+igdStructuresNets$gdtBestCravingHealthVarNames$gamers$`Centrality plot`
+igdStructuresNets$gdtBestCravingHealthVarNames$gamers$Stability
+igdStructuresNets$gdtBestCravingHealthVarNames$esports$`Network plot`
+igdStructuresNets$gdtBestCravingHealthVarNames$esports$`Centrality plot`
+igdStructuresNets$gdtBestCravingHealthVarNames$esports$Stability
+
+
+igdStructuresDiff$igds9sfVarNames$glstrinv.pval
+igdStructuresDiff$igds9sfVarNames$nwinv.pval
+igdStructuresDiff$igds9sfVarNames$diffcen.pval
+
+igdStructuresDiff$bestVarNames$glstrinv.pval
+igdStructuresDiff$bestVarNames$nwinv.pval
+igdStructuresDiff$bestVarNames$diffcen.pval
+
+igdStructuresDiff$bestCravingHealthVarNames$glstrinv.pval
+igdStructuresDiff$bestCravingHealthVarNames$nwinv.pval
+igdStructuresDiff$bestCravingHealthVarNames$diffcen.pval
+
+igdStructuresDiff$gdtVarNames$glstrinv.pval
+igdStructuresDiff$gdtVarNames$nwinv.pval
+igdStructuresDiff$gdtVarNames$diffcen.pval
+
+
+structInvariance$gamers
+structInvariance$esports
+
+modsResults$`Net Invariance`[[1]][,1]
+
+
+
+bootCentrality
+empiricalCentrality
+centralityPval
+
+
+
+
 
 
 # Graveyard ---------------------------------------------------------------
@@ -713,4 +797,3 @@ omega(select(esports, DJGLS_1 : DJGLS_6), nfactors = 1, poly = TRUE)
 omega(select(esports, BSCS_1 : BSCS_13), nfactors = 1, poly = TRUE)
 #BAS Reward Responsiveness
 omega(select(esports, BAS_reward_1 : BAS_reward_5), nfactors = 1, poly = TRUE)
-

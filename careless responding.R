@@ -1,5 +1,3 @@
-# rm(list = ls())
-
 # Libraries ---------------------------------------------------------------
 
 library(careless)
@@ -78,8 +76,8 @@ which(whichManyMissings == TRUE)
 
 ##About 7% of the participants could be considered careless
 esports$careless <- ifelse(esports$bot == 1 | esports$ac > 1 | 
-                          (scale(esports$long1to3) > 3 | scale(esports$long1to5) > 3) | 
-                          (scale(esports$mahal1to3) > 3 | scale(esports$mahal1to5) > 3), 1, 0)
+                             (scale(esports$long1to3) > 3 | scale(esports$long1to5) > 3) | 
+                             (scale(esports$mahal1to3) > 3 | scale(esports$mahal1to5) > 3), 1, 0)
 esports$careless[is.na(esports$careless)] <- 0
 table(esports$careless)
 1-(nrow(subset(esports, careless == 0))/nrow(esports))
@@ -98,18 +96,18 @@ gamers$bot <- ifelse(gamers$Q_RecaptchaScore < .5, 1, ifelse(gamers$Q_RelevantID
 gamers$long1to3 <- longstringWoNA(select(gamers, IGCQ_1:IGCQ_4, BFRS_1:BFRS_7))
 gamers$long1to4 <- longstringWoNA(select(gamers, BAS_reward_1:BAS_reward_5))
 gamers$long1to5 <- longstringWoNA(select(gamers, MOGQ_social1:MOGQ_coping4, IGDS9SF_1:IGDS9SF_9,
-                                          GDT_1:GDT_4, IGD_alternative_criterion2:IGD_alternative_health,
-                                          BSCS_1:BSCS_13, neuroticism_1:neuroticism_10,
-                                          DJGLS_1:DJGLS_6, harm_avoidance_1:harm_avoidance_10))
+                                         GDT_1:GDT_4, IGD_alternative_criterion2:IGD_alternative_health,
+                                         BSCS_1:BSCS_13, neuroticism_1:neuroticism_10,
+                                         DJGLS_1:DJGLS_6, harm_avoidance_1:harm_avoidance_10))
 
 ##Calculate Mahalanobis distance
 gamers$mahal1to3 <- mahad(select(gamers, IGCQ_1:IGCQ_4, BFRS_1:BFRS_7), flag = FALSE, confidence = .99, plot = FALSE)
 gamers$mahal1to4 <- mahad(select(gamers, BAS_reward_1:BAS_reward_5), flag = FALSE, confidence = .99, plot = FALSE)
 gamers$mahal1to5 <- mahad(select(gamers, MOGQ_social1:MOGQ_coping4, IGDS9SF_1:IGDS9SF_9,
-                                  GDT_1:GDT_4, IGD_alternative_criterion2:IGD_alternative_health,
-                                  BSCS_1:BSCS_13, neuroticism_1:neuroticism_10,
-                                  DJGLS_1:DJGLS_6, harm_avoidance_1:harm_avoidance_10), 
-                           flag = FALSE, confidence = .99, plot = FALSE)
+                                 GDT_1:GDT_4, IGD_alternative_criterion2:IGD_alternative_health,
+                                 BSCS_1:BSCS_13, neuroticism_1:neuroticism_10,
+                                 DJGLS_1:DJGLS_6, harm_avoidance_1:harm_avoidance_10), 
+                          flag = FALSE, confidence = .99, plot = FALSE)
 
 ##Attention checks
 gamers$attention_check_1 <- ifelse(gamers$attention_check_1 == 1, 0, 1)
@@ -129,8 +127,8 @@ which(whichManyMissings == TRUE)
 
 ##About 6% of the participants could be considered careless
 gamers$careless <- ifelse(gamers$bot | gamers$ac > 1 | 
-                             (scale(gamers$long1to3) > 3 | scale(gamers$long1to5) > 3) | 
-                             (scale(gamers$mahal1to3) > 3 | scale(gamers$mahal1to5) > 3), 1, 0)
+                            (scale(gamers$long1to3) > 3 | scale(gamers$long1to5) > 3) | 
+                            (scale(gamers$mahal1to3) > 3 | scale(gamers$mahal1to5) > 3), 1, 0)
 gamers$careless[is.na(gamers$careless)] <- 0
 table(gamers$careless)
 1-(nrow(subset(gamers, careless == 0))/nrow(gamers))
