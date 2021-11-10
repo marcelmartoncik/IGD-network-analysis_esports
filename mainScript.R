@@ -229,7 +229,7 @@ for(d in 1:length(data)){
 
 end_time <- Sys.time()
 end_time - start_time
-
+#nrow(data)
 
 save.image(file = "allResults")
 
