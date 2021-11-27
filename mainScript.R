@@ -1,13 +1,13 @@
 # Libraries ---------------------------------------------------------------
 
-list.of.packages <- c("bootnet", "qgraph", "magrittr", "mgm", "NetworkComparisonTest", "networktree", "psych")
+list.of.packages <- c("bootnet", "qgraph", "magrittr", "mgm", "NetworkComparisonTest", "networktree", "psych", "tidyverse")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 invisible(lapply(list.of.packages, require, quietly = TRUE, warn.conflicts = FALSE, character.only = TRUE))
 
 
 # Sourcing auxiliary scripts ----------------------------------------------
-rm(list = ls())
+# rm(list = ls())
 # source("data wrangling.R")
 # source("codebook.R")
 # source("careless responding.R")
@@ -17,20 +17,51 @@ gamersImp <- readRDS("gamersImputed.Rds")
 esportsImp <- readRDS("esportsImputed.Rds")
 data <- readRDS("data.Rds")
 
-bootstrapIterations <- 2000
+
+# Sensitivity analysis ----------------------------------------------------
+
+# Uncomment the following lines to remove participants with average gaming time > 18 hours (3 participants from regular gamers and 5 participants from esports players)
+# for(i in 1:length(data)) {
+#   data[[i]] <- subset(data[[i]], gaming_time < 19)
+# }
+
+# Uncomment the following lines to include only those participants from the esports players sample who identified themselves as esports players
+# for(i in 1:length(esportsImp)) {
+#   esportsImp[[i]] <- subset(esportsImp[[i]], playing_esports == 1)
+# }
+# data$esports <- subset(data$esports, playing_esports == 1)
+
+
+# Set the number of iterations for bootstrapping --------------------------
+
+bootstrapIterations <- 20
+
 
 # Estimate the structure of GD together with additional 
 # IGD symptoms (n. 1, 2, 3, 5, 7, 8) measured with the highest content validity
 # and with two additional items focused on craving and neglecting health 
 
-# Find splits -------------------------------------------------------------
+
+# Define network structures -----------------------------------------------
+
 igdStructures <- list(
-  igds9sfVarNames = select(esports, IGDS9SF_1:IGDS9SF_9) %>% names(),
-  bestVarNames = select(esports, IGDS9SF_1, IGD_alternative_criterion2, IGD_alternative_criterion3, IGDS9SF_4, IGD_alternative_criterion5, IGD_alternative_criterion6, IGDS9SF_7:IGDS9SF_9) %>% names(),
-  bestCravingHealthVarNames = select(esports, IGDS9SF_1, IGD_alternative_criterion2, IGD_alternative_criterion3, IGDS9SF_4, IGD_alternative_criterion5, IGD_alternative_criterion6, IGDS9SF_7:IGDS9SF_9, IGD_alternative_craving, IGD_alternative_health) %>% names(),
-  gdtVarNames = select(esports, GDT_1:GDT_4) %>% names(),
-  gdtBestCravingHealthVarNames = select(esports, GDT_1:GDT_4, IGDS9SF_1, IGD_alternative_criterion2, IGD_alternative_criterion3, IGD_alternative_criterion5, IGDS9SF_7, IGDS9SF_8) %>% names()
+  igds9sfVarNames = select(data$esports, IGDS9SF_1:IGDS9SF_9) %>% names(),
+  bestVarNames = select(data$esports, IGDS9SF_1, IGD_alternative_criterion2, IGD_alternative_criterion3, IGDS9SF_4, IGD_alternative_criterion5, IGD_alternative_criterion6, IGDS9SF_7:IGDS9SF_9) %>% names(),
+  bestCravingHealthVarNames = select(data$esports, IGDS9SF_1, IGD_alternative_criterion2, IGD_alternative_criterion3, IGDS9SF_4, IGD_alternative_criterion5, IGD_alternative_criterion6, IGDS9SF_7:IGDS9SF_9, IGD_alternative_craving, IGD_alternative_health) %>% names(),
+  gdtVarNames = select(data$esports, GDT_1:GDT_4) %>% names(),
+  gdtBestCravingHealthVarNames = select(data$esports, GDT_1:GDT_4, IGDS9SF_1, IGD_alternative_criterion2, IGD_alternative_criterion3, IGD_alternative_criterion5, IGDS9SF_7, IGDS9SF_8) %>% names()
 )
+
+# Define the structures to test how each variable with the highest content validity performs alone
+bestVarsStructures <- list(
+  bestVarNames2 = select(data$esports, IGDS9SF_1, IGD_alternative_criterion2, IGDS9SF_3:IGDS9SF_9) %>% names(),
+  bestVarNames3 = select(data$esports, IGDS9SF_1:IGDS9SF_2, IGD_alternative_criterion3, IGDS9SF_4:IGDS9SF_9) %>% names(),
+  bestVarNames5 = select(data$esports, IGDS9SF_1:IGDS9SF_4, IGD_alternative_criterion5, IGDS9SF_6:IGDS9SF_9) %>% names(),
+  bestVarNames6 = select(data$esports, IGDS9SF_1:IGDS9SF_5, IGD_alternative_criterion6, IGDS9SF_7:IGDS9SF_9) %>% names()
+)
+
+
+# Find splits -------------------------------------------------------------
 
 mods <- select(esportsImp[[1]], c(gender, gaming_time, MOGQ_social, MOGQ_escape, MOGQ_competition, MOGQ_coping, IGCQ, BFRS, BSCS, neuroticism, DJGLS, harm_avoidance, BAS_reward)) %>% names()
 
@@ -112,6 +143,7 @@ network <- function(data = NA, structureName = NA, moderator = NULL, estimator =
   }
 }
 
+
 # Network analysis --------------------------------------------------------
 
 # Networks for individual IGD structures
@@ -136,7 +168,7 @@ for(i in names(igdStructures)) {
   igdStructuresEsports <- tryCatch(estimateNetwork(data = data[[2]] %>% select(eval(substitute(nodesVect))),
                                                    default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE),
                                    error = function(e) NULL)
-  igdStructuresDiff[[i]] <- suppressMessages(NCT(igdStructuresGamers, igdStructuresEsports, test.edges = T, test.centrality = T, progressbar = F, it = 1000))
+  igdStructuresDiff[[i]] <- suppressMessages(NCT(igdStructuresGamers, igdStructuresEsports, test.edges = T, test.centrality = T, progressbar = F, it = bootstrapIterations))
 }
 # igdStructuresDiff
 
@@ -155,8 +187,23 @@ for(d in names(data)){
 }
 # structInvariance
 
+structInvarianceBestVars <- list(NA)
+for(d in names(data)){
+  for(i in names(bestVarsStructures)) {
+    struct1 <- data[[d]] %>% select(igdStructures$igds9sfVarNames)
+    struct2 <- data[[d]] %>% select(eval(substitute(bestVarsStructures[[i]])))
+    names(struct1) <- names(struct2) <- 1:9
+    netIGD9sf <- estimateNetwork(struct1, default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE)
+    netBestVar <- estimateNetwork(struct2, default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE)
+    set.seed(1)
+    structInvarianceBestVars[[d]][[i]][[1]] <- suppressMessages(NCT(netIGD9sf, netBestVar, test.edges = T, test.centrality = T, progressbar = F, it = bootstrapIterations))
+    structInvarianceBestVars[[d]][[i]][[2]] <- centralityPlot(list(IGDSF9 = netIGD9sf, BestVar = netBestVar), include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"), decreasing = FALSE, orderBy = "Strength")
+  }
+}
+# structInvarianceBestVars
+
 # Network invariance across levels of moderators
-bootstrapIterations <- 1000
+bootstrapIterations <- 2000
 # 1 == gamers, 2 = esports players
 netInvariance <- strengthInvariance <- proportionSignEdges <- proportionSignInfluence <- list(matrix(NA, nrow = length(igdStructures), ncol = length(mods), dimnames = list(names(igdStructures), mods)),
                                                                                               matrix(NA, nrow = length(igdStructures), ncol = length(mods), dimnames = list(names(igdStructures), mods)))
@@ -179,8 +226,26 @@ for(d in 1:length(data)) {
 }
 # modsResults
 
-# Centrality of core vs peripheral IGD symptoms ---------------------------
+# GD network moderated by neuroticism
 
+neuroticismInvariance <- list(NA)
+for(d in 1:length(data)) {
+  set.seed(1)
+  neuroticismInvariance[[d]] <- tryCatch(network(data = data[[d]], structureName = names(igdStructures[4]), moderator = mods[10], estimator = "mgm"),
+                                             error = function(e) NULL)}
+neuroticismInvariancePlots <- list(neuroticismInvariance,
+lowNeuroticismGamers = centralityPlot(estimateNetwork(data = data[[1]] %>% subset(neuroticism < meanSplitMatrices$meanMatrixGamers$neuroticism[4]) %>% select(GDT_1 : GDT_4), 
+                default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE), orderBy = "Strength", decreasing = FALSE, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness")),
+highNeuroticismGamers = centralityPlot(estimateNetwork(data = data[[1]] %>% subset(neuroticism >= meanSplitMatrices$meanMatrixGamers$neuroticism[4]) %>% select(GDT_1 : GDT_4), 
+                               default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE), orderBy = "Strength", decreasing = FALSE, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness")),
+lowNeuroticismEsports = centralityPlot(estimateNetwork(data = data[[2]] %>% subset(neuroticism < meanSplitMatrices$meanMatrixGamers$neuroticism[4]) %>% select(GDT_1 : GDT_4), 
+                                                      default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE), orderBy = "Strength", decreasing = FALSE, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness")),
+highNeuroticismEsports = centralityPlot(estimateNetwork(data = data[[2]] %>% subset(neuroticism >= meanSplitMatrices$meanMatrixGamers$neuroticism[4]) %>% select(GDT_1 : GDT_4), 
+                                                      default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE), orderBy = "Strength", decreasing = FALSE, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"))
+)
+neuroticismInvariancePlots
+
+# Centrality of core vs peripheral IGD symptoms
 # Centrality of the core (2, 4, 7, 9) and peripheral IGD symptoms (1, 3, 8) (Charlton & Danforth, 2007; Brunborg et al., 2015) in the population of gamers and esports players
 
 bootCentrality <- rep(list(data.frame(NA)), 2)
@@ -227,26 +292,22 @@ for(d in 1:length(data)){
 end_time <- Sys.time()
 end_time - start_time
 
-
-save.image(file = "allResults")
-
+# save.image(file = "allResults")
 
 
 # Results -----------------------------------------------------------------
 
-igdStructuresNets
-igdStructuresDiff
+igdStructuresNets$gdtBestCravingHealthVarNames$esports$`Centrality plot`
+igdStructuresDiff$gdtBestCravingHealthVarNames$diffcen.pval
 structInvariance
-modsResults
+modsResults 
 centralityPval
-
 
 
 # Descriptives and reliabilities ------------------------------------------
 
-library(dplyr)
-
 scalesStructures <- list(
+  gamingTime = select(data[[1]], gaming_time) %>% names(),
   igds9sf = select(data[[1]], IGDS9SF_1:IGDS9SF_9) %>% names(),
   gdt = select(data[[1]], GDT_1:GDT_4) %>% names(),
   bfrs = select(data[[1]], BFRS_1 : BFRS_7) %>% names(),
@@ -259,7 +320,7 @@ scalesStructures <- list(
   loneliness = select(data[[1]], DJGLS_1 : DJGLS_6) %>% names(),
   selfControl = select(data[[1]], BSCS_1 : BSCS_13) %>% names(),
   rewardResponse = select(data[[1]], BAS_reward_1 : BAS_reward_5) %>% names()
-  )
+)
 
 m <- matrix(data = NA, nrow = length(scalesStructures), ncol = 8) 
 colnames(m) <- c("mean", "sd", "median", "min", "max", "skew", "kurt", "omega")
@@ -268,9 +329,12 @@ scalesDescriptives <- list(m, m)
 for(d in 1:length(data)) {
   for(i in 1:length((scalesStructures))) {
     scalesDescriptives[[d]][i, 1:7] <- round(as.numeric(describe(rowMeans(select(data[[d]], eval(substitute(scalesStructures[[i]]))))))[c(3:5,8:9,11:12)], 2)
-    scalesDescriptives[[d]][i, 8] <- round(suppressMessages(suppressWarnings(omega(select(data[[d]], eval(substitute(scalesStructures[[i]]))), nfactors = 1, poly = TRUE)$omega.tot)), 2)
+    if(names(scalesStructures[i]) == "gamingTime") {scalesDescriptives[[d]][i, 8] <- NA} else {
+      scalesDescriptives[[d]][i, 8] <- round(suppressMessages(suppressWarnings(omega(select(data[[d]], eval(substitute(scalesStructures[[i]]))), nfactors = 1, poly = TRUE)$omega.tot)), 2)
+    }
   }
 }
 scalesDescriptives
+
 
 
