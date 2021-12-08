@@ -5,7 +5,6 @@ new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"
 if(length(new.packages)) install.packages(new.packages)
 invisible(lapply(list.of.packages, require, quietly = TRUE, warn.conflicts = FALSE, character.only = TRUE))
 
-
 # Sourcing auxiliary scripts ----------------------------------------------
 # rm(list = ls())
 # source("data wrangling.R")
@@ -19,23 +18,27 @@ data <- readRDS("data.Rds")
 
 
 # Sensitivity analysis ----------------------------------------------------
+# Set to TRUE to remove participants with average gaming time > 18 hours (3 participants from regular gamers and 5 participants from esports players).
+sensitivity18hours <- FALSE
+# Set to TRUE to include only those participants from the esports players sample who identified themselves as esports players.
+sensitivityEsports <- FALSE
 
-# Uncomment the following lines to remove participants with average gaming time > 18 hours (3 participants from regular gamers and 5 participants from esports players)
-# for(i in 1:length(data)) {
-#   data[[i]] <- subset(data[[i]], gaming_time < 19)
-# }
+if(sensitivity18hours == TRUE){
+  for(i in 1:length(data)) {
+    data[[i]] <- subset(data[[i]], gaming_time < 19)
+  }
+}
 
-# Uncomment the following lines to include only those participants from the esports players sample who identified themselves as esports players
-# for(i in 1:length(esportsImp)) {
-#   esportsImp[[i]] <- subset(esportsImp[[i]], playing_esports == 1)
-# }
-# data$esports <- subset(data$esports, playing_esports == 1)
-
+if(sensitivityEsports == TRUE){
+  for(i in 1:length(esportsImp)) {
+    esportsImp[[i]] <- subset(esportsImp[[i]], playing_esports == 1)
+  }
+  data$esports <- subset(data$esports, playing_esports == 1)
+}
 
 # Set the number of iterations for bootstrapping --------------------------
 
 bootstrapIterations <- 20
-
 
 # Estimate the structure of GD together with additional 
 # IGD symptoms (n. 1, 2, 3, 5, 7, 8) measured with the highest content validity
@@ -59,7 +62,6 @@ bestVarsStructures <- list(
   bestVarNames5 = select(data$esports, IGDS9SF_1:IGDS9SF_4, IGD_alternative_criterion5, IGDS9SF_6:IGDS9SF_9) %>% names(),
   bestVarNames6 = select(data$esports, IGDS9SF_1:IGDS9SF_5, IGD_alternative_criterion6, IGDS9SF_7:IGDS9SF_9) %>% names()
 )
-
 
 # Find splits -------------------------------------------------------------
 
@@ -170,22 +172,25 @@ for(i in names(igdStructures)) {
                                    error = function(e) NULL)
   igdStructuresDiff[[i]] <- suppressMessages(NCT(igdStructuresGamers, igdStructuresEsports, test.edges = T, test.centrality = T, progressbar = F, it = bootstrapIterations))
 }
-# igdStructuresDiff
 
 # Invariance of igds9sfVarNames and bestVarNames structures across gamers and esports
 # First plot is based on the gamers sample, second plot on esports players
 structInvariance <- list(NA)
+avgLayout <- NA
 for(d in names(data)){
   struct1 <- data[[d]] %>% select(igdStructures$igds9sfVarNames)
   struct2 <- data[[d]] %>% select(igdStructures$bestVarNames)
   names(struct1) <- names(struct2) <- 1:9
   netIGD9sf <- estimateNetwork(struct1, default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE)
   netBestVar <- estimateNetwork(struct2, default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE)
+  avgLayout <- averageLayout(netIGD9sf, netBestVar)
   set.seed(1)
-  structInvariance[[d]][[1]] <- suppressMessages(NCT(netIGD9sf, netBestVar, test.edges = T, test.centrality = T, progressbar = F, it = bootstrapIterations))
-  structInvariance[[d]][[2]] <- centralityPlot(list(IGDSF9 = netIGD9sf, BestVar = netBestVar), include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"), decreasing = TRUE)
+  structInvariance[[d]][["NCT"]] <- suppressMessages(NCT(netIGD9sf, netBestVar, test.edges = T, test.centrality = T, progressbar = F, it = bootstrapIterations))
+  plot(netIGD9sf, theme = "gray", layout = avgLayout)
+  plot(netBestVar, theme = "gray", layout = avgLayout)
+  structInvariance[[d]][["Network plot"]] <- recordPlot()
+  structInvariance[[d]][["Centrality plot"]] <- centralityPlot(list(IGDSF9 = netIGD9sf, BestVar = netBestVar), include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"), decreasing = TRUE)
 }
-# structInvariance
 
 structInvarianceBestVars <- list(NA)
 for(d in names(data)){
@@ -195,12 +200,15 @@ for(d in names(data)){
     names(struct1) <- names(struct2) <- 1:9
     netIGD9sf <- estimateNetwork(struct1, default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE)
     netBestVar <- estimateNetwork(struct2, default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE)
+    avgLayout <- averageLayout(netIGD9sf, netBestVar)
     set.seed(1)
-    structInvarianceBestVars[[d]][[i]][[1]] <- suppressMessages(NCT(netIGD9sf, netBestVar, test.edges = T, test.centrality = T, progressbar = F, it = bootstrapIterations))
-    structInvarianceBestVars[[d]][[i]][[2]] <- centralityPlot(list(IGDSF9 = netIGD9sf, BestVar = netBestVar), include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"), decreasing = FALSE, orderBy = "Strength")
+    structInvarianceBestVars[[d]][[i]][["NCT"]] <- suppressMessages(NCT(netIGD9sf, netBestVar, test.edges = T, test.centrality = T, progressbar = F, it = bootstrapIterations))
+    plot(netIGD9sf, theme = "gray", layout = avgLayout)
+    plot(netBestVar, theme = "gray", layout = avgLayout)
+    structInvarianceBestVars[[d]][[i]][["Network plot"]] <- recordPlot()
+    structInvarianceBestVars[[d]][[i]][["Centrality plot"]] <- centralityPlot(list(IGDSF9 = netIGD9sf, BestVar = netBestVar), include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"), decreasing = FALSE, orderBy = "Strength")
   }
 }
-# structInvarianceBestVars
 
 # Network invariance across levels of moderators
 bootstrapIterations <- 2000
@@ -228,21 +236,19 @@ for(d in 1:length(data)) {
 
 # GD network moderated by neuroticism
 
-neuroticismInvariance <- list(NA)
-for(d in 1:length(data)) {
+neuroticismInvariance <- neuroticismInvariancePlots <- list(NA)
+dfNo <- NA
+for(d in names(data)){
+  dfNo <- ifelse(d == "gamers", 1, 2)
   set.seed(1)
-  neuroticismInvariance[[d]] <- tryCatch(network(data = data[[d]], structureName = names(igdStructures[4]), moderator = mods[10], estimator = "mgm"),
-                                             error = function(e) NULL)}
-neuroticismInvariancePlots <- list(neuroticismInvariance,
-lowNeuroticismGamers = centralityPlot(estimateNetwork(data = data[[1]] %>% subset(neuroticism < meanSplitMatrices$meanMatrixGamers$neuroticism[4]) %>% select(GDT_1 : GDT_4), 
-                default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE), orderBy = "Strength", decreasing = FALSE, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness")),
-highNeuroticismGamers = centralityPlot(estimateNetwork(data = data[[1]] %>% subset(neuroticism >= meanSplitMatrices$meanMatrixGamers$neuroticism[4]) %>% select(GDT_1 : GDT_4), 
-                               default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE), orderBy = "Strength", decreasing = FALSE, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness")),
-lowNeuroticismEsports = centralityPlot(estimateNetwork(data = data[[2]] %>% subset(neuroticism < meanSplitMatrices$meanMatrixGamers$neuroticism[4]) %>% select(GDT_1 : GDT_4), 
-                                                      default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE), orderBy = "Strength", decreasing = FALSE, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness")),
-highNeuroticismEsports = centralityPlot(estimateNetwork(data = data[[2]] %>% subset(neuroticism >= meanSplitMatrices$meanMatrixGamers$neuroticism[4]) %>% select(GDT_1 : GDT_4), 
-                                                      default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE), orderBy = "Strength", decreasing = FALSE, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness"))
-)
+  neuroticismInvariance <- tryCatch(network(data = data[[dfNo]], structureName = names(igdStructures[4]), moderator = mods[10], estimator = "mgm"),
+                                         error = function(e) NULL)
+  neuroticismInvariancePlots[[d]] <- list("neuroticismInvariance" = neuroticismInvariance,
+                                          "lowNeuroticism" = centralityPlot(estimateNetwork(data = data[[dfNo]] %>% subset(neuroticism < meanSplitMatrices[[dfNo]]$neuroticism[4]) %>% select(GDT_1 : GDT_4), 
+                                                                                                default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE), orderBy = "Strength", decreasing = FALSE, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness")),
+                                          "highNeuroticism" = centralityPlot(estimateNetwork(data = data[[dfNo]] %>% subset(neuroticism >= meanSplitMatrices[[dfNo]]$neuroticism[4]) %>% select(GDT_1 : GDT_4), 
+                                                                                                 default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE), orderBy = "Strength", decreasing = FALSE, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness")))
+}
 neuroticismInvariancePlots
 
 # Centrality of core vs peripheral IGD symptoms
@@ -297,8 +303,8 @@ end_time - start_time
 
 # Results -----------------------------------------------------------------
 
-igdStructuresNets$gdtBestCravingHealthVarNames$esports$`Centrality plot`
-igdStructuresDiff$gdtBestCravingHealthVarNames$diffcen.pval
+igdStructuresNets
+igdStructuresDiff
 structInvariance
 modsResults 
 centralityPval
