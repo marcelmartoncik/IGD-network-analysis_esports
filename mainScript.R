@@ -1,3 +1,5 @@
+start_time0 <- Sys.time()
+
 # Libraries ---------------------------------------------------------------
 
 list.of.packages <- c("bootnet", "qgraph", "magrittr", "mgm", "NetworkComparisonTest", "networktree", "networktools", "psych", "tidyverse")
@@ -66,7 +68,7 @@ bestVarsStructures <- list(
 
 # Find splits -------------------------------------------------------------
 
-mods <- select(esportsImp[[1]], c(gender, gaming_time, MOGQ_social, MOGQ_escape, MOGQ_competition, MOGQ_coping, IGCQ, BFRS, BSCS, neuroticism, DJGLS, harm_avoidance, BAS_reward)) %>% names()
+mods <- select(esportsImp[[1]], c(gender, age, gaming_time, MOGQ_social, MOGQ_escape, MOGQ_competition, MOGQ_coping, IGCQ, BFRS, BSCS, neuroticism, DJGLS, harm_avoidance, BAS_reward)) %>% names()
 
 splitsMatrixGamers <- splitsMatrixEsports <- matrix(data = NA, nrow = length(igdStructures), ncol = length(mods),
                                                     dimnames = list(names(igdStructures), mods))
@@ -127,12 +129,14 @@ network <- function(data = NA, structureName = NA, moderator = NULL, estimator =
     netPlot <- recordPlot()
     dev.off()
     netStrDiffPlot <- plot(netBoot, "strength", plot = "difference")
+    netEdgeDiffPlot <- plot(netBoot, "edge", plot = "difference", onlNonZero = FALSE, order = "sample")
     stability <- suppressMessages(bootnet(netObj, nBoots = bootstrapIterations, default = "EBICglasso", type = "case", nCores = cores, statistics = c("Strength","ExpectedInfluence","Closeness", "Betweenness"), verbose = FALSE))
     out <- list(
       "Network object" = netObj,
       "Centrality plot" = centralityPlot,
       "Network plot" = netPlot,
       "Strength difference plot" = netStrDiffPlot,
+      "Edge difference plot" = netEdgeDiffPlot,
       "Stability" = corStability(stability, verbose = FALSE),
       "Stability plot" = plot(stability, statistics = c("Strength","ExpectedInfluence","Closeness", "Betweenness"))
     )
@@ -154,48 +158,52 @@ network <- function(data = NA, structureName = NA, moderator = NULL, estimator =
 
 start_time <- Sys.time()
 
-# Networks for individual IGD structures
+
+# Networks for individual (I)GD structures --------------------------------
+
 igdStructuresNets <- rep(list(rep(list(NA), 2)), 6)
-for(i in names(igdStructures[1])) {
+for(i in names(igdStructures)) {
   for(d in names(data)) {
     igdStructuresNets[[i]][[d]] <- tryCatch(network(data = data[[d]], structureName = names(igdStructures[i]), estimator = "EBICglasso"),
                                             error = function(e) NULL)
   }
 }
 # igdStructuresNets
-igdStructuresNets$igds9sfVarNames$gamers$`Centrality plot`
-igdStructuresNets$gdtStandardCravingHealthVarNames$gamers$`Network plot`
 
 
 # Bridge symptoms ---------------------------------------------------------
+
 # Bridge symptoms in the network combining GD symptoms and remaining IGD symptoms
 # Adapted from Jones et al. (2019)
 
 netBridge <- estimateNetwork(select(data$gamers, GDT_1:GDT_4, IGDS9SF_1:IGDS9SF_3, IGDS9SF_5, IGDS9SF_7, IGDS9SF_8),
                              default = "EBICglasso", tuning = .50)
-bridgeNetBridge <- EBICglasso(cor(select(data$gamers, GDT_1:GDT_4, IGDS9SF_1:IGDS9SF_3, IGDS9SF_5, IGDS9SF_7, IGDS9SF_8)), 
-                              n=2846, gamma = 0.5)
-communityStructureBridge <- c(rep("gdt", 4), rep("igds", 6))
-bridgeCentralityBridge <- bridge(bridgeNetBridge, communities=communityStructureBridge)
-plot(bridgeCentralityBridge, include = "Bridge Strength", order = "value", zscore = TRUE)
-bridgeStrengthBridge <- bridgeCentralityBridge$`Bridge Strength`
-topBridgesBridge <- names(bridgeStrengthBridge[bridgeStrengthBridge>quantile(bridgeStrengthBridge, probs=.90, na.rm=TRUE)])
-bridgeNumBridge <- which(names(bridgeStrengthBridge) %in% topBridgesBridge)
+bridgeNet <- EBICglasso(cor(select(data$gamers, GDT_1:GDT_4, IGDS9SF_1:IGDS9SF_3, IGDS9SF_5, IGDS9SF_7, IGDS9SF_8)), 
+                        n=2846, gamma = 0.5)
+communityStructure <- c(rep("gdt", 4), rep("igds", 6))
+bridgeCentrality <- bridge(bridgeNet, communities = communityStructure)
+bridgeCentralityPlot <- recordPlot(plot(bridgeCentrality, include = "Bridge Strength", order = "value", zscore = TRUE))
+bridgeStrength <- bridgeCentrality$`Bridge Strength`
+topBridges <- names(bridgeStrength[bridgeStrength > quantile(bridgeStrength, probs = .90, na.rm = TRUE)])
+bridgeNum <- which(names(bridgeStrength) %in% topBridges)
 newCommunities <- vector()
-for(i in 1:length(bridgeStrengthBridge)) {
-  if(i %in% bridgeNumBridge) {
+for(i in 1:length(bridgeStrength)) {
+  if(i %in% bridgeNum) {
     newCommunities[i] <- "Bridge symptoms"
-  } else {newCommunities[i] <- communityStructureBridge[i]}
+  } else {newCommunities[i] <- communityStructure[i]}
 }
-qgraph(bridgeNetBridge, layout="spring", groups=newCommunities, 
-       color=c("white", "#CC79A7", "#56B4E9"), theme = "gray", legend = FALSE,
-       labels = c("gdt1", "gdt2", "gdt3", "gdt4",
-                  "igds1", "igds2", "igds3", "igds4", "igds5", "igds6"))
+bridgeNetPlot <- recordPlot(qgraph(bridgeNet, layout = "spring", groups = newCommunities, 
+                                   color=c("white", "#CC79A7", "#56B4E9"), theme = "gray", legend = FALSE,
+                                   labels = c("gdt1", "gdt2", "gdt3", "gdt4", "igds1", "igds2", "igds3", "igds5", "igds7", "igds8")))
+bridgeResults <- list(bridgeNetPlot, bridgeCentralityPlot)
 
 
-# Invariance of individual network structures across gamers and esports
+# Play style invariance ---------------------------------------------------
+
+# Invariance of (I)GD network structures across gamers and esports
+
 igdStructuresDiff <- list(NA)
-for(i in names(igdStructures)) {
+for(i in names(igdStructures[1:2])) {
   set.seed(1)
   nodesVect <- igdStructures[[eval(substitute(i))]]
   igdStructuresGamers <- tryCatch(estimateNetwork(data = data[[1]] %>% select(eval(substitute(nodesVect))),
@@ -207,8 +215,12 @@ for(i in names(igdStructures)) {
   igdStructuresDiff[[i]] <- suppressMessages(NCT(igdStructuresGamers, igdStructuresEsports, test.edges = T, test.centrality = T, progressbar = F, it = bootstrapIterations))
 }
 
+
+# Items validity invariance -----------------------------------------------
+
 # Invariance of igds9sfVarNames and bestVarNames structures across gamers and esports
 # First plot is based on the gamers sample, second plot on esports players
+
 structInvariance <- list(NA)
 avgLayout <- NA
 for(d in names(data)){
@@ -244,16 +256,21 @@ for(d in names(data)){
   }
 }
 
-# Network invariance across levels of moderators
 
-# 1 == gamers, 2 = esports players
+# Network invariance across levels of moderators --------------------------
+
+# Unless you have a very fast cluster, this part will take a very long time to compute
+bootstrapIterations <- 1000
+
+# 1 == regular gamers, 2 = esports players
 netInvariance <- strengthInvariance <- proportionSignEdges <- proportionSignInfluence <- list(matrix(NA, nrow = length(igdStructures), ncol = length(mods), dimnames = list(names(igdStructures), mods)),
                                                                                               matrix(NA, nrow = length(igdStructures), ncol = length(mods), dimnames = list(names(igdStructures), mods)))
 
 for(d in 1:length(data)) {
   for(i in 1:length(igdStructures[1:2])) {
     for(j in 1:length(mods)) {
-      netObj <- tryCatch(network(data = data[[d]], structureName = names(igdStructures[i]), moderator = mods[j], estimator = "mgm"),
+      set.seed(1)
+      netObj <- tryCatch(network(data = data[[d]], structureName = names(igdStructures[i]), moderator = mods[j], estimator = "mgm", nBoot = modBoots),
                          error = function(e) NULL)
       netInvariance[[d]][i, j] <- ifelse(is.numeric(netObj$nwinv.pval), netObj$nwinv.pval, NA)
       strengthInvariance[[d]][i, j] <- ifelse(is.numeric(netObj$glstrinv.pval), netObj$glstrinv.pval, NA)
@@ -268,25 +285,30 @@ for(d in 1:length(data)) {
 }
 # modsResults
 
-# GD network moderated by neuroticism
+
+# Neuroticism as a moderator of GD ----------------------------------------
+
+bootstrapIterations <- 2000
 
 neuroticismInvariance <- neuroticismInvariancePlots <- list(NA)
 dfNo <- NA
 for(d in names(data)){
   dfNo <- ifelse(d == "gamers", 1, 2)
   set.seed(1)
-  neuroticismInvariance <- tryCatch(network(data = data[[dfNo]], structureName = names(igdStructures[4]), moderator = mods[10], estimator = "mgm"),
+  neuroticismInvariance <- tryCatch(network(data = data[[dfNo]], structureName = names(igdStructures[2]), moderator = mods[11], estimator = "mgm"),
                                          error = function(e) NULL)
   neuroticismInvariancePlots[[d]] <- list("neuroticismInvariance" = neuroticismInvariance,
-                                          "lowNeuroticism" = centralityPlot(estimateNetwork(data = data[[dfNo]] %>% subset(neuroticism < meanSplitMatrices[[dfNo]]$neuroticism[4]) %>% select(GDT_1 : GDT_4), 
-                                                                                                default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE), orderBy = "Strength", decreasing = FALSE, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness")),
-                                          "highNeuroticism" = centralityPlot(estimateNetwork(data = data[[dfNo]] %>% subset(neuroticism >= meanSplitMatrices[[dfNo]]$neuroticism[4]) %>% select(GDT_1 : GDT_4), 
-                                                                                                 default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE), orderBy = "Strength", decreasing = FALSE, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness")))
+                                          "lowNeuroticism" = centralityPlot(estimateNetwork(data = data[[dfNo]] %>% subset(neuroticism < meanSplitMatrices[[dfNo]]$neuroticism[2]) %>% select(GDT_1 : GDT_4),
+                                                                                            default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE), orderBy = "Strength", decreasing = FALSE, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness")),
+                                          "highNeuroticism" = centralityPlot(estimateNetwork(data = data[[dfNo]] %>% subset(neuroticism >= meanSplitMatrices[[dfNo]]$neuroticism[2]) %>% select(GDT_1 : GDT_4), 
+                                                                                             default = "EBICglasso", corMethod = "cor_auto", verbose = FALSE), orderBy = "Strength", decreasing = FALSE, include = c("Strength","ExpectedInfluence","Closeness", "Betweenness")))
 }
 # neuroticismInvariancePlots
 
-# Centrality of core vs peripheral IGD symptoms
-# Centrality of the core (2, 4, 7, 9) and peripheral IGD symptoms (1, 3, 8) (Charlton & Danforth, 2007; Brunborg et al., 2015) in the population of gamers and esports players
+
+# Centrality of core vs peripheral IGD symptoms ---------------------------
+
+# Centrality of the core (2, 4, 7, 9) and peripheral IGD symptoms (1, 3, 8) (Charlton & Danforth, 2007; Brunborg et al., 2015) in the population of regular gamers and esports players
 
 bootCentrality <- rep(list(data.frame(NA)), 2)
 set.seed(1)
@@ -328,20 +350,10 @@ for(d in 1:length(data)){
   names(centralityPval)[[d]] <- names(data)[[d]]
 }
 # centralityPval
+# corePeriphResults <- list(empiricalCentrality, centralityPval)
 
 end_time <- Sys.time()
 end_time - start_time
-
-# save.image(file = "allResults")
-
-
-# Results -----------------------------------------------------------------
-
-igdStructuresNets
-igdStructuresDiff
-structInvariance
-modsResults 
-centralityPval
 
 
 # Descriptives and reliabilities ------------------------------------------
@@ -374,8 +386,25 @@ for(d in 1:length(data)) {
     }
   }
 }
-scalesDescriptives
+# scalesDescriptives
 
 
+# Results -----------------------------------------------------------------
 
+mainResults <- list(mainNetworks = igdStructuresNets, itemValidityGeneralInv = structInvariance, itemValiditySpecificInv = structInvarianceBestVars, 
+                    modsResults = modsResults, playStyleInv = igdStructuresDiff,
+                    bridgeSymptoms = bridgeResults, neuroticismInv = neuroticismInvariancePlots, corePeriphResults = corePeriphResults, 
+                    descriptives = scalesDescriptives)
+
+
+# Save results ------------------------------------------------------------
+
+save(mainResults, file = "mainResults.RData")
+saveRDS(mainResults, file = "mainResults.RDS") 
+
+save.image(file = "allResults")
+
+
+end_time0 <- Sys.time()
+end_time0 - start_time0
 
