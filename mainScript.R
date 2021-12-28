@@ -402,7 +402,7 @@ mainResults <- list(mainNetworks = igdStructuresNets, itemValidityGeneralInv = s
 save(mainResults, file = "mainResults.RData")
 saveRDS(mainResults, file = "mainResults.RDS") 
 
-save.image(file = "allResults")
+save.image(file = "allResults.Rdata")
 
 
 end_time0 <- Sys.time()
