@@ -182,6 +182,8 @@ bridgeNet <- EBICglasso(cor(select(data$gamers, GDT_1:GDT_4, IGDS9SF_1:IGDS9SF_3
                         n=2846, gamma = 0.5)
 communityStructure <- c(rep("gdt", 4), rep("igds", 6))
 bridgeCentrality <- bridge(bridgeNet, communities = communityStructure)
+plot(bridgeCentrality, include = "Bridge Strength", order = "value", zscore = TRUE)
+bridgeCentralityPlot <- recordPlot()
 bridgeCentralityPlot <- recordPlot(plot(bridgeCentrality, include = "Bridge Strength", order = "value", zscore = TRUE))
 bridgeStrength <- bridgeCentrality$`Bridge Strength`
 topBridges <- names(bridgeStrength[bridgeStrength > quantile(bridgeStrength, probs = .90, na.rm = TRUE)])
@@ -192,10 +194,11 @@ for(i in 1:length(bridgeStrength)) {
     newCommunities[i] <- "Bridge symptoms"
   } else {newCommunities[i] <- communityStructure[i]}
 }
-bridgeNetPlot <- recordPlot(qgraph(bridgeNet, layout = "spring", groups = newCommunities, 
-                                   color=c("white", "#CC79A7", "#56B4E9"), theme = "gray", legend = FALSE,
-                                   labels = c("gdt1", "gdt2", "gdt3", "gdt4", "igds1", "igds2", "igds3", "igds5", "igds7", "igds8")))
-bridgeResults <- list(bridgeNetPlot, bridgeCentralityPlot)
+qgraph(bridgeNet, layout = "spring", groups = newCommunities, 
+       color=c("white", "#CC79A7", "#56B4E9"), theme = "gray", legend = FALSE,
+       labels = c("gdt1", "gdt2", "gdt3", "gdt4", "igds1", "igds2", "igds3", "igds5", "igds7", "igds8"))
+bridgeNetPlot <- recordPlot()
+bridgeResults <- list(bridgeNetPlot = bridgeNetPlot, bridgeCentralityPlot = bridgeCentralityPlot)
 
 
 # Play style invariance ---------------------------------------------------
@@ -362,11 +365,14 @@ scalesStructures <- list(
   gamingTime = select(data[[1]], gaming_time) %>% names(),
   igds9sf = select(data[[1]], IGDS9SF_1:IGDS9SF_9) %>% names(),
   gdt = select(data[[1]], GDT_1:GDT_4) %>% names(),
+  craving = select(data[[1]], IGD_alternative_craving) %>% names(),
+  health = select(data[[1]], IGD_alternative_health) %>% names(),
   bfrs = select(data[[1]], BFRS_1 : BFRS_7) %>% names(),
   mogqSocial = select(data[[1]], MOGQ_social1 : MOGQ_social4) %>% names(),
   mogqCompetition = select(data[[1]], MOGQ_competition1 : MOGQ_competition4) %>% names(),
   mogqEscape = select(data[[1]], MOGQ_escape1 : MOGQ_escape4) %>% names(),
   mogqCoping = select(data[[1]], MOGQ_coping1 : MOGQ_coping4) %>% names(),
+  gamingCogn = select(data[[1]], IGCQ_1 : IGCQ_4) %>% names(),
   neuroticism = select(data[[1]], neuroticism_1 : neuroticism_10) %>% names(),
   harmAvoidance = select(data[[1]], harm_avoidance_1 : harm_avoidance_10) %>% names(),
   loneliness = select(data[[1]], DJGLS_1 : DJGLS_6) %>% names(),
@@ -379,10 +385,11 @@ colnames(m) <- c("mean", "sd", "median", "min", "max", "skew", "kurt", "omega")
 rownames(m) <- names(scalesStructures)
 scalesDescriptives <- list(m, m)
 for(d in 1:length(data)) {
-  for(i in 1:length((scalesStructures))) {
+  for(i in 1:length(scalesStructures)) {
     scalesDescriptives[[d]][i, 1:7] <- round(as.numeric(describe(rowMeans(select(data[[d]], eval(substitute(scalesStructures[[i]]))))))[c(3:5,8:9,11:12)], 2)
-    if(names(scalesStructures[i]) == "gamingTime") {scalesDescriptives[[d]][i, 8] <- NA} else {
-      scalesDescriptives[[d]][i, 8] <- round(suppressMessages(suppressWarnings(omega(select(data[[d]], eval(substitute(scalesStructures[[i]]))), nfactors = 1, poly = TRUE)$omega.tot)), 2)
+    if(names(scalesStructures[i]) == "gamingTime"  || names(scalesStructures[i]) == "craving" || names(scalesStructures[i]) == "health") 
+      {scalesDescriptives[[d]][i, 8] <- NA} else {
+        scalesDescriptives[[d]][i, 8] <- round(suppressMessages(suppressWarnings(omega(select(data[[d]], eval(substitute(scalesStructures[[i]]))), nfactors = 1, poly = FALSE)$omega.tot)), 2)
     }
   }
 }
@@ -408,3 +415,7 @@ save.image(file = "allResults.Rdata")
 end_time0 <- Sys.time()
 end_time0 - start_time0
 
+
+a <- select(data$gamers, MOGQ_social1:MOGQ_social4)
+lowerCor(a)
+omega(a, nfactors = 1)
