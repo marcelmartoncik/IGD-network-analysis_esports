@@ -3,7 +3,7 @@ title: 'Network analysis of (internet) gaming disorder: Supplementary materials 
 author: 
 - name: XY^1^, XY^2^, XY^3^, and XY^4^ ...add authorship of the supplementary material...
   affiliation: '^1^ XY<br>^2^ XY<br>^3^ XY<br>^4^ XY<br><br>'
-abstract:  'Add abstract here - although it is not necessary, I think it will be better to have it mentioned here'
+abstract:  '**Background:** From 2022, the World Health Organization’s ICD-11 includes the first mental disorder based on digital technology, “gaming disorder”. A similar construct was previously suggested as a condition for further study by the American Psychiatric Association in their DSM-5 as “internet gaming disorder”. In this study, we provide the first large-scale network analysis on the various structural alternatives for these constructs to understand how their debated criteria and symptoms are connected.<br>**Methods:** Culturally diverse samples of 2 846 digital game players (M = 25.3 years) and 746 esports players (M = 23.5 years) were recruited. Network analysis was applied to explore a structural multiverse of criteria and symptoms in DSM-5/ICD-11 based gaming disorders and how various item operationalizations and moderators possibly shape them.<br>**Findings:** Although some criteria and symptoms (lack of control and continued use despite health problems) remained strong and influential across many networks, we found alternative content valid operationalizations of single items systematically causing significant network differences. All networks were invariant across groups of play style, age, gender, gaming time, and most of the psychosocial characteristics.<br>**Interpretation:** Our study alarms caution for practitioners and researchers when applying and interpreting the listed DSM-5 and ICD-11 based criteria and symptoms for gaming disorders. Our findings show that even small item-level changes can lead to significant network-level changes, thus highlighting a need for careful operationalisation. Considering this highly sensitive network variation, the upcoming clinical validation studies should not be strictly limited to the wordings, criteria, and symptoms of current diagnostic manuals.'
 output: 
   html_document:
     code_folding: hide
@@ -64,7 +64,7 @@ In this document, we summarize all the outcomes relevant for the paper as well a
 #### Participants<br>
 The data used for these analyses comes from international samples of (1) regular gamers (*N = 3015*) and (2) esports players<br>(*N = 801*). In both cases, the participants were recruited online via Prolific.
 
-The research was conducted in accordance with the ethical principles stated in the Declaration of Helsinki. The study was approved by the Ethics committee of the Faculty of Arts, University of Presov. The participants were fairly compensated for their time.
+The research was conducted in accordance with the ethical principles stated in the Declaration of Helsinki. The study was approved by the Ethics committee of the Faculty of Arts, University of Presov. The participants were fairly compensated for their time. Debriefing was provided at the end of the survey.
 
 **Data quality**<br>
 The datasets were screened for careless participants (their detection was based on a combination of bot detection, failed attention checks, longstrings, and Mahalanobis distance) whom were then excluded. In summary, 5.6% and 7.2% of the participants were considered as careless and were excluded from the analyses. The resulting effective sample sizes for the samples of regular gamers and esports players were *N = 2846* and *N = 746*, respectively. 
@@ -106,6 +106,15 @@ Four different **motives for gaming**, specifically **social**, **competition**,
 
 **BAS Reward Responsiveness** representing positive responses to the occurrence or anticipation of reward was measured using 5 items of the *BIS/BAS Scale* (Carver & White, 1994). 
 
+The scales were presented to participants in the following order: 
+1) items on demographic situation
+2) motives for online gaming (scales order randomized within a block)
+3) Maladaptive gaming cognitions
+4) internet gaming disorder and gaming disorder (scales order randomized within a block)
+5) family relationships, self-control, neuroticism, loneliness, harm avoidance, BAS reward responsiveness (scales order randomized within a block)
+
+All items were also randomized within the scales. 
+
 <br><br>
 
 ```{r, results=FALSE, message=FALSE, warning=FALSE}
@@ -128,7 +137,7 @@ kable(mainResults$descriptives[[1]], format = "html", caption = "Regular gamers"
 kable(mainResults$descriptives[[2]], format = "html", caption = "esports players") %>% 
   kable_styling(bootstrap_options = "condensed", full_width = TRUE, font_size = 12, position = "center")
 ```
-^*Note: In the sensitivity analysis, we ran the calculations with the exclusion of the participants with gaming time > 16 hours (5 participants from regular gamers<br> and 7 participants from esports players), but kept these participants here as their inclusion does not affect the results of the subsequent analyses.*^
+^*Note: In the sensitivity analysis, we ran the calculations with the exclusion of the participants with gaming time > 16 hours (5 participants from regular gamers and 7 participants from esports players), but kept these participants here as their inclusion does not affect the results of the subsequent analyses.*^
 <br><br>
 
 ### Research questions and results<br><br>
@@ -309,7 +318,7 @@ ggarrange(mainResults$mainNetworks$gdtBestCravingHealthVarNames$esports$`Central
 ```{r, fig.align="center", fig.height=3, fig.width=5}
 mainResults$mainNetworks$bestCravingHealthTimeVarNames$gamers$`Network plot`
 ```
-Nodes no. 1-9 represent the symptoms of IGD (using the operationalization with the highest content validity) in that order. Nodes no. 11-13 represent *craving*, *neglect of own health*, and *gaming_time*, respectively.<br><br>
+Nodes no. 1-9 represent the symptoms of IGD (using the operationalization with the highest content validity) in that order. Nodes no. 10-12 represent *craving*, *neglect of own health*, and *gaming_time*, respectively.<br><br>
 ```{r, fig.align="center", fig.height=12, fig.width=12}
 library(ggpubr)
 ggarrange(mainResults$mainNetworks$bestCravingHealthTimeVarNames$gamers$`Centrality plot`, mainResults$mainNetworks$bestCravingHealthTimeVarNames$gamers$`Stability plot`,
@@ -320,7 +329,7 @@ ggarrange(mainResults$mainNetworks$bestCravingHealthTimeVarNames$gamers$`Central
 ```{r, fig.align="center", fig.height=3, fig.width=5}
 mainResults$mainNetworks$bestCravingHealthTimeVarNames$esports$`Network plot`
 ```
-Nodes no. 1-9 represent the symptoms of IGD (using the operationalization with the highest content validity) in that order. Nodes no. 11-13 represent *craving*, *neglect of own health*, and *gaming_time*, respectively.<br><br>
+Nodes no. 1-9 represent the symptoms of IGD (using the operationalization with the highest content validity) in that order. Nodes no. 10-12 represent *craving*, *neglect of own health*, and *gaming_time*, respectively.<br><br>
 ```{r, fig.align="center", fig.height=12, fig.width=12}
 library(ggpubr)
 ggarrange(mainResults$mainNetworks$bestCravingHealthTimeVarNames$esports$`Centrality plot`, mainResults$mainNetworks$bestCravingHealthTimeVarNames$esports$`Stability plot`,
@@ -336,26 +345,9 @@ To do so, we defined the communities (GD items and IGD items) and calculated the
 
 **Bridge symptoms between the GD and IGD symptoms in regular gamers**<br><br>
 ```{r, fig.align="center", fig.height=3, fig.width=5}
-
-netBridge <- suppressWarnings(suppressMessages(estimateNetwork(dplyr::select(data$gamers, GDT_1:GDT_4, IGDS9SF_1:IGDS9SF_3, IGDS9SF_5, 
-                                                                             IGDS9SF_7, IGDS9SF_8), default = "EBICglasso", tuning = .50)))
-bridgeNet <- suppressWarnings(suppressMessages(EBICglasso(cor(dplyr::select(data$gamers, GDT_1:GDT_4, IGDS9SF_1:IGDS9SF_3, IGDS9SF_5, IGDS9SF_7,
-                                                                            IGDS9SF_8)), n=2846, gamma = 0.5)))
-communityStructure <- c(rep("gdt", 4), rep("igds", 6))
-bridgeCentrality <- bridge(bridgeNet, communities = communityStructure)
-bridgeStrength <- bridgeCentrality$`Bridge Strength`
-topBridges <- names(bridgeStrength[bridgeStrength > quantile(bridgeStrength, probs = .90, na.rm = TRUE)])
-bridgeNum <- which(names(bridgeStrength) %in% topBridges)
-newCommunities <- vector()
-for(i in 1:length(bridgeStrength)) {
-  if(i %in% bridgeNum) {
-    newCommunities[i] <- "Bridge symptoms"
-  } else {newCommunities[i] <- communityStructure[i]}
-}
-suppressWarnings(suppressMessages(qgraph(bridgeNet, layout = "spring", groups = newCommunities, 
-                                         color=c("white", "#CC79A7", "#56B4E9"), theme = "gray", legend = FALSE,
-                                         labels = c("gdt1", "gdt2", "gdt3", "gdt4", "igds1", "igds2", "igds3", "igds5", "igds7", "igds8"))))
-suppressWarnings(suppressMessages(plot(bridgeCentrality, include = "Bridge Strength", order = "value", zscore = TRUE)))
+library(ggpubr)
+ggarrange(mainResults$bridgeSymptoms$bridgeNetPlot,
+          mainResults$bridgeSymptoms$bridgeCentralityPlot)
 ```
 <br><br>
 
