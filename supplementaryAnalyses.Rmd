@@ -181,10 +181,10 @@ The network structures looked as follows:<br>
 *A combination of the GD symptoms and the remaining IGD symptoms (non-overlapping with the GD symptoms)*<br>
 *A combination of the GD symptoms and the non-overlapping IGD symptoms plus three additional items focused on craving, neglect of own health, and time spent gaming*<br>
 *Symptoms of IGD measured by the items with highest content validity plus three additional items focused on craving, neglect of own health, and time spent gaming*
-<br><br>
+<br><br><br>
 
 
-#### RQ 1: How are the IGD and GD criteria/symptoms networked?
+#### **RQ 1: How are the IGD and GD criteria/symptoms networked?**
 
 #### RQ 1.1: How are the IGD/GD symptoms structurally interconnected? 
 ##### RQ 1.1.1: What are (less) central criteria/symptoms in the DSM-5 and ICD-11 networks?
@@ -274,12 +274,13 @@ ggarrange(mainResults$mainNetworks$gdtIgdshVarNames$esports$`Centrality plot`, m
 <br><br>
 **Technicalities of the statistical analysis**<br>
 To examine which symptom bridge the IGD and GD constructs, we defined the communities (GD items and IGD items) and calculated the strength of the bridge symptoms (i.e., the items that best link the communities) adapting the code from Jones et al. (2019). The higher the bridge strength, the better is an item connecting the communities. In the visualization, the bridge symptom (based on 90th percentile of bridghe strength) is colored in white ink.
+<br><br>
 
 **Bridge symptoms between the GD and IGD symptoms in regular gamers**<br><br>
-```{r, fig.align="center", fig.height=3, fig.width=5}
+```{r, fig.align="center", fig.height=4, fig.width=7, message=FALSE, warning=FALSE}
 library(ggpubr)
-ggarrange(mainResults$bridgeSymptoms$bridgeNetPlot,
-          mainResults$bridgeSymptoms$bridgeCentralityPlot)
+mainResults$bridgeSymptoms$bridgeNetPlot
+mainResults$bridgeSymptoms$bridgeCentralityPlot
 ```
 <br><br>
 
@@ -313,7 +314,7 @@ ggarrange(mainResults$mainNetworks$gdtBestCravingHealthVarNames$esports$`Central
 <br><br>
 
 
-#### RQ 2: How do different operationalization of items (highest concordance of the item's content with the criterion as described in the DSM-5) change the structure of IGD?
+#### **RQ 2: How do different operationalization of items (highest concordance of the item's content with the criterion as described in the DSM-5) change the structure of IGD?**
 <br><br>
 
 ##### **A network of the IGD symptoms operationalized by the items with the highest content concordance with the DMS-5**<br><br>
@@ -687,13 +688,13 @@ ggarrange(mainResults$mainNetworks$bestCravingHealthTimeVarNames$esports$`Centra
 <br><br>
 
 
-#### RQ 3: Are the IGD and GD networks invariant across different subgroups? 
+#### **RQ 3: Are the IGD and GD networks invariant across different subgroups?** 
 
-##### RQ 3.1: Do the IGD and GD networks differ across *play style (regular gamers vs. esports players)*? 
-##### RQ 3.2: Do the IGD and GD networks differ across *age groups*? 
-##### RQ 3.3: Do the IGD and GD networks differ across *gender*? 
-##### RQ 3.4: Do the IGD and GD networks differ across *different levels of time spent gaming*? 
-##### RQ 3.5: Do the IGD and GD networks differ across *psychosocial characteristics*? Specifically:
+#### RQ 3.1: Do the IGD and GD networks differ across *play style (regular gamers vs. esports players)*? 
+#### RQ 3.2: Do the IGD and GD networks differ across *age groups*? 
+#### RQ 3.3: Do the IGD and GD networks differ across *gender*? 
+#### RQ 3.4: Do the IGD and GD networks differ across *different levels of time spent gaming*? 
+#### RQ 3.5: Do the IGD and GD networks differ across *psychosocial characteristics*? Specifically:
 * *Social* motive for gaming
 * *Escape* motive for gaming
 * *Competition* motive for gaming
@@ -795,7 +796,7 @@ mainResults$modsResults$`Proportion of significantly different edges`
 <br>
 
 **Technicalities of the statistical analysis**<br>
-Finally, in the network structure consisting of the IGDS9-SF items, we compared the centrality/connectivity indices (expected influence, strength, closeness, and betweenness) of the IGD symptoms that were, in theory, deemed to be central with the nodes that were considered peripheral. To do so, we extracted the correlation matrix for both regular gamers and esports players and simulated 10 000 correlation matrices by reshuffling the original parameters. For each of the recreated correlation matrices, we computed the network model, extracted the centrality/connectivity indices, and compared the means of those indices for the core and peripheral symptoms. Consequently, we computed one-tailed permutation p-values for the difference in the means of the centrality/connectivity indices, where the iterated set of reshuffled matrices served as the H0 distribution.
+Finally, in the network structure consisting of the IGDS9-SF items, we compared the centrality/connectivity indices (expected influence, strength, closeness, and betweenness) of the IGD symptoms that were, in theory, deemed to be central with the nodes that were considered peripheral. To do so, we extracted the correlation matrix for both regular gamers and esports players and simulated 10 000 correlation matrices by reshuffling the original parameters. For each of the recreated correlation matrices, we computed the network model, extracted the centrality/connectivity indices, and compared the means of those indices for the core and peripheral symptoms. Consequently, we computed one-tailed permutation p-values for the difference in the means of the centrality/connectivity indices, where the iterated set of reshuffled matrices served as the H0 distribution.<br><br>
 
 **Differences in centrality/connectivity measures between the groups of core and peripheral symptoms and the corresponding p-values**<br>
 
@@ -830,7 +831,7 @@ Using the network analysis we have exploratively analyzed the relationships betw
 3) We have found symptoms of Continued use, Withdrawal symptoms, and Control the most important and symptoms of Preoccupation, Escape, and Increased priority as the least important. 
 4) We have noticed several important changes in the structure of the networks based on the different operationalizations of symptoms, which confirms the importance of correctly operationalizing symptoms.
 
-**Recommendation for future research:** 
+**Recommendation for future research:**<br>
 Adding additional symptoms or switching to different operationalization could change the network structure. Since the network structures depend on the elements that are included in the network, a high priority should be put on the clinical validation of measures coming from both approaches, DSM-5, and ICD-11.
 
 
