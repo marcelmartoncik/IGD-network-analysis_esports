@@ -1,7 +1,7 @@
 ---
 title: 'Network Structures of Gaming Disorder and Internet Gaming Disorder: Supplementary materials and outputs <br><br>'
 author: 
-- name: Matúš Adamkovič^1,2,3,•^, Marcel Martončik^1,2,•^, Veli-Matti Karhulahti^3,•^, & Ivan Ropovik^4^
+- name: Matúš Adamkovič^1,2,3,•^, Marcel Martončik^1,2,•^, Veli-Matti Karhulahti^4,•^, & Ivan Ropovik^1,3^
   affiliation: '^1^ University of Presov, Slovakia<br>^2^ Slovak Academy of Sciences<br>^3^ Charles University, Czechia<br>^4^ University of Jyväskylä, Finland<br>^•^ Shared first authorship<br><br>'
 abstract:  '**Background:** From 2022, the World Health Organization’s ICD-11 includes the first mental disorder based on digital technology, “gaming disorder”. A similar construct was previously suggested as a condition for further study by the American Psychiatric Association in their DSM-5 as “internet gaming disorder”. In this study, we provide the first large-scale network analysis on the various structural alternatives for these constructs to understand how their debated criteria and symptoms are connected.<br>**Methods:** Culturally diverse samples of 2 846 digital game players (M = 25.3 years) and 746 esports players (M = 23.5 years) were recruited. Network analysis was applied to explore a structural multiverse of criteria and symptoms in DSM-5/ICD-11 based gaming disorders and how various item operationalizations and moderators possibly shape them.<br>**Findings:** Although some criteria and symptoms (lack of control and continued use despite health problems) remained strong and influential across many networks, we found alternative content valid operationalizations of single items systematically causing significant network differences. All networks were invariant across groups of play style, age, gender, gaming time, and most of the psychosocial characteristics.<br>**Interpretation:** Our study alarms caution for practitioners and researchers when applying and interpreting the listed DSM-5 and ICD-11 based criteria and symptoms for gaming disorders. Our findings show that even small item-level changes can lead to significant network-level changes, thus highlighting a need for careful operationalisation. Considering this highly sensitive network variation, the upcoming clinical validation studies should not be strictly limited to the wordings, criteria, and symptoms of current diagnostic manuals.'
 output: 
@@ -85,15 +85,13 @@ First, we provide an overview of the measures. Descriptive statistics and reliab
 
 **Highest content validity items.** Based on the qualitative content validity analysis (Karhulahti, et al., 2021), we have selected additional 4 questions measuring different criteria and applied the same 5-point ordinal response scale (1 = Never, 2 = Rarely, 3 = Sometimes, 4 = Often, and 5= Very Often). Different operationalizations of *withdrawal symptoms*, *loss of interests*, and *continued excessive use* were selected from the *C-IGDS* (Sigerson et al., 2017), alternative operaionalization of tolerance was selected from the *PIE-9* (Pearcy et al., 2016). The item from the PIE-9 has been transformed from first person („I find an increasing need to spend increasing amounts of time engaged in Internet games.“) to third person to („Do you find an increasing need to spend increasing amounts of time engaged in digital games?“). In addition, „Internet games“ were transformed into „digital games“ to align with the rest of the items depicting gaming disorder. 
 
-**Possible additional symptoms.** As the criteria of (I)GD are still being discussed and other aspects could play a causally relevant role for the disorder to develop, we measured two additional items focused on *craving* and *neglect of own health* from the *CVAT2.0* (van Rooij, et al., 2015).
-
 **Possible additional symptoms.** As the criteria of (I)GD are still being discussed and other aspects could play a causally relevant role for the disorder to develop, we measured two additional items focused on *craving* and *neglect of own health* from the *CVAT2.0* (van Rooij, et al., 2015). In order to apply network analysis, we had to modify an original binary response scale from the CVAT 2.0 scale to the same 5-point ordinal response scale (1 = never to 5 = always). For this reason, we have slightly reformulated the original items starting with „Did you“ to „How often“. Original CVAT 2.0 items: Did you have a strong urge (need) to play video games? Did you neglect your own health because of gaming? (examples: not getting enough sleep, showering less, failing to brush teeth, drinking insufﬁciently). Modified CVAT 2.0 items used in our study: How often have you had a strong urge (desire) to play digital games? How often have you neglected your own health because of gaming? (examples: not getting enough sleep, showering less, failing to brush teeth, drinking insufficiently).
 
 **Support within family** as an indicator of family functioning was measured using 7 items of the *Cohesion subscale* of the *Brief Family Relationship Scale* (Fok et al., 2011). 
 
 Four different **motives for gaming**, specifically **social**, **competition**, **escape**, and **coping** were measured using the *Motives for Online Gaming Questionnaire* (Demetrovics et al., 2011). 
 
-**Problematic gaming-specific cognitions** were measured using 4 items of the *Internet Gaming Cognition Scale* (King & Delfabbro, 2016). To optimize resources, we chose four items (no. 1, 5, 19, and 20) that best represent the construct from the perspective of their content validity.
+**Maladaptive gaming cognitions** were measured using 4 items of the *Internet Gaming Cognition Scale* (King & Delfabbro, 2016). To optimize resources, we chose four items (no. 1, 5, 19, and 20) that best represent the construct from the perspective of their content validity.
 
 **Self-control** was measured using 13 items of the *Brief Self-Control Scale* (Tangney et al., 2004). 
 
@@ -175,66 +173,64 @@ Six different network structures were estimated in both regular gamers and espor
 
 The network structures looked as follows:<br>
 
-*Symptoms of IGD measured by the IGDS9-SF*<br>
-*Symptoms of GD measured by the GDT*<br>
-*Symptoms of IGD measured by the items with the highest content validity*<br>
-*A combination of the GD symptoms and the remaining IGD symptoms (non-overlapping with the GD symptoms)*<br>
-*A combination of the GD symptoms and the non-overlapping IGD symptoms plus three additional items focused on craving, neglect of own health, and time spent gaming*<br>
-*Symptoms of IGD measured by the items with highest content validity plus three additional items focused on craving, neglect of own health, and time spent gaming*
+* *Symptoms of IGD measured by the IGDS9-SF*<br>
+* *Symptoms of GD measured by the GDT*<br>
+* *Symptoms of IGD measured by the items with the highest content validity*<br>
+* *A combination of the GD symptoms and the remaining IGD symptoms (non-overlapping with the GD symptoms)*<br>
+* *A combination of the GD symptoms and the non-overlapping IGD symptoms plus three additional items focused on craving, neglect of own health, and time spent gaming*<br>
+* *Symptoms of IGD measured by the items with highest content validity plus three additional items focused on craving, neglect of own health, and time spent gaming*
 <br><br><br>
 
 
-#### **RQ 1: How are the IGD and GD criteria/symptoms networked?**
-
-#### RQ 1.1: How are the IGD/GD symptoms structurally interconnected? 
-##### RQ 1.1.1: What are (less) central criteria/symptoms in the DSM-5 and ICD-11 networks?
-##### RQ 1.1.2: Which connections between the symptoms are the strongest/weakest?
+#### **RQ 1.1: How are the IGD/GD symptoms structurally interconnected?** 
+##### RQ 1.1.1: What are the central and peripheral symptoms in the IGD/GD networks?
+##### RQ 1.1.2: Which connections between the symptoms are the strongest/weakest? <font size="1">*(Note that this RQ is not mentioned in the paper)*</font>
 <br><br>
 
-##### **A network of the nine DSM-5's symptoms measured by the conventional measure IGDS9-SF**<br><br>
+<font size="4"> **A network of the nine DSM-5's symptoms measured by the conventional measure IGDS9-SF**</font> <br><br>
 
 *Regular gamers*
-```{r, fig.align="center", fig.height=3, fig.width=5}
+```{r, fig.align="center", fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 mainResults$mainNetworks$igds9sfVarNames$gamers$`Network plot`
 ```
 Nodes no. 1-9 represent the symptoms of IGD in that order.<br><br>
-```{r, fig.align="center", fig.height=12, fig.width=12}
+```{r, fig.align="center", fig.height=12, fig.width=12, message=FALSE, warning=FALSE}
 library(ggpubr)
 ggarrange(mainResults$mainNetworks$igds9sfVarNames$gamers$`Centrality plot`, mainResults$mainNetworks$igds9sfVarNames$gamers$`Stability plot`,
           mainResults$mainNetworks$igds9sfVarNames$gamers$`Strength difference plot`, mainResults$mainNetworks$igds9sfVarNames$gamers$`Edge difference plot`)
 ```
 <br>
 *Esports players*
-```{r, fig.align="center", fig.height=3, fig.width=5}
+```{r, fig.align="center", fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 mainResults$mainNetworks$igds9sfVarNames$esports$`Network plot`
 ```
 Nodes no. 1-9 represent the symptoms of IGD in that order.<br><br>
-```{r, fig.align="center", fig.height=12, fig.width=12}
+```{r, fig.align="center", fig.height=12, fig.width=12, message=FALSE, warning=FALSE}
 library(ggpubr)
 ggarrange(mainResults$mainNetworks$igds9sfVarNames$esports$`Centrality plot`, mainResults$mainNetworks$igds9sfVarNames$esports$`Stability plot`,
           mainResults$mainNetworks$igds9sfVarNames$esports$`Strength difference plot`, mainResults$mainNetworks$igds9sfVarNames$esports$`Edge difference plot`)
 ```
 <br><br>
 
-##### **A network of the four ICD-11's symptoms measured by the GDT**<br><br>
+<font size="4"> **A network of the four ICD-11's symptoms measured by the GDT**</font> <br><br>
 
 *Regular gamers*
-```{r, fig.align="center", fig.height=3, fig.width=5}
+```{r, fig.align="center", fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 mainResults$mainNetworks$gdtVarNames$gamers$`Network plot`
 ```
 Nodes no. 1-4 represent the symptoms of GD in that order.<br><br>
-```{r, fig.align="center", fig.height=12, fig.width=12}
+```{r, fig.align="center", fig.height=12, fig.width=12, message=FALSE, warning=FALSE}
 library(ggpubr)
 ggarrange(mainResults$mainNetworks$gdtVarNames$gamers$`Centrality plot`, mainResults$mainNetworks$gdtVarNames$gamers$`Stability plot`,
           mainResults$mainNetworks$gdtVarNames$gamers$`Strength difference plot`, mainResults$mainNetworks$gdtVarNames$gamers$`Edge difference plot`)
 ```
 <br>
 *Esports players*
-```{r, fig.align="center", fig.height=3, fig.width=5}
+```{r, fig.align="center", fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 mainResults$mainNetworks$gdtVarNames$esports$`Network plot`
 ```
 Nodes no. 1-4 represent the symptoms of GD in that order.<br><br>
-```{r, fig.align="center", fig.height=12, fig.width=12}
+```{r, fig.align="center", fig.height=12, fig.width=12, message=FALSE, warning=FALSE}
 library(ggpubr)
 ggarrange(mainResults$mainNetworks$gdtVarNames$esports$`Centrality plot`, mainResults$mainNetworks$gdtVarNames$esports$`Stability plot`,
           mainResults$mainNetworks$gdtVarNames$esports$`Strength difference plot`, mainResults$mainNetworks$gdtVarNames$esports$`Edge difference plot`)
@@ -242,28 +238,28 @@ ggarrange(mainResults$mainNetworks$gdtVarNames$esports$`Centrality plot`, mainRe
 <br><br>
 
 
-#### RQ 1.2: How is the (non-overlapping) combination of IGD/GD symptoms structurally interconnected?
+#### **RQ 1.2: How is the (non-overlapping) combination of IGD/GD symptoms structurally interconnected?**
 <br><br>
 
-##### **A network combining the GD symptoms and the remaining IGD symptoms (non-overlapping with the GD symptoms)**<br><br>
+<font size="4"> **A network combining the GD symptoms and the remaining IGD symptoms (non-overlapping with the GD symptoms)**</font> <br><br>
 
 *Regular gamers*
-```{r, fig.align="center", fig.height=3, fig.width=5}
+```{r, fig.align="center", fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 mainResults$mainNetworks$gdtIgdshVarNames$gamers$`Network plot`
 ```
 Nodes no. 1-4 represent the symptoms of GD in that order. Nodes no. 5-10 represent *preoccupation with internet games*, *withdrawal*, *tolerance*, *deception of important people*, and *use of internet games to escape*, respectively.<br><br>
-```{r, fig.align="center", fig.height=12, fig.width=12}
+```{r, fig.align="center", fig.height=12, fig.width=12, message=FALSE, warning=FALSE}
 library(ggpubr)
 ggarrange(mainResults$mainNetworks$gdtIgdshVarNames$gamers$`Centrality plot`, mainResults$mainNetworks$gdtIgdshVarNames$gamers$`Stability plot`,
           mainResults$mainNetworks$gdtIgdshVarNames$gamers$`Strength difference plot`, mainResults$mainNetworks$gdtIgdshVarNames$gamers$`Edge difference plot`)
 ```
 <br>
 *Esports players*
-```{r, fig.align="center", fig.height=3, fig.width=5}
+```{r, fig.align="center", fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 mainResults$mainNetworks$gdtIgdshVarNames$esports$`Network plot`
 ```
 Nodes no. 1-4 represent the symptoms of GD in that order. Nodes no. 5-10 represent *preoccupation with internet games*, *withdrawal*, *tolerance*, *deception of important people*, and *use of internet games to escape*, respectively.<br><br>
-```{r, fig.align="center", fig.height=12, fig.width=12}
+```{r, fig.align="center", fig.height=12, fig.width=12, message=FALSE, warning=FALSE}
 library(ggpubr)
 ggarrange(mainResults$mainNetworks$gdtIgdshVarNames$esports$`Centrality plot`, mainResults$mainNetworks$gdtIgdshVarNames$esports$`Stability plot`, mainResults$mainNetworks$gdtIgdshVarNames$esports$`Strength difference plot`, mainResults$mainNetworks$gdtIgdshVarNames$esports$`Edge difference plot`)
 ```
@@ -276,7 +272,7 @@ ggarrange(mainResults$mainNetworks$gdtIgdshVarNames$esports$`Centrality plot`, m
 To examine which symptom bridge the IGD and GD constructs, we defined the communities (GD items and IGD items) and calculated the strength of the bridge symptoms (i.e., the items that best link the communities) adapting the code from Jones et al. (2019). The higher the bridge strength, the better is an item connecting the communities. In the visualization, the bridge symptom (based on 90th percentile of bridghe strength) is colored in white ink.
 <br><br>
 
-**Bridge symptoms between the GD and IGD symptoms in regular gamers**<br><br>
+<font size="4"> **Bridge symptoms between the GD and IGD symptoms in regular gamers**</font> <br><br>
 ```{r, fig.align="center", fig.height=4, fig.width=7, message=FALSE, warning=FALSE}
 library(ggpubr)
 mainResults$bridgeSymptoms$bridgeNetPlot
@@ -285,28 +281,28 @@ mainResults$bridgeSymptoms$bridgeCentralityPlot
 <br><br>
 
 
-##### RQ 1.2.2: How does the inclusion of causally relevant variables from outside of the diagnostic manuals—craving, neglect of own health, and gaming time—change the combined IGD/GD network 
+##### RQ 1.2.2: How does the inclusion of causally relevant variables from outside of the diagnostic manuals—craving, neglect of own health, and gaming time—change the combined IGD/GD network?
 <br><br>
 
-##### **A network combining the GD symptoms and the non-overlapping IGD symptoms plus three additional items focused on craving, neglect of own health, and time spent gaming**<br><br>
+<font size="4"> **A network combining the GD symptoms and the non-overlapping IGD symptoms plus three additional items focused on craving, neglect of own health, and time spent gaming**</font> <br><br>
 
 *Regular gamers*
-```{r, fig.align="center", fig.height=3, fig.width=5}
+```{r, fig.align="center", fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 mainResults$mainNetworks$gdtBestCravingHealthVarNames$gamers$`Network plot`
 ```
-Nodes no. 1-4 represent the symptoms of GD in that order. Nodes no. 5-10 represent *preoccupation with internet games*, *withdrawal*, *tolerance*, *deception of important people*, and *use of internet games to escape*, respectively. Nodes no. 11-13 represent *craving*, *neglect of own health*, and *gaming_time*, respectively.<br><br>
-```{r, fig.align="center", fig.height=12, fig.width=12}
+Nodes no. 1-4 represent the symptoms of GD in that order. Nodes no. 5-10 represent *preoccupation with internet games*, *withdrawal*, *tolerance*, *deception of important people*, and *use of internet games to escape*, respectively. Nodes no. 11-13 represent *craving*, *neglect of own health*, and *gaming time*, respectively.<br><br>
+```{r, fig.align="center", fig.height=12, fig.width=12, message=FALSE, warning=FALSE}
 library(ggpubr)
 ggarrange(mainResults$mainNetworks$gdtBestCravingHealthVarNames$gamers$`Centrality plot`, mainResults$mainNetworks$gdtBestCravingHealthVarNames$gamers$`Stability plot`,
           mainResults$mainNetworks$gdtBestCravingHealthVarNames$gamers$`Strength difference plot`, mainResults$mainNetworks$gdtBestCravingHealthVarNames$gamers$`Edge difference plot`)
 ```
 <br>
 *Esports players*
-```{r, fig.align="center", fig.height=3, fig.width=5}
+```{r, fig.align="center", fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 mainResults$mainNetworks$gdtBestCravingHealthVarNames$esports$`Network plot`
 ```
-Nodes no. 1-4 represent the symptoms of GD in that order. Nodes no. 5-10 represent *preoccupation with internet games*, *withdrawal*, *tolerance*, *deception of important people*, and *use of internet games to escape*, respectively. Nodes no. 11-13 represent *craving*, *neglect of own health*, and *gaming_time*, respectively.<br><br>
-```{r, fig.align="center", fig.height=12, fig.width=12}
+Nodes no. 1-4 represent the symptoms of GD in that order. Nodes no. 5-10 represent *preoccupation with internet games*, *withdrawal*, *tolerance*, *deception of important people*, and *use of internet games to escape*, respectively. Nodes no. 11-13 represent *craving*, *neglect of own health*, and *gaming time*, respectively.<br><br>
+```{r, fig.align="center", fig.height=12, fig.width=12, message=FALSE, warning=FALSE}
 library(ggpubr)
 ggarrange(mainResults$mainNetworks$gdtBestCravingHealthVarNames$esports$`Centrality plot`, mainResults$mainNetworks$gdtBestCravingHealthVarNames$esports$`Stability plot`,
           mainResults$mainNetworks$gdtBestCravingHealthVarNames$esports$`Strength difference plot`, mainResults$mainNetworks$gdtBestCravingHealthVarNames$esports$`Edge difference plot`)
@@ -314,28 +310,28 @@ ggarrange(mainResults$mainNetworks$gdtBestCravingHealthVarNames$esports$`Central
 <br><br>
 
 
-#### **RQ 2: How do different operationalization of items (highest concordance of the item's content with the criterion as described in the DSM-5) change the structure of IGD?**
+<font size="4"> **To examine how different operationalization of items change the structure of IGD, we first estimated a network that involved higher-cotnent-valid items (highest concordance of the item's content with the criterion as described in the DSM-5).**</font>
 <br><br>
 
-##### **A network of the IGD symptoms operationalized by the items with the highest content concordance with the DMS-5**<br><br>
+<font size="4"> **A network of the IGD symptoms operationalized by the items with the highest content concordance with the DMS-5**</font> <br><br>
 
 *Regular gamers*
-```{r, fig.align="center", fig.height=3, fig.width=5}
+```{r, fig.align="center", fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 mainResults$mainNetworks$bestVarNames$gamers$`Network plot`
 ```
 Nodes no. 1-9 represent the symptoms of IGD (using the operationalization with the highest content validity) in that order.<br><br>
-```{r, fig.align="center", fig.height=12, fig.width=12}
+```{r, fig.align="center", fig.height=12, fig.width=12, message=FALSE, warning=FALSE}
 library(ggpubr)
 ggarrange(mainResults$mainNetworks$bestVarNames$gamers$`Centrality plot`, mainResults$mainNetworks$bestVarNames$gamers$`Stability plot`,
           mainResults$mainNetworks$bestVarNames$gamers$`Strength difference plot`, mainResults$mainNetworks$bestVarNames$gamers$`Edge difference plot`)
 ```
 <br>
 *Esports players*
-```{r, fig.align="center", fig.height=3, fig.width=5}
+```{r, fig.align="center", fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 mainResults$mainNetworks$bestVarNames$esports$`Network plot`
 ```
 Nodes no. 1-9 represent the symptoms of IGD (using the operationalization with the highest content validity) in that order.<br><br>
-```{r, fig.align="center", fig.height=12, fig.width=12}
+```{r, fig.align="center", fig.height=12, fig.width=12, message=FALSE, warning=FALSE}
 library(ggpubr)
 ggarrange(mainResults$mainNetworks$bestVarNames$esports$`Centrality plot`, mainResults$mainNetworks$bestVarNames$esports$`Stability plot`,
           mainResults$mainNetworks$bestVarNames$esports$`Strength difference plot`, mainResults$mainNetworks$bestVarNames$esports$`Edge difference plot`)
@@ -343,21 +339,21 @@ ggarrange(mainResults$mainNetworks$bestVarNames$esports$`Centrality plot`, mainR
 <br><br>
 
 
-##### RQ 2.1: How do different operationalization of *withdrawal* affect the IGD network?
-##### RQ 2.2: How do different operationalization of *loss of interest* affect the IGD network?
-##### RQ 2.3: How do different operationalization of *tolerance* affect the IGD network?
-##### RQ 2.4: How do different operationalization of *continued excessive use* affect the IGD network?
+#### RQ 2.1: How do different operationalization of *withdrawal* affect the IGD network?
+#### RQ 2.2: How do different operationalization of *loss of interest* affect the IGD network?
+#### RQ 2.3: How do different operationalization of *tolerance* affect the IGD network?
+#### RQ 2.4: How do different operationalization of *continued excessive use* affect the IGD network?
 <br>
 
 **Technicalities of the statistical analysis**<br>
 The network comparison test (van Borkulo et al., 2017) was used to examine invariance (network invariance, general strength, and difference in strength of the specific symptom) of the structures. First, the IGD network comprising the standard nine items as measured by the IGDS9-SF and the IGD network consisting of the items with the highest content validity were estimated and compared. Second, to examine how does the substitutions of the specific symptoms/items alter the network, four additional networks (substituting only one symptom at a time) were estimated and compared to the standard items. The permutation testing was based on 2000 iterations.
 <br><br>
 
-**Differences caused by different items operationalizations**<br><br>
+<font size="4"> **Differences caused by different items operationalizations**</font> <br><br>
 The results shown the following pattern for **regular gamers**.<br><br>
 **The network where all four items (no. 2, 3, 5, and 6) were substituted:**<br><br>
 Centrality plot
-```{r, fig.align="center"}
+```{r, fig.align="center", message=FALSE, warning=FALSE}
 mainResults$itemValidityGeneralInv$gamers$`Centrality plot`
 ```
 Network invariance real value
@@ -385,9 +381,9 @@ Edge-weights invariance p-value
 mainResults$itemValidityGeneralInv$gamers$NCT$einv.pvals
 ```
 <br><br>
-**The network where withdrawal (item no. 2) was substituted:**<br><br>
+<font size="4"> **The network where withdrawal (item no. 2) was substituted:**</font> <br><br>
 Centrality plot
-```{r, fig.align="center"}
+```{r, fig.align="center", message=FALSE, warning=FALSE}
 mainResults$itemValiditySpecificInv$gamers$bestVarNames2$`Centrality plot`
 ```
 Network invariance real value
@@ -415,9 +411,9 @@ Edge-weights invariance p-value
 mainResults$itemValiditySpecificInv$gamers$bestVarNames2$NCT$einv.pvals
 ```
 <br><br>
-**The network where loss of interest (item no. 3) was substituted:**<br><br>
+<font size="4"> **The network where loss of interest (item no. 3) was substituted:**</font> <br><br>
 Centrality plot
-```{r, fig.align="center"}
+```{r, fig.align="center", message=FALSE, warning=FALSE}
 mainResults$itemValiditySpecificInv$gamers$bestVarNames3$`Centrality plot`
 ```
 Network invariance real value
@@ -445,9 +441,9 @@ Edge-weights invariance p-value
 mainResults$itemValiditySpecificInv$gamers$bestVarNames3$NCT$einv.pvals
 ```
 <br><br>
-The network where *tolerance* (item no. 5) was substituted:<br><br>
+<font size="4"> **The network where tolerance (item no. 5) was substituted:**</font> <br><br>
 Centrality plot
-```{r, fig.align="center"}
+```{r, fig.align="center", message=FALSE, warning=FALSE}
 mainResults$itemValiditySpecificInv$gamers$bestVarNames5$`Centrality plot`
 ```
 Network invariance real value
@@ -475,9 +471,9 @@ Edge-weights invariance p-value
 mainResults$itemValiditySpecificInv$gamers$bestVarNames5$NCT$einv.pvals
 ```
 <br><br>
-**The network where continued excessive use (item no. 6) was substituted:**<br><br>
+<font size="4"> **The network where continued excessive use (item no. 6) was substituted:**</font> <br><br>
 Centrality plot
-```{r, fig.align="center"}
+```{r, fig.align="center", message=FALSE, warning=FALSE}
 mainResults$itemValiditySpecificInv$gamers$bestVarNames6$`Centrality plot`
 ```
 Network invariance real value
@@ -507,9 +503,11 @@ mainResults$itemValiditySpecificInv$gamers$bestVarNames6$NCT$einv.pvals
 <br><br>
 
 The results shown the following pattern for **esports players**.<br><br>
-**The network where all four items (no. 2, 3, 5, and 6) were substituted:**<br><br>
+<font size="4"> **The network where all four items (no. 2, 3, 5, and 6) were substituted:**</font> <br><br>
+^*Note: Blue color represents parameters for the original IGDS9-SF items while red color represents parameters for higher-content-validity operationalizations*^
+
 Centrality plot
-```{r, fig.align="center"}
+```{r, fig.align="center", message=FALSE, warning=FALSE}
 mainResults$itemValidityGeneralInv$esports$`Centrality plot`
 ```
 Network invariance real value
@@ -537,9 +535,9 @@ Edge-weights invariance p-value
 mainResults$itemValidityGeneralInv$esports$NCT$einv.pvals
 ```
 <br><br>
-**The network where withdrawal (item no. 2) was substituted**:<br><br>
+<font size="4"> **The network where withdrawal (item no. 2) was substituted:**</font> <br><br>
 Centrality plot
-```{r, fig.align="center"}
+```{r, fig.align="center", message=FALSE, warning=FALSE}
 mainResults$itemValiditySpecificInv$esports$bestVarNames2$`Centrality plot`
 ```
 Network invariance real value
@@ -567,9 +565,9 @@ Edge-weights invariance p-value
 mainResults$itemValiditySpecificInv$esports$bestVarNames2$NCT$einv.pvals
 ```
 <br><br>
-**The network where loss of interest (item no. 3) was substituted:**<br><br>
+<font size="4"> **The network where loss of interest (item no. 3) was substituted:**</font> <br><br>
 Centrality plot
-```{r, fig.align="center"}
+```{r, fig.align="center", message=FALSE, warning=FALSE}
 mainResults$itemValiditySpecificInv$esports$bestVarNames3$`Centrality plot`
 ```
 Network invariance real value
@@ -597,9 +595,9 @@ Edge-weights invariance p-value
 mainResults$itemValiditySpecificInv$esports$bestVarNames3$NCT$einv.pvals
 ```
 <br><br>
-**The network where tolerance (item no. 5) was substituted:**<br><br>
+<font size="4"> **The network where tolerance (item no. 5) was substituted:**</font> <br><br>
 Centrality plot
-```{r, fig.align="center"}
+```{r, fig.align="center", message=FALSE, warning=FALSE}
 mainResults$itemValiditySpecificInv$esports$bestVarNames5$`Centrality plot`
 ```
 Network invariance real value
@@ -627,9 +625,9 @@ Edge-weights invariance p-value
 mainResults$itemValiditySpecificInv$esports$bestVarNames5$NCT$einv.pvals
 ```
 <br><br>
-**The network where continued excessive use (item no. 6) was substituted:**<br><br>
+<font size="4"> **The network where continued excessive use (item no. 6) was substituted:**</font><br><br>
 Centrality plot
-```{r, fig.align="center"}
+```{r, fig.align="center", message=FALSE, warning=FALSE}
 mainResults$itemValiditySpecificInv$esports$bestVarNames6$`Centrality plot`
 ```
 Network invariance real value
@@ -660,27 +658,27 @@ mainResults$itemValiditySpecificInv$esports$bestVarNames6$NCT$einv.pvals
 
 
 
-##### RQ 2.5: How is the combination of DSM-5 network with different operationalizations of “withdrawal”, “loss of interests”, “tolerance”, and “continued excessive use” together with causally relevant variables from outside of the diagnostic manuals—craving, neglect of own health, and gaming time structurally interconnected??
+#### RQ 2.5: How is the combination of DSM-5 network with different operationalizations of *withdrawal*, *loss of interests*, *tolerance*, and *continued excessive use* together with causally relevant variables from outside of the diagnostic manuals—*craving*, *neglect of own health*, and *gaming time*-structurally interconnected?
 <br><br>
-##### **A network of the IGD symptoms measured by the items with highest content validity plus three additional items focused on craving, neglect of own health, and time spent gaming**<br><br>
+<font size="4"> **A network of the IGD symptoms measured by the items with highest content validity plus three additional items focused on craving, neglect of own health, and time spent gaming**</font> <br><br>
 
 *Regular gamers*
-```{r, fig.align="center", fig.height=3, fig.width=5}
+```{r, fig.align="center", fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 mainResults$mainNetworks$bestCravingHealthTimeVarNames$gamers$`Network plot`
 ```
-Nodes no. 1-9 represent the symptoms of IGD (using the operationalizations with the highest content validity) in that order. Nodes no. 10-12 represent *craving*, *neglect of own health*, and *gaming_time*, respectively.<br><br>
-```{r, fig.align="center", fig.height=12, fig.width=12}
+Nodes no. 1-9 represent the symptoms of IGD (using the operationalizations with the highest content validity) in that order. Nodes no. 10-12 represent *craving*, *neglect of own health*, and *gaming time*, respectively.<br><br>
+```{r, fig.align="center", fig.height=12, fig.width=12, message=FALSE, warning=FALSE}
 library(ggpubr)
 ggarrange(mainResults$mainNetworks$bestCravingHealthTimeVarNames$gamers$`Centrality plot`, mainResults$mainNetworks$bestCravingHealthTimeVarNames$gamers$`Stability plot`,
           mainResults$mainNetworks$bestCravingHealthTimeVarNames$gamers$`Strength difference plot`, mainResults$mainNetworks$bestCravingHealthTimeVarNames$gamers$`Edge difference plot`)
 ```
 <br>
 *Esports players*
-```{r, fig.align="center", fig.height=3, fig.width=5}
+```{r, fig.align="center", fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 mainResults$mainNetworks$bestCravingHealthTimeVarNames$esports$`Network plot`
 ```
-Nodes no. 1-9 represent the symptoms of IGD (using the operationalization with the highest content validity) in that order. Nodes no. 10-12 represent *craving*, *neglect of own health*, and *gaming_time*, respectively.<br><br>
-```{r, fig.align="center", fig.height=12, fig.width=12}
+Nodes no. 1-9 represent the symptoms of IGD (using the operationalization with the highest content validity) in that order. Nodes no. 10-12 represent *craving*, *neglect of own health*, and *gaming time*, respectively.<br><br>
+```{r, fig.align="center", fig.height=12, fig.width=12, message=FALSE, warning=FALSE}
 library(ggpubr)
 ggarrange(mainResults$mainNetworks$bestCravingHealthTimeVarNames$esports$`Centrality plot`, mainResults$mainNetworks$bestCravingHealthTimeVarNames$esports$`Stability plot`,
           mainResults$mainNetworks$bestCravingHealthTimeVarNames$esports$`Strength difference plot`, mainResults$mainNetworks$bestCravingHealthTimeVarNames$esports$`Edge difference plot`)
@@ -688,13 +686,13 @@ ggarrange(mainResults$mainNetworks$bestCravingHealthTimeVarNames$esports$`Centra
 <br><br>
 
 
-#### **RQ 3: Are the IGD and GD networks invariant across different subgroups?** 
+<font size="4"> **To examine the invariance of IGD and GD networks across different subgroups, the following research questions were stated.**</font> <br><br>
 
-#### RQ 3.1: Do the IGD and GD networks differ across *play style (regular gamers vs. esports players)*? 
-#### RQ 3.2: Do the IGD and GD networks differ across *age groups*? 
-#### RQ 3.3: Do the IGD and GD networks differ across *gender*? 
-#### RQ 3.4: Do the IGD and GD networks differ across *different levels of time spent gaming*? 
-#### RQ 3.5: Do the IGD and GD networks differ across *psychosocial characteristics*? Specifically:
+#### RQ 3.1: How do the IGD and GD networks differ between groups of *play style (regular gamers vs. esports players)*? 
+#### RQ 3.2: How do the IGD and GD networks differ between *age groups*? 
+#### RQ 3.3: How do the IGD and GD networks differ between *gender*? 
+#### RQ 3.4: How do the IGD and GD networks differ between groups of *different gaming time*? 
+#### RQ 3.5: How do the IGD and GD networks differ across the following *psychosocial characteristics*?
 * *Social* motive for gaming
 * *Escape* motive for gaming
 * *Competition* motive for gaming
@@ -771,7 +769,7 @@ mainResults$playStyleInv$gdtVarNames$einv.pvals
 ```
 <br><br>
 
-**Network invariance across age groups, gender, gaming time and psychosocial characteristics**<br><br>
+<font size="4"> **Network invariance across age groups, gender, gaming time, and psychosocial characteristics**</font> <br><br>
 
 Network invariance
 ```{r, fig.align="center"}
@@ -792,13 +790,14 @@ mainResults$modsResults$`Proportion of significantly different edges`
 <br><br>
 
 
-#### RQ 4: Do the groups of core (*withdrawal*, *unsuccessful attempts to control gaming*, *deception of important people*, *jeopardizing important things*) and peripheral (*preoccupation*, *tolerance*, *gaming to escape*) IGD symptoms, as suggested by Brunborg et al. (2015), differ in centrality/connectivity indices? *(Note that this RQ is not mentioned in the paper)*
+#### RQ 4.1: Do the groups of core (*withdrawal*, *unsuccessful attempts to control gaming*, *deception of important people*, *jeopardizing important things*) and peripheral (*preoccupation*, *tolerance*, *gaming to escape*) IGD symptoms, as suggested by Brunborg et al. (2015), differ in centrality/connectivity indices? 
+^*(Note that this RQ is not mentioned in the paper)*^
 <br>
 
 **Technicalities of the statistical analysis**<br>
 Finally, in the network structure consisting of the IGDS9-SF items, we compared the centrality/connectivity indices (expected influence, strength, closeness, and betweenness) of the IGD symptoms that were, in theory, deemed to be central with the nodes that were considered peripheral. To do so, we extracted the correlation matrix for both regular gamers and esports players and simulated 10 000 correlation matrices by reshuffling the original parameters. For each of the recreated correlation matrices, we computed the network model, extracted the centrality/connectivity indices, and compared the means of those indices for the core and peripheral symptoms. Consequently, we computed one-tailed permutation p-values for the difference in the means of the centrality/connectivity indices, where the iterated set of reshuffled matrices served as the H0 distribution.<br><br>
 
-**Differences in centrality/connectivity measures between the groups of core and peripheral symptoms and the corresponding p-values**<br>
+<font size="4"> **Differences in centrality/connectivity measures between the groups of core and peripheral symptoms and the corresponding p-values**</font> <br>
 
 In both regular gamers and esports players, the core and peripheral symptoms did not differ in any of the centrality indices. 
 
