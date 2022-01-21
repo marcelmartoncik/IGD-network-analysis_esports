@@ -13,9 +13,9 @@ output:
 ---
 
 <br>
-The presented document serves as supplementary material to the paper '**Network Structures of Gaming Disorder and Internet Gaming Disorder: Criteria and Symptom Operationalization Cause Variation**'. The preprint of the paper can be found at [PsyArXiv](https:).<br><br>
+The present document serves as supplementary material to the paper '**Network Structures of Gaming Disorder and Internet Gaming Disorder: Criteria and Symptom Operationalization Cause Variation**'. The preprint of the paper can be found at [PsyArXiv](https:).<br><br>
 
-Data and R code are freely available at [this OSF project](https:). 
+Data and R code are freely available at [this OSF project](https://osf.io/a8fhx/).<br> 
 Authors of the code: Ivan Ropovik and Matus Adamkovic
 <br><br><br>
 
@@ -27,7 +27,7 @@ knitr::opts_chunk$set(echo = FALSE)
 ### Overview of the document 
 In this document, we summarize all the outcomes relevant for the paper (in total, we estimated about 50 theoretically justifiable networks, including the moderation analysis) as well as provide additional information concerning:
 
-* Description of the (I)GD symptoms
+* Description of the IGD and GD symptoms
 * Methods
   + Participants
   + Measures
@@ -38,8 +38,8 @@ In this document, we summarize all the outcomes relevant for the paper (in total
 <br><br>
 
 
-### Description of the (I)GD symptoms<br><br>
-#### Internet gaming disorder (DSM-5)<br>
+### Description of the IGD and GD symptoms<br><br>
+#### IGD - Internet gaming disorder (DSM-5)<br>
 
 **1. Preoccupation with internet games.** The individual thinks about previous gaming activity or anticipates playing the next game. Internet gaming becomes the dominant activity in daily life.<br>
 **2. Withdrawal symptoms when internet gaming is taken away.** These symptoms are typically described as irritability, anxiety, or sadness, but there are no physical signs of pharmacological withdrawal.<br>
@@ -51,7 +51,7 @@ In this document, we summarize all the outcomes relevant for the paper (in total
 **8. Use of internet games to escape or relieve a negative mood.** For example, feelings of helplessness, guilt, anxiety.<br>
 **9. Has jeopardized or lost a significant relationship, job, or educational or career opportunity because of participation in internet games**<br>
 
-#### Gaming disorder (ICD-11)<br>
+#### GD - Gaming disorder (ICD-11)<br>
 
 **1. Impaired control over gaming.** For example, onset, frequency, intensity, duration, termination, context.<br>
 **2. Increasing priority given to gaming to the extent that gaming takes precedence over other life interests and daily activities.**<br>
@@ -59,15 +59,15 @@ In this document, we summarize all the outcomes relevant for the paper (in total
 
 ### Methods<br><br>
 #### Participants<br>
-The data used for these analyses comes from international samples of (1) regular gamers (*N = 3015*) and (2) esports players<br>(*N = 801*). In both cases, the participants were recruited online via Prolific.
+The data used for these analyses comes from international samples of (1) videogame players (general) (*N = 3015*) and (2) esports players<br>(*N = 801*). In both cases, the participants were recruited online via Prolific.
 
 The research was conducted in accordance with the ethical principles stated in the Declaration of Helsinki. The study was approved by the Ethics committee of the Faculty of Arts, University of Presov. The participants were fairly compensated for their time. Debriefing was provided at the end of the survey.
 
 **Data quality**<br>
-The datasets were screened for careless participants (their detection was based on a combination of bot detection, failed attention checks, longstrings, and Mahalanobis distance) whom were then excluded. In summary, 5.6% and 7.2% of the participants were considered as careless and were excluded from the analyses. The resulting effective sample sizes for the samples of regular gamers and esports players were *N = 2846* and *N = 746*, respectively. 
+The datasets were screened for careless participants (their detection was based on a combination of bot detection, failed attention checks, longstrings, and Mahalanobis distance) whom were then excluded. In summary, 5.6% and 7.2% of the participants were considered as careless and were excluded from the analyses. The resulting effective sample sizes for the samples of videogame players (general) and esports players were *N = 2846* and *N = 746*, respectively. 
 
-**Regular gamers**<br>
-The only inclusion criterion for the sample of regular gamers was *average gaming time higher than 2 hours per week*. The sample of regular gamers (N = 2846; 80.5% male, 18.2% female, 1% non-binary) had a mean age of 25.28 years (*SD* = 7.38). The average time spent gaming equaled 3.97 hours per day (*SD* = 2.48), out of which 61.11% was dedicated to online games. The participants spent another 3.06 hours per day (*SD* = 2.88) on additional activities related to digital games.
+**Videogame players (general)**<br>
+The only inclusion criterion for the sample of videogame players (general) was *average gaming time higher than 2 hours per week*. The sample (N = 2846; 80.5% male, 18.2% female, 1% non-binary) had a mean age of 25.28 years (*SD* = 7.38). The average time spent gaming equaled 3.97 hours per day (*SD* = 2.48), out of which 61.11% was dedicated to online games. The participants spent another 3.06 hours per day (*SD* = 2.88) on additional activities related to digital games.
 
 **esports players**<br>
 The esports sample was selected using two prescreening criteria (1) *playing an esports game* and (2) *average weekly gaming time higher than 13 hours*. The sample of esports players (N = 746; 90.7% male, 8.5% female, 0.7% non-binary) had a mean age of 23.51 years (*SD* = 5.80). At the time of data collection, 15.9% of the sample were members of a gaming team or club. The majority of the participants played League of Legends. On average, the participants played digital games for 5.37 hours per day (*SD* = 3.00), with 71.3% of this time involved playing online rather than offline. They spent, on average, additional 3.88 hours per day (*SD* = 3.38) on other gaming related activities (e.g., watching other people play, watching gaming-related videos, etc.). 
@@ -85,7 +85,7 @@ First, we provide an overview of the measures. Descriptive statistics and reliab
 
 **Highest content validity items.** Based on the qualitative content validity analysis (Karhulahti, et al., 2021), we have selected additional 4 questions measuring different criteria and applied the same 5-point ordinal response scale (1 = Never, 2 = Rarely, 3 = Sometimes, 4 = Often, and 5= Very Often). Different operationalizations of *withdrawal symptoms*, *loss of interests*, and *continued excessive use* were selected from the *C-IGDS* (Sigerson et al., 2017), alternative operaionalization of tolerance was selected from the *PIE-9* (Pearcy et al., 2016). The item from the PIE-9 has been transformed from first person („I find an increasing need to spend increasing amounts of time engaged in Internet games.“) to third person to („Do you find an increasing need to spend increasing amounts of time engaged in digital games?“). In addition, „Internet games“ were transformed into „digital games“ to align with the rest of the items depicting gaming disorder. 
 
-**Possible additional symptoms.** As the criteria of (I)GD are still being discussed and other aspects could play a causally relevant role for the disorder to develop, we measured two additional items focused on *craving* and *neglect of own health* from the *CVAT2.0* (van Rooij, et al., 2015). In order to apply network analysis, we had to modify an original binary response scale from the CVAT 2.0 scale to the same 5-point ordinal response scale (1 = never to 5 = always). For this reason, we have slightly reformulated the original items starting with „Did you“ to „How often“. Original CVAT 2.0 items: Did you have a strong urge (need) to play video games? Did you neglect your own health because of gaming? (examples: not getting enough sleep, showering less, failing to brush teeth, drinking insufﬁciently). Modified CVAT 2.0 items used in our study: How often have you had a strong urge (desire) to play digital games? How often have you neglected your own health because of gaming? (examples: not getting enough sleep, showering less, failing to brush teeth, drinking insufficiently).
+**Possible additional symptoms.** As the criteria of both IGD and GD are still being discussed and other aspects could play a causally relevant role for the disorder to develop, we measured two additional items focused on *craving* and *neglect of own health* from the *CVAT2.0* (van Rooij, et al., 2015). In order to apply network analysis, we had to modify an original binary response scale from the CVAT 2.0 scale to the same 5-point ordinal response scale (1 = never to 5 = always). For this reason, we have slightly reformulated the original items starting with „Did you“ to „How often“. Original CVAT 2.0 items: Did you have a strong urge (need) to play video games? Did you neglect your own health because of gaming? (examples: not getting enough sleep, showering less, failing to brush teeth, drinking insufﬁciently). Modified CVAT 2.0 items used in our study: How often have you had a strong urge (desire) to play digital games? How often have you neglected your own health because of gaming? (examples: not getting enough sleep, showering less, failing to brush teeth, drinking insufficiently).
 
 **Support within family** as an indicator of family functioning was measured using 7 items of the *Cohesion subscale* of the *Brief Family Relationship Scale* (Fok et al., 2011). 
 
@@ -126,12 +126,12 @@ suppressPackageStartupMessages(invisible(lapply(list.of.packages, require, quiet
 
 **Supplementary Table 1. Descriptive statistics**<br><br>
 ```{r}
-kable(mainResults$descriptives[[1]], format = "html", caption = "Regular gamers") %>% 
+kable(mainResults$descriptives[[1]], format = "html", caption = "videogame players (general)") %>% 
   kable_styling(bootstrap_options = "condensed", full_width = TRUE, font_size = 12, position = "center")
 kable(mainResults$descriptives[[2]], format = "html", caption = "esports players") %>% 
   kable_styling(bootstrap_options = "condensed", full_width = TRUE, font_size = 12, position = "center")
 ```
-^*Note: In the sensitivity analysis, we ran the calculations with the exclusion of the participants who reported gaming time > 16 hours (5 participants from regular gamers and 7 participants from esports players), but kept these participants here as their inclusion does not affect the results of the subsequent analyses.*^
+^*Note: In the sensitivity analysis, we ran the calculations with the exclusion of the participants who reported gaming time > 16 hours (5 participants from videogame players (general) and 7 participants from esports players), but kept these participants here as their inclusion does not affect the results of the subsequent analyses.*^
 <br><br>
 
 
@@ -163,13 +163,13 @@ kable(mainResults$descriptives[[2]], format = "html", caption = "esports players
 
 ### Research questions and results<br><br>
 
-The calculations below were performed for both regular gamers and esports players separately (in the main paper, only the analyses performed on regular gamers are reported and discussed).
+The calculations below were performed for both videogame players (general) and esports players separately (in the main paper, only the analyses performed on videogame players (general) are reported and discussed).
 
 Note that the present document contains additional research questions (and, obviously, analyses) compared to the the actual paper.<br><br>
 
 
 **Technicalities of the statistical analyses - general network estimation procedure**<br><br>
-Six different network structures were estimated in both regular gamers and esports players. To avoid finding spurious relationships, the networks were estimated using the EBICglasso method which combines LASSO and EBIC to find an optimal regularization. The differences in symptoms' strength and edge-weights differences were based on 2000 bootstraps. All the networks were estimated using the *bootnet* package (Epskamp et al., 2017). 
+Six different network structures were estimated in both videogame players (general) and esports players. To avoid finding spurious relationships, the networks were estimated using the EBICglasso method which combines LASSO and EBIC to find an optimal regularization. The differences in symptoms' strength and edge-weights differences were based on 2000 bootstraps. All the networks were estimated using the *bootnet* package (Epskamp et al., 2017). 
 
 The network structures looked as follows:<br>
 
@@ -189,7 +189,7 @@ The network structures looked as follows:<br>
 
 <font size="4"> **A network of the nine DSM-5's symptoms measured by the conventional measure IGDS9-SF**</font> <br><br>
 
-*Regular gamers*
+*Videogame players (general)*
 ```{r, fig.align="center", fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 mainResults$mainNetworks$igds9sfVarNames$gamers$`Network plot`
 ```
@@ -214,7 +214,7 @@ ggarrange(mainResults$mainNetworks$igds9sfVarNames$esports$`Centrality plot`, ma
 
 <font size="4"> **A network of the four ICD-11's symptoms measured by the GDT**</font> <br><br>
 
-*Regular gamers*
+*Videogame players (general)*
 ```{r, fig.align="center", fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 mainResults$mainNetworks$gdtVarNames$gamers$`Network plot`
 ```
@@ -243,7 +243,7 @@ ggarrange(mainResults$mainNetworks$gdtVarNames$esports$`Centrality plot`, mainRe
 
 <font size="4"> **A network combining the GD symptoms and the remaining IGD symptoms (non-overlapping with the GD symptoms)**</font> <br><br>
 
-*Regular gamers*
+*Videogame players (general)*
 ```{r, fig.align="center", fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 mainResults$mainNetworks$gdtIgdshVarNames$gamers$`Network plot`
 ```
@@ -272,7 +272,7 @@ ggarrange(mainResults$mainNetworks$gdtIgdshVarNames$esports$`Centrality plot`, m
 To examine which symptom bridge the IGD and GD constructs, we defined the communities (GD items and IGD items) and calculated the strength of the bridge symptoms (i.e., the items that best link the communities) adapting the code from Jones et al. (2019). The higher the bridge strength, the better is an item connecting the communities. In the visualization, the bridge symptom (based on 90th percentile of bridghe strength) is colored in white ink.
 <br><br>
 
-<font size="4"> **Bridge symptoms between the GD and IGD symptoms in regular gamers**</font> <br><br>
+<font size="4"> **Bridge symptoms between the GD and IGD symptoms in videogame players (general)**</font> <br><br>
 ```{r, fig.align="center", fig.height=4, fig.width=7, message=FALSE, warning=FALSE}
 library(ggpubr)
 mainResults$bridgeSymptoms$bridgeNetPlot
@@ -286,7 +286,7 @@ mainResults$bridgeSymptoms$bridgeCentralityPlot
 
 <font size="4"> **A network combining the GD symptoms and the non-overlapping IGD symptoms plus three additional items focused on craving, neglect of own health, and time spent gaming**</font> <br><br>
 
-*Regular gamers*
+*Videogame players (general)*
 ```{r, fig.align="center", fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 mainResults$mainNetworks$gdtBestCravingHealthVarNames$gamers$`Network plot`
 ```
@@ -315,7 +315,7 @@ ggarrange(mainResults$mainNetworks$gdtBestCravingHealthVarNames$esports$`Central
 
 <font size="4"> **A network of the IGD symptoms operationalized by the items with the highest content concordance with the DMS-5**</font> <br><br>
 
-*Regular gamers*
+*Videogame players (general)*
 ```{r, fig.align="center", fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 mainResults$mainNetworks$bestVarNames$gamers$`Network plot`
 ```
@@ -350,7 +350,7 @@ The network comparison test (van Borkulo et al., 2017) was used to examine invar
 <br><br>
 
 <font size="4"> **Differences caused by different items operationalizations**</font> <br><br>
-The results shown the following pattern for **regular gamers**.<br><br>
+The results shown the following pattern for **videogame players (general)**.<br><br>
 **The network where all four items (no. 2, 3, 5, and 6) were substituted:**<br><br>
 Centrality plot
 ```{r, fig.align="center", message=FALSE, warning=FALSE}
@@ -662,7 +662,7 @@ mainResults$itemValiditySpecificInv$esports$bestVarNames6$NCT$einv.pvals
 <br><br>
 <font size="4"> **A network of the IGD symptoms measured by the items with highest content validity plus three additional items focused on craving, neglect of own health, and time spent gaming**</font> <br><br>
 
-*Regular gamers*
+*Videogame players (general)*
 ```{r, fig.align="center", fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 mainResults$mainNetworks$bestCravingHealthTimeVarNames$gamers$`Network plot`
 ```
