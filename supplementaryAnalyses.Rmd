@@ -1,9 +1,9 @@
 ---
 title: 'Network Structures of Gaming Disorder and Internet Gaming Disorder: Supplementary materials and outputs <br><br>'
 author: 
-- name: Matúš Adamkovič^1,2,3,•^, Marcel Martončik^1,2,•^, Veli-Matti Karhulahti^4,•^, & Ivan Ropovik^1,3^
+- name: Matúš Adamkovič^1,2,3,•^, Marcel Martončik^1,2,•^, Veli-Matti Karhulahti^4,•^,<br> & Ivan Ropovik^1,3^
   affiliation: '^1^ University of Presov, Slovakia<br>^2^ Slovak Academy of Sciences<br>^3^ Charles University, Czechia<br>^4^ University of Jyväskylä, Finland<br>^•^ Shared first authorship<br><br>'
-abstract:  '**Background:** From 2022, the World Health Organization’s ICD-11 includes the first mental disorder based on digital technology, “gaming disorder”. A similar construct was previously suggested as a condition for further study by the American Psychiatric Association in their DSM-5 as “internet gaming disorder”. In this study, we provide the first large-scale network analysis on the various structural alternatives for these constructs to understand how their debated criteria and symptoms are connected.<br>**Methods:** Culturally diverse samples of 2 846 digital game players (M = 25.3 years) and 746 esports players (M = 23.5 years) were recruited. Network analysis was applied to explore a structural multiverse of criteria and symptoms in DSM-5/ICD-11 based gaming disorders and how various item operationalizations and moderators possibly shape them.<br>**Findings:** Although some criteria and symptoms (lack of control and continued use despite health problems) remained strong and influential across many networks, we found alternative content valid operationalizations of single items systematically causing significant network differences. All networks were invariant across groups of play style, age, gender, gaming time, and most of the psychosocial characteristics.<br>**Interpretation:** Our study alarms caution for practitioners and researchers when applying and interpreting the listed DSM-5 and ICD-11 based criteria and symptoms for gaming disorders. Our findings show that even small item-level changes can lead to significant network-level changes, thus highlighting a need for careful operationalisation. Considering this highly sensitive network variation, the upcoming clinical validation studies should not be strictly limited to the wordings, criteria, and symptoms of current diagnostic manuals.'
+abstract:  '**Background:** From 2022, the ICD-11 includes the first mental disorder based on digital technology, “gaming disorder”, which was previously suggested as a condition for further study in the DSM-5 (2013). In this study, we provide the first large-scale network analysis of various symptom structures for these constructs to understand the complex interconnections between their proposed symptoms.<br>**Methods:** Culturally diverse samples of 2,846 digital game players (M = 25.3 years) and 746 esports players (M = 23.5 years) were recruited. Network approach was applied to explore a multiverse of gaming disorder symptom structures, effects of item operationalization, and possibile external moderators.<br>**Findings:** Two symptoms (lack of control and continued use despite problems) present in both, the DSM-5 and ICD-11, were systematically central to most of the analyzed networks. Alternative operationalizations of single items systematically caused significant network differences. Networks were invariant across groups of play style, age, gender, gaming time, and most of the psychosocial characteristics.<br>**Interpretation:** Our results caution practitioners and researchers when studying and interpreting gaming disorder symptoms. The data indicate that even minor item-level changes can lead to significant network-level changes, thus highlighting the need for careful operationalisation. Considering this high sensitivity of the network structure, future clinical validation studies should not be strictly limited to the wordings, criteria, and symptoms of current diagnostic manuals.'
 output: 
   html_document:
     code_folding: hide
@@ -13,7 +13,7 @@ output:
 ---
 
 <br>
-The present document serves as supplementary material to the paper '**Network Structures of Gaming Disorder and Internet Gaming Disorder: Criteria and Symptom Operationalization Cause Variation**'. The preprint of the paper can be found at [PsyArXiv](https:).<br><br>
+The present document serves as supplementary material to the paper '**Network Structures of Gaming Disorder and Internet Gaming Disorder: Criteria and Symptom Operationalization Cause Variation**'. The preprint of the paper can be found at [PsyArXiv](https://psyarxiv.com/g3jpt/).<br><br>
 
 Data and R code are freely available at [this OSF project](https://osf.io/a8fhx/).<br> 
 Authors of the code: Ivan Ropovik and Matus Adamkovic
@@ -59,12 +59,13 @@ In this document, we summarize all the outcomes relevant for the paper (in total
 
 ### Methods<br><br>
 #### Participants<br>
-The data used for these analyses comes from international samples of (1) videogame players (general) (*N = 3015*) and (2) esports players<br>(*N = 801*). In both cases, the participants were recruited online via Prolific.
+The data used for these analyses comes from international (70 nationalities) samples of (1) regular gamers (*N = 3015*) and (2) esports players (*N = 801*).
+In both cases, the participants were recruited online via Prolific.
 
 The research was conducted in accordance with the ethical principles stated in the Declaration of Helsinki. The study was approved by the Ethics committee of the Faculty of Arts, University of Presov. The participants were fairly compensated for their time. Debriefing was provided at the end of the survey.
 
 **Data quality**<br>
-The datasets were screened for careless participants (their detection was based on a combination of bot detection, failed attention checks, longstrings, and Mahalanobis distance) whom were then excluded. In summary, 5.6% and 7.2% of the participants were considered as careless and were excluded from the analyses. The resulting effective sample sizes for the samples of videogame players (general) and esports players were *N = 2846* and *N = 746*, respectively. 
+The datasets were screened for careless participants (their detection was based on a combination of bot detection, failed attention checks, longstrings, and Mahalanobis distance) whom were then excluded. In summary, 5.6% and 7.2% of the participants were considered as careless and were excluded from the analyses. The resulting effective sample sizes for the samples of videogame players (general) and esports players were *N = 2,846* and *N = 746*, respectively. 
 
 **Videogame players (general)**<br>
 The only inclusion criterion for the sample of videogame players (general) was *average gaming time higher than 2 hours per week*. The sample (N = 2846; 80.5% male, 18.2% female, 1% non-binary) had a mean age of 25.28 years (*SD* = 7.38). The average time spent gaming equaled 3.97 hours per day (*SD* = 2.48), out of which 61.11% was dedicated to online games. The participants spent another 3.06 hours per day (*SD* = 2.88) on additional activities related to digital games.
@@ -184,7 +185,7 @@ The network structures looked as follows:<br>
 
 #### **RQ 1.1: How are the IGD/GD symptoms structurally interconnected?** 
 ##### RQ 1.1.1: What are the central and peripheral symptoms in the IGD/GD networks?
-##### RQ 1.1.2: Which connections between the symptoms are the strongest/weakest? <font size="1">*(Note that this RQ is not mentioned in the paper)*</font>
+##### RQ 1.1.2: Which connections between the symptoms are the strongest/weakest? <font size="2">*(Note that this RQ is not mentioned in the paper)*</font>
 <br><br>
 
 <font size="4"> **A network of the nine DSM-5's symptoms measured by the conventional measure IGDS9-SF**</font> <br><br>
@@ -212,13 +213,13 @@ ggarrange(mainResults$mainNetworks$igds9sfVarNames$esports$`Centrality plot`, ma
 ```
 <br><br>
 
-<font size="4"> **A network of the four ICD-11's symptoms measured by the GDT**</font> <br><br>
+<font size="4"> **A network of the three ICD-11's symptoms measured by the GDT**</font> <font size="2"> *(Note: symptom no. 3 is split into two)*</font> <br><br>
 
 *Videogame players (general)*
 ```{r, fig.align="center", fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 mainResults$mainNetworks$gdtVarNames$gamers$`Network plot`
 ```
-Nodes no. 1-4 represent the symptoms of GD in that order.<br><br>
+Nodes no. 1-4 represent the symptoms of GD in that order *Note that the symptom no 3 is split into two, here represented as no. 3 and no. 4)*.<br><br>
 ```{r, fig.align="center", fig.height=12, fig.width=12, message=FALSE, warning=FALSE}
 library(ggpubr)
 ggarrange(mainResults$mainNetworks$gdtVarNames$gamers$`Centrality plot`, mainResults$mainNetworks$gdtVarNames$gamers$`Stability plot`,
@@ -229,7 +230,7 @@ ggarrange(mainResults$mainNetworks$gdtVarNames$gamers$`Centrality plot`, mainRes
 ```{r, fig.align="center", fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 mainResults$mainNetworks$gdtVarNames$esports$`Network plot`
 ```
-Nodes no. 1-4 represent the symptoms of GD in that order.<br><br>
+Nodes no. 1-4 represent the symptoms of GD in that order. *Note that the symptom no 3 is split into two, here represented as no. 3 and no. 4)*<br><br>
 ```{r, fig.align="center", fig.height=12, fig.width=12, message=FALSE, warning=FALSE}
 library(ggpubr)
 ggarrange(mainResults$mainNetworks$gdtVarNames$esports$`Centrality plot`, mainResults$mainNetworks$gdtVarNames$esports$`Stability plot`,
@@ -247,7 +248,7 @@ ggarrange(mainResults$mainNetworks$gdtVarNames$esports$`Centrality plot`, mainRe
 ```{r, fig.align="center", fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 mainResults$mainNetworks$gdtIgdshVarNames$gamers$`Network plot`
 ```
-Nodes no. 1-4 represent the symptoms of GD in that order. Nodes no. 5-10 represent *preoccupation with internet games*, *withdrawal*, *tolerance*, *deception of important people*, and *use of internet games to escape*, respectively.<br><br>
+Nodes no. 1-4 represent the symptoms of GD in that order. *Note that the symptom no 3 is split into two, here represented as no. 3 and no. 4)*. Nodes no. 5-10 represent *preoccupation with internet games*, *withdrawal*, *tolerance*, *deception of important people*, and *use of internet games to escape*, respectively.<br><br>
 ```{r, fig.align="center", fig.height=12, fig.width=12, message=FALSE, warning=FALSE}
 library(ggpubr)
 ggarrange(mainResults$mainNetworks$gdtIgdshVarNames$gamers$`Centrality plot`, mainResults$mainNetworks$gdtIgdshVarNames$gamers$`Stability plot`,
@@ -290,7 +291,7 @@ mainResults$bridgeSymptoms$bridgeCentralityPlot
 ```{r, fig.align="center", fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 mainResults$mainNetworks$gdtBestCravingHealthVarNames$gamers$`Network plot`
 ```
-Nodes no. 1-4 represent the symptoms of GD in that order. Nodes no. 5-10 represent *preoccupation with internet games*, *withdrawal*, *tolerance*, *deception of important people*, and *use of internet games to escape*, respectively. Nodes no. 11-13 represent *craving*, *neglect of own health*, and *gaming time*, respectively.<br><br>
+Nodes no. 1-4 represent the symptoms of GD in that order. *Note that the symptom no 3 is split into two, here represented as no. 3 and no. 4)*. Nodes no. 5-10 represent *preoccupation with internet games*, *withdrawal*, *tolerance*, *deception of important people*, and *use of internet games to escape*, respectively. Nodes no. 11-13 represent *craving*, *neglect of own health*, and *gaming time*, respectively.<br><br>
 ```{r, fig.align="center", fig.height=12, fig.width=12, message=FALSE, warning=FALSE}
 library(ggpubr)
 ggarrange(mainResults$mainNetworks$gdtBestCravingHealthVarNames$gamers$`Centrality plot`, mainResults$mainNetworks$gdtBestCravingHealthVarNames$gamers$`Stability plot`,
@@ -301,7 +302,7 @@ ggarrange(mainResults$mainNetworks$gdtBestCravingHealthVarNames$gamers$`Centrali
 ```{r, fig.align="center", fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 mainResults$mainNetworks$gdtBestCravingHealthVarNames$esports$`Network plot`
 ```
-Nodes no. 1-4 represent the symptoms of GD in that order. Nodes no. 5-10 represent *preoccupation with internet games*, *withdrawal*, *tolerance*, *deception of important people*, and *use of internet games to escape*, respectively. Nodes no. 11-13 represent *craving*, *neglect of own health*, and *gaming time*, respectively.<br><br>
+Nodes no. 1-4 represent the symptoms of GD in that order. *Note that the symptom no 3 is split into two, here represented as no. 3 and no. 4)*. Nodes no. 5-10 represent *preoccupation with internet games*, *withdrawal*, *tolerance*, *deception of important people*, and *use of internet games to escape*, respectively. Nodes no. 11-13 represent *craving*, *neglect of own health*, and *gaming time*, respectively.<br><br>
 ```{r, fig.align="center", fig.height=12, fig.width=12, message=FALSE, warning=FALSE}
 library(ggpubr)
 ggarrange(mainResults$mainNetworks$gdtBestCravingHealthVarNames$esports$`Centrality plot`, mainResults$mainNetworks$gdtBestCravingHealthVarNames$esports$`Stability plot`,
@@ -791,7 +792,7 @@ mainResults$modsResults$`Proportion of significantly different edges`
 
 
 #### RQ 4.1: Do the groups of core (*withdrawal*, *unsuccessful attempts to control gaming*, *deception of important people*, *jeopardizing important things*) and peripheral (*preoccupation*, *tolerance*, *gaming to escape*) IGD symptoms, as suggested by Brunborg et al. (2015), differ in centrality/connectivity indices? 
-^*(Note that this RQ is not mentioned in the paper)*^
+<font size="2">*(Note that this RQ is not mentioned in the paper)*</font>
 <br>
 
 **Technicalities of the statistical analysis**<br>
